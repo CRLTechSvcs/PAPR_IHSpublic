@@ -1,0 +1,134 @@
+submit=Submit
+cancel=Cancel
+tools=Tools
+edit=Edit
+
+# 
+login.invalid.user.password=Invalid User Name and Password
+
+#menu
+menu.search.journals=Search Journals
+
+menu.ingestion=Ingestion
+menu.ingestion.summary=Summary
+menu.ingestion.exceptions=Exceptions
+menu.ingestion.newIngestion=New Ingestion
+
+menu.advanced.editing=Advanced Editing
+menu.advanced.editing.journal.history=Journal History
+menu.advanced.editing.journal.linking=Journal Linking
+
+menu.deaccession=Deaccession
+menu.deaccession.summary=Summary
+menu.deaccession.new.deaccession=New Deaccession
+menu.deaccession.finalizejob=Finalize Job
+
+menu.publishing=Publishing
+menu.publishing.published.data=Published Data
+menu.publishing.publish.new.data=Publish New Data
+
+menu.reporting=Reporting
+menu.reporting.previous.reports=Previous Reports
+menu.reporting.new.report=New Report
+
+
+menu.administration=Administration
+menu.admin.group=Manage Group
+menu.admin.member=Manage Member
+menu.admin.user=Manage User
+
+
+#Search Journal
+search.journal.title=Title
+search.journal.issn=ISSN
+search.journal.oclc=OCLC
+search.journal.subject=Subject
+search.journal.member=Member
+search.journal.number.of.issues=Number of Issues
+search.journal.min=Min
+search.journal.max=Max
+search.journal.results=Results
+
+#Ingestion home
+ingestion.home.issue.level.holdings=Issue Level Holdings
+ingestion.home.ingestion.jobs.summary=Ingestion Jobs Summary
+ingestion.home.start.date=Start Date
+ingestion.home.job.name=Job Name
+ingestion.home.data.source=Data Source
+ingestion.home.organization=Organization
+ingestion.home.user=User
+ingestion.home.job.status=Job Status
+ingestion.home.status.detail=Status Detail
+
+ingestion.home.show.All.Members.Jobs=Show All Members' Jobs
+ingestion.home.show.only.my.jobs=Show Only My Jobs
+ingestion.home.show.only.failed.jobs=Show Only Failed Jobs
+ingestion.home.show.only.queued.jobs=Show Only Queued Jobs
+ingestion.home.show.completed.jobs=Show All Completed Jobs
+ingestion.home.show.one.members.jobs=Show One Member's Jobs
+ingestion.home.custom.filter=Custom Filter
+ingestion.home.show.only.my.member.jobs = Show My Member's Jobs
+
+#Ingestion New
+ingestion.new.start.a.new.ingestion=Start a New Ingestion
+ingestion.new.ingestion.name=Ingestion Name
+ingestion.new.file.format.type=File Format Type
+ingestion.new.commitment.type=Commitment Type
+ingestion.new.holdings.commitment=Holdings Commitment
+ingestion.new.not-committed=Not-Committed
+ingestion.new.committed=Committed
+ingestion.new.file.source=File Source
+ingestion.new.ftp.upload=FTP Upload
+ingestion.new.http.upload=HTTP Upload
+ingestion.new.authorized.source=Authorized Source
+ingestion.new.data.file=Data File
+
+ingestion.new.start.ingestion=Start Ingestion
+
+#Ingestion Exception
+
+ingestion.excpetion.ingestion.excpetion=Ingestion Exceptions
+ingestion.excpetion.Data.Parsing.or.Logic.Error=Data Parsing or Logic Error
+ingestion.excpetion.uncertain.match=Uncertain Match
+ingestion.excpetion.conflict.with.existing.record=Conflict with Existing Record
+
+ingestion.excpetion.Show.All.Members.Exceptions=Show All Members' Exceptions
+ingestion.excpetion.Show.Only.Available.Exceptions=Show Only Available Exceptions
+ingestion.excpetion.Show.Only.My.Exceptions=Show Only My Exceptions
+ingestion.excpetion.Show.Only.My.Available.Exceptions=Show Only My Available Exceptions
+ingestion.excpetion.Show.Only.My.Member.Exceptions=Show Only My Member Exceptions
+ingestion.excpetion.Show.Only.My.Member.Available.Exceptions=Show Only My Member Available Exceptions
+ingestion.excpetion.Show.Only.My.Held.Exceptions=Show Only My Held Exceptions
+ingestion.excpetion.Show.Only.Onhold.Exceptions=Show Only On Hold Exceptions
+ingestion.excpetion.exception.date=Exception Date
+ingestion.excpetion.job.name=Job Name
+ingestion.excpetion.record.title=Record Title
+ingestion.excpetion.issues=Issue(s)
+ingestion.excpetion.status=Status
+ingestion.excpetion.resolve.owner=Resolve/Owner
+ingestion.excpetion.exception.field=Field
+ingestion.excpetion.exception.original.data=Original Data
+ingestion.excpetion.exception.corrected.data=Corrected Data
+ingestion.excpetion.exception.info=Info
+ingestion.excpetion.exception.resolve.data.error=Resolve Data Parsing or Logic Error
+
+
+#Advanced Editing
+
+advanced.editing.search.journals.to.edit.history=Search Journals to Edit History
+advanced.editing.search.journals.to.edit.linking=Search Journals to Edit Linking
+
+##Deaccession
+deaccession.summary.deaccession.jobs.summary=Deaccession Jobs Summary
+deaccession.summary.deaccession.criteria=Deaccession Criteria
+deaccession.summary.deaccession.criteria.in.progress=Choose an In-Progress Deaccession Job to Finalize
+
+##Publish New Data
+publishing.publishing.jobs.summary=Publishing Jobs Summary
+publishing.start.a.new.publishing.Job=Start a New Publishing Job
+
+##Reporting
+reporting.reports.summary=Reports Summary
+reporting.create.a.new.report=Create a New Report
+
+

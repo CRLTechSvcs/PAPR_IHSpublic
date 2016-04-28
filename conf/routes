@@ -1,0 +1,130 @@
+# Routes
+# This file defines all application routes (Higher priority routes first)
+# ~~~~
+
+#Home page
+GET     /                           controllers.Login.login()
+POST    /login						controllers.Login.doLogin()
+GET     /logout						controllers.Login.doLogout()
+#POST   /person                     controllers.Application.addPerson()
+#GET    /persons                    controllers.Application.getPersons
+#######################################################################
+
+## Search ##
+GET /search_home					   controllers.SearchJournals.search_home()
+GET /search/searchJournalByTitle/:searchValue       controllers.SearchJournals.searchJournalByTitle(searchValue: String)
+GET /search/searchJournalByISSN/:searchValue        controllers.SearchJournals.searchJournalByISSN(searchValue: String)
+GET /search/searchJournalByOCLC/:searchValue        controllers.SearchJournals.searchJournalByOCLC(searchValue: String)
+
+GET /search/getJournalDetail/:id      controllers.SearchJournals.getJournalDetail(id: Int)
+GET /search/getJournalVolumeDetail/:id/:memberid      controllers.SearchJournals.getJournalVolumeDetail(id: Int, memberid: Int)
+GET /search/getMembers                       controllers.SearchJournals.getMembers()
+POST /search/postHoldingConditions           controllers.SearchJournals.postHoldingConditions()
+POST /search/postHoldingNotes           controllers.SearchJournals.postHoldingNotes()
+GET /search/getJournalWantStatus/:id 	controllers.SearchJournals.getJournalWantStatus(id: Int)
+GET /search/setJournalWantStatus/:id/:status  	controllers.SearchJournals.setJournalWantStatus(id: Int, status: Int)
+ 
+##Ingestion##
+
+GET   /ingestion_home                 controllers.Ingestion.ingestion_home()
+POST  /ingestion_home                 controllers.Ingestion.ingestion_home()
+GET   /ingestion/getAllIngestionJobs       controllers.IngestionJob.getAllIngestionJobs()
+GET   /ingestion/getAUserIngestionJobs     controllers.IngestionJob.getAUserIngestionJobs()
+GET   /ingestion/getAllQuedUserJobs        controllers.IngestionJob.getAllQuedUserJobs()
+GET   /ingestion/getAllArchiveUserJob      controllers.IngestionJob.getAllArchiveUserJob()
+GET   /ingestion/getAMemberIngestionJobs   controllers.IngestionJob.getAMemberIngestionJobs()
+GET   /ingestion/getBadformatFile/:fileName      controllers.IngestionJob.getBadformatFile(fileName: String)
+
+GET    /ingestion_exception            controllers.Ingestion.ingestion_exception()
+GET    /ingestion_exception_jobid/:jobid            controllers.Ingestion.ingestion_exception_jobid(jobid: Int)
+
+
+GET    /ingestion/getAllUserExceptions/:offset       controllers.IngestionException.getAllUserExceptions(offset :Int)
+GET    /ingestion/getAllUserAvailableExceptions/:offset     controllers.IngestionException.getAllUserAvailableExceptions(offset :Int)
+GET    /ingestion/getAllUserOnholdExceptions/:offset        controllers.IngestionException.getAllUserOnholdExceptions(offset :Int)
+GET    /ingestion/getAUserExceptions/:offset        controllers.IngestionException.getAUserExceptions(offset :Int)
+GET    /ingestion/getAUserAvailableExceptions/:offset        controllers.IngestionException.getAUserAvailableExceptions(offset :Int)
+GET    /ingestion/getAUserOnholdExceptions/:offset        controllers.IngestionException.getAUserOnholdExceptions(offset :Int)
+GET    /ingestion/getMyMemberExceptions/:offset      controllers.IngestionException.getMyMemberExceptions(offset :Int) 
+GET    /ingestion/getMyMemberAvailableExceptions/:offset    controllers.IngestionException.getMyMemberAvailableExceptions(offset :Int)
+GET    /ingestion/getAllExceptionsByJob/:jobId/:offset        controllers.IngestionException.getAllExceptionsByJob(jobId: Int, offset :Int)
+GET    /ingestion/getExceptionDetail/:index     controllers.IngestionException.getExceptionDetail(index: Int)
+POST   /ingestion/postExceptionResolve           controllers.IngestionException.postExceptionResolve()
+POST   /ingestion/postExceptionIgnore/:recordId       controllers.IngestionException.postExceptionIgnore(recordId: Int)
+POST   /ingestion/postExceptionOnhold/:recordId       controllers.IngestionException.postExceptionOnhold(recordId: Int)
+
+GET    /ingestion_new                    controllers.Ingestion.ingestion_new()
+POST   /ingestion/ingestionHttpStart     controllers.IngestionNew.ingestionHttpStart()
+POST   /ingestion/ingestionFtpStart      controllers.IngestionNew.ingestionFtpStart()
+GET    /ingestion/ingestionFtpFilelist   controllers.IngestionNew.ingestionFtpFilelist()
+
+
+#Advance Editing
+GET /advanced_editing_history			controllers.AdvancedEditing.advanced_editing_history()
+GET /advanced_editing_linking			controllers.AdvancedEditing.advanced_editing_linking()
+GET /advancedEditing/GetTitles/:titleid			controllers.AdvancedEditing.GetTitles(titleid: Int)
+GET /advancedEditing/GetPublishers				controllers.AdvancedEditing.GetPublishers()
+GET /advancedEditing/GetPeriodicityType			controllers.AdvancedEditing.GetPeriodicityType()
+POST /advancedEditing/postTitle			controllers.AdvancedEditing.postTitle()
+GET /advancedEditing/restorePreviousTitle/:titleID/:titleVersionID	controllers.AdvancedEditing.restorePreviousTitle(titleID: Int, titleVersionID: Int)
+GET /advancedEditing/addParent/:titleid/:parentTitleId		controllers.AdvancedEditing.addParent(titleid: Int, parentTitleId: Int)
+GET /advancedEditing/addChild/:titleid/:childTitleId		controllers.AdvancedEditing.addChild(titleid: Int, childTitleId: Int)
+GET /advancedEditing/getLinkView/:titleid  controllers.AdvancedEditing.getLinkView(titleid: Int)
+GET /advancedEditing/removeParent/:titleid/:parentTitleId		controllers.AdvancedEditing.removeParent(titleid: Int, parentTitleId: Int)
+GET /advancedEditing/removeChild/:titleid/:childTitleId		controllers.AdvancedEditing.removeChild(titleid: Int, childTitleId: Int)
+
+#Deaccession			
+GET /deaccession_summary				controllers.Deaccession.deaccession_summary()
+GET /deaccession_new_deaccession		controllers.Deaccession.deaccession_new_deaccession()
+GET /deaccession_finalized_job			controllers.Deaccession.deaccession_finalized_job()
+GET /deaccessionSummary/getDeaccessionNewView     controllers.Deaccession.getDeaccessionNewView()
+
+GET /deaccessionSummary/getAllDeaccessionJobs/:status     controllers.Deaccession.getAllDeaccessionJobs(status: Int)
+
+GET /deaccessionSummary/getAMemberDeaccessionJobs/:status     controllers.Deaccession.getAMemberDeaccessionJobs(status: Int)
+GET /deaccessionSummary/getAUserDeaccessionJobs/:status     controllers.Deaccession.getAUserDeaccessionJobs(status: Int)
+GET /deaccessionSummary/submitDeaccessionJob/:jobId			controllers.Deaccession.submitDeaccessionJob(jobId: Int)
+
+POST /deaccessionSummary/postDeaccessionReport	  controllers.Deaccession.postDeaccessionReport()
+POST /deaccessionSummary/postDeaccessionJob       controllers.Deaccession.postDeaccessionJob()
+ 
+##Publishing
+GET /publishing_published_data			controllers.Publishing.publishing_published_data()
+GET /publishing_publish_new_data		controllers.Publishing.publishing_publish_new_data()
+GET /publishing/getPublishingView       controllers.Publishing.getPublishingView()
+POST /publishing/postPublishingView       controllers.Publishing.postPublishingView()
+GET /publishing/getAUserPublishingJobs       controllers.Publishing.getAUserPublishingJobs()
+GET /publishing/getAllPublishingJobs       controllers.Publishing.getAllPublishingJobs()
+GET /publishing/getAMemberPublishingJobs       controllers.Publishing.getAMemberPublishingJobs()
+
+## Reporting
+GET /reporting_previous_reports			controllers.Reporting.reporting_previous_reports()
+GET /reporting_new_report				controllers.Reporting.reporting_new_report()
+GET /reporting/getReportingView         controllers.Reporting.getReportingView()
+POST /reporting/submitReport            controllers.Reporting.submitReport()
+GET /reporting/getReportingJobs			controllers.Reporting.getReportingJobs()
+
+##Administration
+GET /administration_group				controllers.Administration.getAdministrationGroup()
+GET /administration_member				controllers.Administration.getAdministrationMember()
+GET /administration_user				controllers.Administration.getAdministrationUser()
+POST /administration/addAGroup			controllers.Administration.addAGroup()
+GET /administration/serchGroup/:name	controllers.Administration.searchGroup(name: String)
+POST /administration/editGroup      	controllers.Administration.editGroup
+GET /administration/getAllGroup			controllers.Administration.getAllGroup
+POST /administration/addAMember			controllers.Administration.addAMember()
+POST /administration/addAUser			controllers.Administration.addAUser()
+POST /administration/addAMember			controllers.Administration.addAMember()
+GET /administration/searchMember/:name	controllers.Administration.searchMember(name: String)
+POST /administration/editAMember		controllers.Administration.editAMember()
+GET /administration/getAllMember		controllers.Administration.getAllMember()
+POST /administration/addAUser			controllers.Administration.addAUser()
+GET /administration/searchUser/:name	controllers.Administration.searchUser(name: String)
+POST /administration/saveAUser			controllers.Administration.saveAUser()
+GET /administration/getCountryState	    controllers.Administration.getCountryState()
+
+#GET    /java                      controllers.Ingestion.view
+#POST    /java                     controllers.Ingestion.save
+
+# Map static resources from the /public folder to the /assets URL path
+GET     /assets/*file               controllers.Assets.at(path="/public", file)

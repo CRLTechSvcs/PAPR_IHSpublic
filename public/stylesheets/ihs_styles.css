@@ -1,0 +1,1193 @@
+/*Site structure*/
+
+body {
+	background-color: #fff; 
+	margin: 0;
+	padding: 0;
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 80%;
+	line-height: 1.3em;
+	font-weight: normal;
+}
+
+button {
+	font-size: 10px;
+}
+
+.nihilo div.dojoxGrid {
+	font-size: 10px; 
+}
+
+#container {
+	width: 1140px;
+	margin: 0 auto 0 auto;
+	text-align: center;
+	/*border: 1px solid #000;*/	
+}
+
+#relationships {
+	font-size:90%;
+	width:300px;
+	height:90px;
+	text-align:center;
+	background-color:lightyellow;
+}
+
+#holdings-img {
+	border:none;
+	height:136px;
+	padding-left:40px;
+}
+
+#header {
+	width: 974px;
+	background: #fff;
+	overflow:hidden;
+	height: 22px;
+	margin: 20px auto 8px auto;
+	padding: 3px 0 10px 0;
+	text-align: left;
+	/*border: 1px solid #000;*/
+}
+
+#header-left {float:left;/*border: 1px solid #000;*/}
+
+#header-right {
+	float:right;
+	margin-right:0;
+	/*border: 1px solid #000;*/
+	text-align: right;
+}
+
+#login-div {
+	display: none;
+}
+
+#login-error {
+	color: red;
+}
+
+input.pre-input {
+	color: gray;
+}
+
+input.with-input {
+	color: black;
+}
+
+h2.menu-header {
+	border: 2px solid black;
+	padding: 10px 0px 10px 16px;
+	margin: -4px -3px 2px -3px;
+	background-color: #bab8a8;
+	color:black;
+}
+
+h2.menu-header a {
+	color:black;
+}
+
+div#menu-contents {
+	height:559px;
+	text-align:left;
+}
+
+div#menu-contents-search_journal {
+	height:559px;
+	text-align:left;
+}
+
+div#menu-contents-ingestion {
+	height:559px;
+	text-align:left;
+}
+
+div#menu-contents-advanced-editing {
+	height:559px;
+	text-align:left;
+}
+
+div#menu-contents-deaccession {
+	height:559px;
+	text-align:left;
+}
+
+div#menu-contents-publishing {
+	height:559px;
+	text-align:left;
+}
+
+div#menu-contents_reporting {
+	height:559px;
+	text-align:left;
+}
+
+div#menu-contents_administration {
+	height:559px;
+	text-align:left;
+}
+p#search-criteria {
+	text-align: right;
+}
+
+#header-right p {font-size:90%;}
+
+#content {
+	width: 100%;
+	overflow: hidden;	
+	margin: 10px 0 0 0;
+}
+
+#content-left {
+	width:190px;
+	height:887px;
+	float:left;
+}
+
+#inner-content-left {
+	width:184px;
+	height:835px;
+	background-color:#e9e6d3;
+	padding:49px 3px 3px 3px;
+}
+
+div.blank {
+	background-color:#fff;
+}
+
+input.search {
+	width: 125px;
+}
+
+div.new-form {
+	text-align:right;
+	width: 600px;
+	margin-left:16px;
+}
+
+.ingestion-form {
+	width: 400px;
+}
+
+input.search-small {
+	width: 50px;
+}
+
+#results {
+	visibility: hidden;
+	height: 458px;
+}
+
+#results ul {
+	list-style-type: none;
+	padding:0;
+	margin:0;
+	overflow:hidden;
+	white-space:nowrap;
+	text-align:left;
+}
+
+#results li:nth-child(odd) {
+	background: white;
+}
+
+#content-left #logo {
+	margin: 40px 0 40px 0;
+}
+
+#content-center {
+	width:867px;
+	height:auto;
+	float:left;
+	text-align:left;
+}
+
+div.exception-list {
+	margin-left: 16px;
+	height: 250px;
+}
+
+#summary {
+	height:180px;
+}
+
+#timeline {
+	height:50px;
+	width:800px;
+	margin: 20px auto;
+	cursor: pointer;
+}
+
+div.timeline {
+	height:30px;
+	float:left;	
+}
+
+
+
+div.timeline-held {
+	background-color:#8080FF;
+}
+
+div.timeline-wanted {
+	background-color:#FF8080;
+}
+
+div.timeline-missing {
+	background-color:#FFFF80;
+}
+
+#issues {
+	overflow:auto;
+	width:800px;
+	margin: 10px auto;
+	height:549px;
+}
+
+div.timeline:hover .coupontooltip { /* NEW */
+    display: block;
+}
+
+
+.coupontooltip {
+    display: none;  /* NEW */
+    background: #C8C8C8;
+    margin-left: 28px;
+    padding: 10px;
+    position: absolute;
+    z-index: 1000;
+    width:80px;
+    height:40px;
+}
+
+.couponcode {
+    margin:100px;
+}
+
+#history-list {
+	overflow:auto;
+	height:575px;
+}
+
+.history {
+	height:220px;
+}
+
+#current {
+	height:220px;
+}
+
+div.history-col1 {
+	clear: both;
+	width:275px;
+	height: auto;
+	float:left;
+	text-align: left;
+}	
+
+div.history-col2 {
+	width: 250px;
+	height: auto;
+	float: left;
+	text-align: left;
+}
+div.history-col3 {
+	width: 300px;
+	height: auto;
+	float: left;
+	text-align: left;
+}
+div.history-title1 {
+	width: 415px;
+	height: auto;
+	float:left;
+	text-align: left;
+	font-weight: bold;
+	font-size: 130%;
+	margin: 11px 0px 13px 16px;
+}
+
+div.history-title2 {
+	width: 395px;
+	height: auto;
+	float:left;
+	text-align: right;
+	font-weight: bold;
+	font-size: 130%;
+	margin: 11px 0px 13px 16px;
+}
+
+#save-cancel-buttons {
+	display: none;
+}
+
+div.links {
+	width: 310px;
+	text-align: center;
+	height: 821px;
+	float: left;
+	margin: 10px;
+}
+
+div#links-current {
+	width: 187px;
+}
+
+div.link-list {
+	margin: 10px;
+    -moz-appearance: textfield;
+    -webkit-appearance: textfield;
+    background-color: white;
+    background-color: -moz-field;
+    border: 1px solid darkgray;
+    box-shadow: 1px 1px 1px 0 lightgray inset;  
+	height: 772px;
+	overflow-y:scroll;
+}
+
+div.link-item {
+	padding:10px;
+	border: 1px solid darkgreen;
+	border-style: none none solid;
+	
+}
+
+div.link-item:nth-child(odd) {
+	background-color:lightgreen;
+}
+
+div.links h2 {
+	text-align:center;
+	margin: 10px 0px;
+}
+
+div.checkbox {
+	float:left;
+	padding:2px;
+}
+
+.holding {
+	border:1px solid #bfbfbf;
+	padding:5px 10px;
+	overflow:auto;
+}
+
+a.edit-crl {
+	visibility: hidden;
+}
+
+a.edit-iu {
+	display:none;
+}
+
+a.edit-nw {
+	display:none;
+}
+
+.year .dijitTitlePaneContentOuter {
+	border:none;
+}
+
+.year .dijitTitlePaneContentInner {
+	padding: 0;
+}
+
+.year .dijitTitlePaneContentOuter .dijitTitlePaneContentOuter:first-child {
+	border-top:none;
+}
+
+.rotate-text {
+	-webkit-transform: rotate(-50deg);
+	-moz-transform:rotate(-50deg);
+	-ms-transform:rotate(-50deg); 
+	position:relative;
+	width:60px;
+}
+
+div.timeline-held {
+	background-color:#8080FF;
+}
+
+div.timeline-wanted {
+	background-color:#FF8080;
+}
+
+div.timeline-missing {
+	background-color:#FFFF80;
+}
+
+#timeline-left {
+	float:left;
+	width:200px;
+}
+
+#timeline-center {
+	float:left;
+	width:400px;
+	text-align:center;
+}
+
+#timeline-right {
+	float:left;
+	width:200px;
+	text-align:right;
+}
+
+div.held .dijitTitlePaneTitle {
+	background:#8080FF;
+}
+
+div.wanted .dijitTitlePaneTitle {
+	background:#FF8080;
+}
+
+div.missing .dijitTitlePaneTitle {
+	background:#FFFF80;
+}
+
+div.holding-col1 {
+	margin:0px 0px;
+	width:170px;
+	float:left;
+}
+
+div.holding-col2 {
+	margin:0px 10px;
+	width:270px;
+	float:left;
+}
+
+div.issues-col {
+	float:left;
+	width:170px;
+}
+
+div.holding-col3 {
+	margin:0px 0px;
+	width:190px;
+	float:left;
+}
+
+textarea.issue-notes {
+	width:197px;
+	height:75px;
+}
+
+textarea.issue-notes[readonly] {
+	background:lightgray;
+}
+
+img.edit-journal {
+	height: 18px;
+	vertical-align: text-top;
+}
+
+img.edit-journal-links {
+	height: 16px;
+	vertical-align: text-top;
+}
+
+img.edit-save-conditions {
+	height: 16px;
+	vertical-align: text-top;
+}
+
+img.edit-save-notes {
+	height: 16px;
+	vertical-align: text-top;
+}
+
+img.edit-pub-range {
+	height: 18px;
+	vertical-align: text-top;
+	visibility: hidden;
+}
+
+.edit-only {
+	display: none;
+}
+
+#content-right {
+	width:83px;
+	height:887px;
+	float:left;
+}
+
+#inner-content-right {
+	width:77px;
+	height:835px;
+	background-color:#e9e6d3;
+	padding:49px 3px 3px 3px;
+	text-align:right;
+}
+
+#content-center p {
+	margin-left:16px;
+	text-align:left;
+}
+	
+/* Content-col1 and content-col2 create the two column layouts for the Directory and Title Detail pages */
+
+#content-col1 {
+	clear: both;
+	width:275px;
+	height: auto;
+	float:left;
+	text-align: left;
+}	
+
+#content-col2 {
+	width: 270px;
+	height: auto;
+	float: left;
+	text-align: left;
+}
+#content-col3 {
+	width: 300px;
+	height: auto;
+	float: left;
+	text-align: left;
+}
+
+#title-col1 {
+	width: 415px;
+	height: auto;
+	float:left;
+	text-align: left;
+	font-weight: bold;
+	font-size: 130%;
+	margin: 11px 0px 13px 16px;
+}
+
+#title-col2 {
+	width: 415px;
+	height: auto;
+	float: right;
+	text-align: left;
+}
+
+#title-col2 h2 {
+	margin-left: 12px;
+}
+
+#footer {
+	margin: 10px auto 32px auto;
+	width: 974px;
+	/*border: 1px solid #000000;*/
+}
+
+#footer p {
+	text-align:left;
+	font-size:88%;
+	margin-left:124px;
+	/*border:1px solid #000;*/
+	}
+
+
+/* Begin CSS Tabs */
+
+#nav-tabs {
+	width:867px;
+	height:37px;
+	background:#e9e6d3;
+	border-bottom: 1px solid #fff;
+	padding-top:8px;
+}
+
+ul#tabs{ /* general settings */
+	text-align: left; /* set to left, right or center */
+	margin: 0 1em 0 0; /* set margins as desired */
+	/*border-bottom: 1px solid #fff;*/   /*set border COLOR as desired */
+	list-style-type: none;
+	padding: 0 40px 0 40px; /* THIRD number must change with respect to padding-top (X) below */
+}
+
+ul#tabs li { /* do not change */
+	display: inline; 
+}
+
+body#tab1 li.tab1, body#tab2 li.tab2, body#tab3 li.tab3 { /* settings for selected tab */
+	/*border-bottom: 1px solid #fff;*/ /* set border color to page background color */
+	/* background-color: #fff;*/ /*set background color to match above border color */
+}
+
+body#tab1 li.tab1 a, body#tab2 li.tab2 a, body#tab3 li.tab3 a { /* settings for selected tab link */
+	background-color: #fff; /* set selected tab background color as desired */
+	color: #485b2e; /* set selected tab link color as desired */
+	position: relative;
+	top: 0;
+	padding-top: 10px; /* must change with respect to padding (X) above and below */
+	font-weight:bold;
+	text-align:center;
+	float:left;	
+	width:155px;
+	
+	/* Top left corner */
+	border-top-left-radius: 10px;
+	-moz-border-radius-topleft: 10px;
+	-webkit-border-top-left-radius: 10px;
+	
+	/* Top right corner*/
+	border-top-right-radius: 10px;
+	-moz-border-radius-topright: 10px;
+	-webkit-border-top-right-radius: 10px;
+}
+
+ul#tabs li a { /* settings for all tab links */
+	padding: 10px 0; /* set padding (tab size) as desired; FIRST number must change with respect to padding-top (X) above */
+	border: 1px solid #e9e6d3; /* set border COLOR as desired; usually matches border color specified in #tabnav */
+	background-color: #adbd90; /* set unselected tab background color as desired */
+	color: #fff; /* set unselected tab link color as desired */
+	margin-right: 6px; /* set additional spacing between tabs as desired */
+	text-decoration: none;
+	border-bottom: none;
+	font-weight:bold;
+	text-align:center;
+	float:left;
+	width:155px;
+
+	/* Top left corner */
+	border-top-left-radius: 10px;
+	-moz-border-radius-topleft: 10px;
+	-webkit-border-top-left-radius: 10px;
+	
+	/* Top right corner*/
+	border-top-right-radius: 10px;
+	-moz-border-radius-topright: 10px;
+	-webkit-border-top-right-radius: 10px;
+}
+
+ul#tabs a:hover { /* settings for hover effect */
+	background: #485b2e; /* set desired hover color */
+}
+
+/* End CSS tabs */
+ 
+
+/* Headings and Font Sizing */
+
+h1, h2, h3, h4 {
+	text-align:left;
+	margin-left:16px;
+}
+
+#subhead-details h1, #subhead-details p {
+	margin-left: 0px;
+}
+
+#subhead-details h1 a {
+	margin-left: 16px;
+	font-size: 80%;
+}
+
+h1 {
+	font-size: 160%;
+}
+
+h1.tos-h1 {
+	text-align:center;
+}
+
+h1.title-detail {
+	margin-left: 16px;
+	line-height: 1.25em;
+	font-size: 130%;
+}
+
+h2 {
+	font-size: 130%;
+}
+
+h2 .program-title {
+	font-weight: normal;
+}
+
+h3 {
+	font-size:125%;
+}
+
+h4 {
+	font-size:100%; 
+	font-weight:normal;
+}
+
+
+/* Links */
+
+a:link, 
+a:visited {
+	color: #485b2e;
+	text-decoration: none;
+}
+
+a:active, 
+a:hover { /*hover state CSS*/
+	color: #485b2e;
+	text-decoration: underline;
+}
+
+#content-center p a:link, #content-center p a:visited, 
+#content-center p a:hover, #content-center p a:active {
+	color: #485b2e;
+	/*font-size: 90%;*/
+	font-weight: normal;	
+}
+
+#content-center p a:link, #content-center p a:visited {
+	text-decoration: none;
+}
+
+#content-center p a:hover, #content-center p a:active {
+	text-decoration: underline;
+}
+
+#footer a:link, #footer a:visited,
+#footer a:hover, #footer a:active,
+#subhead a:link, #subhead a:visited,
+#subhead a:hover, #subhead a:active, 
+#subhead-details a:link, #subhead-details a:visited,
+#subhead-details a:hover, #subhead-details a:active, 
+table#pagination a:link, table#pagination a:visited,
+table#pagination a:hover, table#pagination a:active,
+table.generic-table-results a:link, table.generic-table-results a:visited,
+table.generic-table-results a:hover, table.generic-table-results a:active,
+table.generic-table a:link, table.generic-table a:visited,
+table.generic-table a:hover, table.generic-table a:active,
+table.four-col th a:link, table.four-col th a:visited,
+table.four-col th a:hover, table.four-col th a:active,
+table.four-col-title td a:link, table.four-col-title td a:visited,  
+table.four-col-title td a:hover, table.four-col-title td a:active,  
+#header-right a:link, #header-right a:visited, 
+#header-right a:hover, #header-right a:active,
+ul.no-decoration a:hover, ul.no-decoration a:active,
+ul.no-decoration a:link, ul.no-decoration a:visited {
+	color: #485b2e;
+	/*font-size: 90%;*/
+	font-weight: normal;	
+}
+
+#footer a:link, #footer a:visited,
+#subhead a:link, #subhead a:visited,
+#subhead-details a:link, #subhead-details a:visited,
+table#pagination a:link, table#pagination a:visited,
+table.four-col th a:link,  table.four-col th a:visited,
+table.four-col-title td a:link, table.four-col-title td a:visited,    
+table.generic-table a:link, table.generic-table a:visited,
+#header-right a:link, #header-right a:visited, 
+ul.no-decoration a:link, ul.no-decoration a:visited {
+	text-decoration: none;
+}
+
+#footer a:hover, #footer a:active,
+#subhead a:hover, #subhead a:active,  
+#subhead-details a:hover, #subhead-details a:active,
+table#pagination a:hover, table#pagination a:active, 
+table.four-col th a:hover, table.four-col th a:active,
+table.four-col-title td a:hover, table.four-col-title td a:active,
+table.generic-table a:hover, table#generic-table a:active, 
+#header-right a:hover, #header-right a:active, 
+ul.no-decoration a:hover, ul.no-decoration a:active {
+	text-decoration: underline;
+}
+
+/* End links */
+
+/* List Styles */
+ul.no-decoration {
+	text-align:left;
+	margin-left:16px;
+	padding:0;
+	}
+
+ul.basic {
+	text-align:left;
+	margin-left:32px;
+	padding:0;
+	}
+
+ul.no-decoration li,
+ul.basic li {
+	line-height:1.75em;
+	}
+
+/* This radio_list is used in Gaps and Condition report page automatically generated by somfony, so do not change it */
+ul.radio_list li, ul.no-decoration li {
+	list-style-type: none;
+}
+
+ul.no-decoration-list {
+	list-style-type: none;
+	text-align:left;
+	padding:0;
+	margin:0;
+	vertical-align: top;
+}
+
+ul.no-decoration li, ul.no-decoration li a {
+	white-space: pre;           /* CSS 2.0 */
+	white-space: pre-wrap;      /* CSS 2.1 */
+	white-space: pre-line;      /* CSS 3.0 */
+	white-space: -pre-wrap;     /* Opera 4-6 */
+	white-space: -o-pre-wrap;   /* Opera 7 */
+	white-space: -moz-pre-wrap; /* Mozilla */
+	white-space: -hp-pre-wrap;  /* HP Printers */
+	word-wrap: break-word;      /* IE 5+ */
+	-ms-word-wrap: break-word;  /*IE 8 */
+}
+
+#download-form button {
+	margin-left:16px;
+}
+
+/* Can find where ul.radio_list is used.*/
+
+
+/* The sub-nav section controls the secondory nav menu with search box and Directory options   */
+ 
+#sub-nav {width:750px;overflow:hidden;margin:16px 100px 0 0;padding-left:16px;}
+
+#sub-nav #column-right {float:right;width:400px;margin:0;padding:0;}
+
+#sub-nav #column-left {float:left;width:350px;margin:0;padding:0;}
+
+#sub-nav #column-left a:link, 
+#sub-nav #column-left a:visited,
+#sub-nav #column-left a:hover, 
+#sub-nav #column-left a:active {
+	color: #485b2e;
+	/*font-size: 90%;*/
+	font-weight: normal;	
+}
+
+#sub-nav #column-left a:link,
+#sub-nav #column-left a:visited,
+#sub-nav #column-left a:visited {
+	text-decoration: none;
+}
+
+#sub-nav #column-left a:hover, 
+#sub-nav #column-left a:active {
+	text-decoration: underline;
+}
+
+#sub-nav .pipe {margin-left:7px;margin-right:7px;}
+
+#sub-nav #column-right-tab2 #search-box,
+#sub-nav #column-right #search-box {text-align:right; margin:0;}
+
+#sub-nav #search-form #q,
+#sub-nav #search-form #f {
+	vertical-align:middle;
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 100%;
+	color: #605d5d;
+	margin: 0;
+	padding: 1px 0 0 5px;
+	border: 1px #4d4d4d solid;
+}
+
+#sub-nav #search-form #q {
+	width: 202px;
+}
+
+#sub-nav-tab2 #search-form-tab2 button,
+#sub-nav #search-form button {
+	vertical-align:middle;
+	border:none;
+	padding:0;
+	background:none;
+	cursor:pointer;
+	*cursor:hand; /*alternate cursor for IE*/
+ }
+ 
+ /* End sub-nav styles */
+
+/* subhead ID is used on the Main Directory and Saerch Results pages */
+#subhead {
+	text-align:left;
+	margin-top:16px;
+	margin-left:16px;
+	margin-bottom:16px;
+	} 
+
+#subhead a {
+	padding-left:0; 
+	margin-right:8px;
+	font-size: 125%;
+	}
+	
+/* subhead-details ID is used on the Program and Facility Directory pages */
+
+#subhead-details {
+	text-align:left; 
+	margin-top:16px; 
+	margin-left:16px;
+	margin-bottom:16px;
+	line-height: 2em;
+	}
+
+#subhead-details a {
+	padding-left:0px;
+	margin-left:0px;
+	margin-right:32px;
+	font-size: 115%;
+	}
+
+/* Tables */
+
+/*
+Where are table styles used?
+.generic-table : Main Directory
+#five-col : Program Directory page
+.three-col : Facility Directory page
+.pagination : Search Results page (used to provide pagination above and below results
+.generic-table-results : Search Results page
+.four-col-title : TitleProgramDetail (Holdings) page
+*/
+
+table.three-col,
+table#five-col,
+table.four-col-title,
+table.generic-table-results,
+table.generic-table {
+	/*table-layout: fixed;*/
+	border-collapse: collapse;
+	border: 1px solid #e9e6d3;
+	position:relative;
+	width: 850px;
+	margin-top: 16px;
+	margin-bottom:16px;
+	margin-left: 15px;
+	}
+
+table.three-col,
+table.four-col-title {
+	margin-top:0;
+	}
+
+table.generic-table-results,
+table.generic-table {
+	margin-top:0px;
+	margin-bottom:0;
+	}
+
+table.generic-table-results,
+table.three-col,
+table#five-col,
+table.four-col-title {
+	border:none;
+	}
+
+table.generic-table-results th,
+table.three-col th,
+table#five-col th,
+table.four-col-title th {
+	background:#e9e6d3;
+	text-align:center;
+	border: 1px solid #485b2e;
+	padding: 10px 5px 10px 5px;
+	}
+
+table#five-col td,
+table#five-col th {
+	width:170px; 
+	overflow:hidden;
+	}
+
+table.generic-table-results th.col1 {width:300px;}
+table.generic-table-results th.col2 {width:250px;}
+table.generic-table-results th.col3 {width:70px;}
+table.generic-table-results th.col4 {width:230px;}
+
+table.four-col-title th.col1 {width:458px;}
+table.four-col-title th.col2 {width:116px;}
+table.four-col-title th.col3 {width:116px;}
+table.four-col-title th.col4 {width:236px; text-align:center;}
+
+table.four-col-title th {
+	text-align:center;
+	}
+
+table.generic-table-results td,
+table#five-col td,
+table.four-col-title td {
+	vertical-align:top;
+	white-space: normal;
+	padding: 5px;
+	text-align:left;
+	border: 1px solid #e9e6d3;
+}
+
+table.three-col td {
+ vertical-align: bottom;
+ white-space: normal;
+ padding: 15px;
+ text-align: left;
+ border: 1px solid #e9e6d3;
+ color: #485B2E;
+ font-weight: bold;
+}
+
+table.generic-table-results td.top-row,
+table#five-col td.top-row,
+table.four-col-title td.top-row {
+	border-top:none;
+	white-space:normal;
+	}
+
+table.generic-table .white {background: #fff;height:30px;text-align:left;}
+
+table.generic-table .gray {background: #e9e6d3;height:30px;text-align:left;}
+
+table#five-col table a,
+table.four-col-title table a,
+table.generic-table-results table a,
+table.generic-table a {
+	margin-left:8px;
+	}
+
+
+/* Styles for results pagination */
+
+table.pagination {
+    /*table-layout: fixed;*/
+    border-collapse: collapse;
+    position:relative;
+    width: 860px;
+	}
+
+table.pagination td.pagination-desc {
+	position:relative;
+	width: 50%;
+    padding-left: 20px;
+	}
+
+table.pagination td.pagination-link {
+    position:relative;
+    width: 50%;
+    float: right;
+	}
+
+#content-center #results-page {
+	margin:0;
+	padding:0;
+	}
+
+#content-center #results-page .caption  {
+	padding-right:0;
+	/*border: 1px green solid;*/ 
+ 	}
+
+#content-center #results-page span  {
+	margin-left: 2px;
+	margin-right: 2px;		
+	/* border: 1px red solid;*/  
+    }
+
+
+/* Misc */
+
+.hr {width:974px; color:#e9e6d3; background-color:#e9e6d3; height:1px; margin:8px auto 0 auto;}
+
+.hr-bottom {width:974px; color:#e9e6d3; background-color:#e9e6d3; height:1px; margin:32px auto 0 auto;}
+
+.login {margin-right:0;/*border:1px solid #000000;*/}
+
+img {border:none;}
+
+.download-icon {
+	padding-right: 6px;
+}
+
+.holdings-note {
+	width:840px;
+	height: auto;
+	float:left;
+	text-align: left;
+	margin-left:16px;
+}
+
+/* #search_results_dropdown {width:150px;height:22px;margin-top:16px;margin-left:16px;} 
+I can't find where this is used; not sure that it is but I don't want to delete it until I'm certain. */
+
+/* CSS for collapsible menus - not used any more*/
+.relatedcontentwrapper {
+	width:100%;
+	padding:0;
+	margin:0;
+	float:left;
+}
+
+.relatedcontent {
+	width: 362px; /*width of menu*/
+	float:left;
+	margin-left:16px;
+	margin-top:0;
+}
+
+.relatedcontent .headerbar {
+	background: #e9e6d3; /*url(arrowstop.gif) no-repeat 8px 6px;*/ /*last 2 values are the x and y coordinates of bullet image*/
+	cursor:pointer;
+	*cursor:hand; /*alternate cursor for IE*/
+	border: 1px solid #485b2e;
+	text-align:center;
+	font-size:98%; 	
+	margin-bottom: 0; /*bottom spacing between header and rest of content*/
+	padding: 7px 0 7px 0; /*31px is left indentation of header text*/
+}
+
+.relatedcontent .headerbar_nolink {
+	background: #e9e6d3; /*url(arrowstop.gif) no-repeat 8px 6px;*/ /*last 2 values are the x and y coordinates of bullet image*/
+	border: 1px solid #485b2e;
+	text-align:center;
+	font-size:98%; 	
+	margin-bottom: 0; /*bottom spacing between header and rest of content*/
+	padding: 7px 0 7px 0; /*31px is left indentation of header text*/
+}
+
+.relatedcontent .headerbar a {
+	text-decoration: none;
+	display: block;
+}
+
+.relatedcontent ul {
+	list-style-type: none;
+	margin: 0;
+	padding: 0;
+	margin-bottom: 0; /*bottom spacing between each UL and rest of content*/
+}
+
+.relatedcontent ul li {
+	/*padding-bottom: 8px;*/ /*bottom spacing between menu items*/
+	text-align:left;
+	/*padding-left:6px;*/
+	padding: 8px 0 8px 6px;
+	border: 1px solid #e9e6d3;
+}
+
+.relatedcontent ul li a {
+	display: block;
+	padding: 5px 0;
+	padding-left: 8px; /*link text is indented 8px*/
+	/*text-decoration: none;*/
+}
+
+#waiting {
+	position: absolute;
+	display:none;
+	z-index: 100;
+}
+
+#waiting-image {
+  position: absolute;
+  top: 300px;
+  left: 440px;
+  z-index: 100;
+}
+
+.disableCls{
+	pointer-events:none;
+}
+
+.resizedTextbox {width: 25px; height: 10px}
+
