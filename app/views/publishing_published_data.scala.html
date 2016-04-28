@@ -1,0 +1,103 @@
+@()
+@import be.objectify.deadbolt.java.views.html._
+@import be.objectify.deadbolt.core.utils.TemplateUtils._
+@import play.api.Play.current
+
+
+@main(title = "publishing_published_data") {
+  	<script type="text/javascript">
+			
+				require(["dojo/dom", "dojo/parser", "dijit/form/Button", "dojo/dom", "dojo/domReady!"]);
+	
+	
+	require(["dojox/grid/DataGrid", "dojo/data/ItemFileReadStore", "dojo/dom", "dojo/domReady!"], function(DataGrid, ItemFileReadStore, dom) {
+						
+		
+		var data = { items: [
+			                   	{ dateInitiated: '', jobName: '', formatType: '',  organization: '', user: '', dateRange: '', jobStatus:'',  link:''}
+			                   	]};
+			                   	
+		var store = new ItemFileReadStore({data: data});
+		
+		
+		var layout = [
+		               { 'name': 'Date Initiated', 'field': 'dateInitiated', 'width': '120px'},
+		               { 'name': 'Job Name', 'field': 'jobName', 'width': '150px'},
+		               { 'name': 'File format', 'field': 'formatType', 'width': '80px'},
+		               { 'name': 'Organization', 'field': 'organization', 'width': '100px'},
+		               { 'name': 'User', 'field': 'user', 'width': '60px'},
+		               { 'name': 'Date Range', 'field': 'dateRange', 'width': '70px'},
+		               { 'name': 'Job Status', 'field': 'jobStatus', 'width': '70px'},
+		               { 'name': 'Link', 'field': 'link', 'width': '70px'}
+		               ];
+		
+		var grid = new DataGrid({
+			id: 'publishing-job-summary',
+			store: store,
+			structure: layout,
+			autoWidth: true,
+			selectionMode: 'none',
+			escapeHTMLInData: false
+		});
+		
+		grid.placeAt("publishing-summary-div");
+		grid.startup();
+		
+		getJobs('getAUserPublishingJobs');
+	});
+	
+	
+	  function populatepublishingJobSummary(response, ioArgs){          
+	  
+	  		var dataExceptionStore = new dojo.data.ItemFileReadStore({
+	    			 	data: {
+	         			items: response.items
+	     			}
+	 			});
+	 	
+	 			var dataExceptionGrid = dijit.byId('publishing-job-summary');
+		
+		dataExceptionGrid.setStore(dataExceptionStore); 		   
+	  }
+	  
+	  function getJobs (url){
+			
+	     dojo.xhrGet({
+	     			handleAs: 'json',
+	     			url: "/publishing/" + url ,
+	     			preventCache: true,
+	     			error: function (e) {
+	         			alert("Error: " + e.message);
+	     			},
+	     			load: populatepublishingJobSummary
+	  	     });
+	  	}
+			
+		</script>
+} {
+	
+       <div id="content-center">
+            <div id="nav-tabs">
+                <ul id="tabs">
+
+                    <li class="tab3"><a id="tab2-link" >@Messages("ingestion.home.issue.level.holdings")</a></li>
+                </ul>
+            </div>
+            
+           <h1>@Messages("publishing.publishing.jobs.summary")</h1><br />
+  			  <div id="publishing-summary-div" style="margin-left:16px;height:782px;"> </div>
+  			  
+        </div>
+        <div id="content-right">
+        	<h2>@Messages("tools")</h2>
+		 		@restrict( scala.collection.immutable.List( as( "admin" ) ) ){
+					<button id="button_1" onClick = "getJobs('getAllPublishingJobs');">@Messages("ingestion.home.show.All.Members.Jobs")</button>
+				}
+				<button id="button_2" onClick = "getJobs('getAMemberPublishingJobs');">@Messages("ingestion.home.show.only.my.member.jobs")</button>
+				<button id="button_3" onClick = "getJobs('getAUserPublishingJobs');">@Messages("ingestion.home.show.only.my.jobs")</button>
+        <div id="content-right">
+        	 <div id="inner-content-right">
+        	 </div>    
+        </div>
+  
+}

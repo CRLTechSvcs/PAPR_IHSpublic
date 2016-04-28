@@ -1,0 +1,92 @@
+@()
+
+
+@main(title = "reporting_previous_reports") {
+  	<script type="text/javascript">
+			
+				
+	require(["dojox/grid/DataGrid", "dojo/data/ItemFileReadStore", "dojo/dom", "dojo/domReady!"], function(DataGrid, ItemFileReadStore, dom) {
+						
+		
+		var data = { items: [
+			                   	{ dateInitiated: '', reportType: '', reportParameter: '', formatType: '',  organization: '', user: '', jobStatus: '', link:''}
+			                   	]};
+			                   	
+		var store = new ItemFileReadStore({data: data});
+		
+		
+		var layout = [
+		               { 'name': 'Date Initiated', 'field': 'dateInitiated', 'width': '120px'},
+		               { 'name': 'Report Type', 'field': 'reportType', 'width': '150px'},
+		               { 'name': 'Report Parameter', 'field': 'reportParameter', 'width': '154px'},
+		               { 'name': 'File format', 'field': 'formatType', 'width': '60px'},
+		               { 'name': 'Organization', 'field': 'organization', 'width': '100px'},
+		               { 'name': 'User', 'field': 'user', 'width': '60px'},
+		               { 'name': 'Job Status', 'field': 'jobStatus', 'width': '70px'},
+		               { 'name': 'Link', 'field': 'link', 'width': '70px'}
+		               ];
+		
+		var grid = new DataGrid({
+			id: 'reporting-job-summary',
+			store: store,
+			structure: layout,
+			autoWidth: true,
+			selectionMode: 'none',
+			escapeHTMLInData: false
+		});
+		
+		grid.placeAt("reporting-summary-div");
+		grid.startup();
+		
+		getJobs();
+	});
+	
+	
+	  function populateReportingJobSummary(response, ioArgs){          
+	  
+	  		var dataExceptionStore = new dojo.data.ItemFileReadStore({
+	    			 	data: {
+	         			items: response.items
+	     			}
+	 			});
+	 	
+	 			var dataExceptionGrid = dijit.byId('reporting-job-summary');
+		
+		dataExceptionGrid.setStore(dataExceptionStore); 		   
+	  }
+	  
+	  function getJobs (){
+			
+	     dojo.xhrGet({
+	     			handleAs: 'json',
+	     			url: "/reporting/getReportingJobs" ,
+	     			preventCache: true,
+	     			error: function (e) {
+	         			alert("Error: " + e.message);
+	     			},
+	     			load: populateReportingJobSummary
+	  	     });
+	  	}
+		</script>
+} {
+	
+       <div id="content-center">
+            <div id="nav-tabs">
+                <ul id="tabs">
+
+                    <li class="tab3"><a id="tab2-link" >@Messages("ingestion.home.issue.level.holdings")</a></li>
+                      
+                </ul>
+            </div>
+            
+           <h1>@Messages("reporting.reports.summary")</h1><br />
+  			<div id="reporting-summary-div" style="margin-left:16px;height:782px;"> </div>
+        </div>
+        <div id="content-right">
+        
+        <div id="content-right">
+        	 <div id="inner-content-right">
+        	 </div>    
+        </div>
+  
+}

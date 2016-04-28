@@ -1,0 +1,196 @@
+@(title: String)(script: Html)(content: Html)
+@import be.objectify.deadbolt.java.views.html._
+@import be.objectify.deadbolt.core.utils.TemplateUtils._
+@import play.api.Play.current
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>PAPR - Print Archive and Preservation Registry</title>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<meta name="language" content="en" />
+		<meta name="robots" content="noindex, nofollow" />
+		<link rel="stylesheet" media="screen" href="@routes.Assets.at("stylesheets/ihs_styles.css")">
+		<link rel="stylesheet" media="screen" href="@routes.Assets.at("javascripts/jquery-ui-1.11.3/jquery-ui.css")">
+		 
+		<link rel="shortcut icon" type="image/png" href="@routes.Assets.at("images/favicon.ico")">
+		<script src="@routes.Assets.at("javascripts/ihs.js")" type="text/javascript"></script>
+		<script src="@routes.Assets.at("javascripts/d3.v3.min.js")" type="text/javascript"></script>
+		<link rel="stylesheet" type="text/css" media="screen" href="@routes.Assets.at("javascripts/dojo-release-1.9.0/dijit/themes/nihilo/nihilo.css")">
+		<link rel="stylesheet" type="text/css" media="screen" href="@routes.Assets.at("javascripts/dojo-release-1.9.0/dojox/grid/resources/nihiloGrid.css")">
+		<script>dojoConfig = {parseOnLoad: true}</script>
+		<script src="@routes.Assets.at("javascripts/dojo-release-1.9.0/dojo/dojo.js")" data-dojo-conifg="async: true"></script>
+		<script type="text/javascript">
+			require(["dijit/Dialog", "dijit/form/TextBox", "dijit/form/Button"]);
+			
+		</script>
+		@script
+	</head>
+	<body id="tab3" class="nihilo">
+		<div id="container">
+			<div id="waiting" style="display: none;"><img id="waiting-image" src="/assets/images/waiting.gif"></div>
+			<div id="header">
+				<div id="header-left">
+					<a id="logo-link" href="../index.html"><img id="logo"
+					src="@routes.Assets.at("images/papr_logo.gif")" width="268" height="40"
+					alt="Print Archives Preservation Registry" /></a>
+				</div>
+				<div id="header-right">
+					<div id="credentials">
+						<a id="curr_user" href="javascript:void(0)" title="Account Settings"><span id="curr_user_name">@session.get("user")</span></a> | <span id="curr_user_org">@session.get("member")</span><br />
+						<a href="@routes.Login.doLogout()" title="Sign out of this account" ;">Sign Out</a>
+					</div>
+				</div>
+			</div>
+			<div class="hr"></div>
+			<div id="content">
+				<div id="content-left">
+					<div id="inner-content-left">
+						<h2 class="menu-header"><a href="@routes.SearchJournals.search_home()">@Messages("menu.search.journals")</a></h2>
+						@if(title.equals("search_home")){
+						<div id="menu-contents">
+							<p id="search-criteria">
+								@Messages("search.journal.title"): <input class="search" onkeyup="searchJournalByTitle(this);" type="text" id="titleid" /><br />
+								@Messages("search.journal.issn"): <input class="search" onkeyup="searchJournalByISSN(this);" type="text" id="issnid" /><br />
+								@Messages("search.journal.oclc"): <input class="search" onkeyup="searchJournalByOCLC(this);" type="text" id="oclcid" /><br />
+								
+								<div>
+								<div style="float: left	;">@Messages("search.journal.member") </div>: <div id="member" style="float: right;"> </div><br /><br />
+								</div>
+								@Messages("search.journal.number.of.issues"):<br />
+								@Messages("search.journal.min"): <input class="search-small" type="text" /> @Messages("search.journal.max"): <input class="search-small" type="text" /><br />
+							</p>
+							<hr />
+							<h2>@Messages("search.journal.results")</h2>
+							<div id="results">
+							    
+								
+							</div>
+						</div>
+						}
+						<h2 class="menu-header"><a href="@routes.Ingestion.ingestion_home()">@Messages("menu.ingestion")</a></h2>
+						
+						@if(title.startsWith("ingestion")){
+						<div id="menu-contents">
+							@if(title.equals("ingestion_home")){
+							<h3>&rarr;&nbsp;@Messages("menu.ingestion.summary")</h3>
+							<h3>&emsp;&nbsp;<a href="@routes.Ingestion.ingestion_exception()">@Messages("menu.ingestion.exceptions")</a></h3>
+							<h3>&emsp;&nbsp;<a href="@routes.Ingestion.ingestion_new()">@Messages("menu.ingestion.newIngestion")</a></h3>
+							} 
+							@if(title.equals("ingestion_exception")){
+							<h3>&emsp;&nbsp;<a href="@routes.Ingestion.ingestion_home()">@Messages("menu.ingestion.summary")</a></h3>
+							<h3>&rarr;&nbsp;@Messages("menu.ingestion.exceptions")</a></h3>
+							<h3>&emsp;&nbsp;<a href="@routes.Ingestion.ingestion_new()">@Messages("menu.ingestion.newIngestion")</a></h3>
+							} 
+							@if(title.equals("ingestion_new")){
+							<h3>&emsp;&nbsp;<a href="@routes.Ingestion.ingestion_home()">@Messages("menu.ingestion.summary")</a></h3>
+							<h3>&emsp;&nbsp;<a href="@routes.Ingestion.ingestion_exception()">@Messages("menu.ingestion.exceptions")</a></h3>
+							<h3>&rarr;&nbsp;@Messages("menu.ingestion.newIngestion")</h3>
+							} 
+						</div>
+						}
+						
+						@restrict( scala.collection.immutable.List( as( "admin" ) ) ){
+						<h2 class="menu-header"><a href="@routes.AdvancedEditing.advanced_editing_history()">@Messages("menu.advanced.editing")</a></h2>
+							
+							@if(title.startsWith("advance_editing")){
+							<div id="menu-contents">
+								@if(title.equals("advance_editing_history")){
+								<h3>&rarr;&nbsp;<a href="@routes.AdvancedEditing.advanced_editing_history()">@Messages("menu.advanced.editing.journal.history")</h3>
+								<h3>&emsp;&nbsp;<a href="@routes.AdvancedEditing.advanced_editing_linking()">@Messages("menu.advanced.editing.journal.linking")</a></h3>
+								} 
+								@if(title.equals("advance_editing_linking")){
+								<h3>&emsp;&nbsp;<a href="@routes.AdvancedEditing.advanced_editing_history()">@Messages("menu.advanced.editing.journal.history")</a></h3>
+								<h3>&rarr;&nbsp;<a href="@routes.AdvancedEditing.advanced_editing_linking()">@Messages("menu.advanced.editing.journal.linking")</a></h3>
+								} 
+							</div>
+							}
+						}
+						<h2 class="menu-header"><a href="@routes.Deaccession.deaccession_summary">@Messages("menu.deaccession")</a></h2>
+						@if(title.startsWith("deaccession")){
+						<div id="menu-contents">
+							@if(title.equals("deaccession_summary")){
+							<h3>&rarr;&nbsp;@Messages("menu.deaccession.summary")</h3>
+							<h3>&emsp;&nbsp;<a href="@routes.Deaccession.deaccession_new_deaccession()">@Messages("menu.deaccession.new.deaccession")</a></h3>
+							<h3>&emsp;&nbsp;<a href="@routes.Deaccession.deaccession_finalized_job()">@Messages("menu.deaccession.finalizejob")</a></h3>
+							}
+							@if(title.equals("deaccession_new_deaccession")){
+							<h3>&emsp;&nbsp;<a href="@routes.Deaccession.deaccession_summary()">@Messages("menu.deaccession.summary")</a></h3>
+							<h3>&rarr;&nbsp;@Messages("menu.deaccession.new.deaccession")</h3>
+							<h3>&emsp;&nbsp;<a href="@routes.Deaccession.deaccession_finalized_job()">@Messages("menu.deaccession.finalizejob")</a></h3>
+							}
+							@if(title.equals("deaccession_finalized_job")){
+							<h3>&emsp;&nbsp;<a href="@routes.Deaccession.deaccession_summary()">@Messages("menu.deaccession.summary")</a></h3>
+							<h3>&emsp;&nbsp;<a href="@routes.Deaccession.deaccession_new_deaccession()">@Messages("menu.deaccession.new.deaccession")</a></h3>
+							<h3>&rarr;&nbsp;@Messages("menu.deaccession.finalizejob")</h3>
+							}
+						</div>
+						}
+						<h2 class="menu-header"><a href="@routes.Publishing.publishing_published_data()">@Messages("menu.publishing")</a></h2>
+						@if(title.startsWith("publishing")){
+						<div id="menu-contents">
+							@if(title.equals("publishing_published_data")){
+							<h3>&rarr;&nbsp;@Messages("menu.publishing.published.data")</h3>
+							<h3>&emsp;&nbsp;<a href="@routes.Publishing.publishing_publish_new_data()">@Messages("menu.publishing.publish.new.data")</a></h3>
+							}
+							@if(title.equals("publishing_publish_new_data")){
+							<h3>&emsp;&nbsp;<a href="@routes.Publishing.publishing_published_data()">@Messages("menu.publishing.published.data")</a></h3>
+							<h3>&rarr;&nbsp;@Messages("menu.publishing.publish.new.data")</h3>
+							}
+						</div>
+						}
+						<h2 class="menu-header"><a href="@routes.Reporting.reporting_previous_reports()">@Messages("menu.reporting")</a></h2>
+						@if(title.startsWith("reporting")){
+						<div id="menu-contents">
+							@if(title.equals("reporting_previous_reports")){
+							<h3>&rarr;&nbsp;@Messages("menu.reporting.previous.reports")</h3>
+							<h3>&emsp;&nbsp;<a href="@routes.Reporting.reporting_new_report()">@Messages("menu.reporting.new.report")</a></h3>
+							}
+							@if(title.equals("reporting_new_report")){
+							<h3>&emsp;&nbsp;<a href="@routes.Reporting.reporting_previous_reports()">@Messages("menu.reporting.previous.reports")</a></h3>
+							<h3>&rarr;&nbsp;@Messages("menu.reporting.new.report")</h3>
+							}
+						</div>
+						}
+						  @restrict( scala.collection.immutable.List( as( "admin" ) ) ){
+							<h2 class="menu-header"><a href="@routes.Administration.getAdministrationGroup">@Messages("menu.administration")</a></h2>
+							@if(title.startsWith("administration")){
+							<div id="menu-contents">
+								@if(title.equals("administration_group")){
+									<h3>&rarr;&nbsp;@Messages("menu.admin.group")</h3>
+									<h3>&emsp;&nbsp;<a href="@routes.Administration.getAdministrationMember()">@Messages("menu.admin.member")</a></h3>
+									<h3>&emsp;&nbsp;<a href="@routes.Administration.getAdministrationUser()">@Messages("menu.admin.user")</a></h3>
+								}
+								@if(title.equals("administration_member")){
+									<h3>&emsp;&nbsp;<a href="@routes.Administration.getAdministrationGroup()">@Messages("menu.admin.group")</a></h3>
+									<h3>&rarr;&nbsp;@Messages("menu.admin.member")</h3>
+									<h3>&emsp;&nbsp;<a href="@routes.Administration.getAdministrationUser()">@Messages("menu.admin.user")</a></h3>
+								}
+								
+								@if(title.equals("administration_user")){
+									<h3>&emsp;&nbsp;<a href="@routes.Administration.getAdministrationGroup()">@Messages("menu.admin.group")</a></h3>
+									<h3>&emsp;&nbsp;<a href="@routes.Administration.getAdministrationMember()">@Messages("menu.admin.member")</a></h3>
+									<h3>&rarr;&nbsp;@Messages("menu.admin.user")</h3>
+								}
+							</div>
+						  }
+						}
+					</div>
+				</div>
+				@content
+			</div>
+			<div class="hr-bottom"></div>
+			<div id="footer">
+				<p>
+					PAPR is a service of the <a href="javascript:void(0);">Center
+					for Research Libraries (CRL)</a>, an international consortium of
+					university, college, and independent research libraries who acquire
+					and preserve traditional and digital resources from a global network
+					of sources. This site uses Ulrich's&trade; XML Data. <a
+						href="javascript:void(0);">See PAPR Terms of Service</a>. Questions or comments:
+					<a href="javascript:void(0);">papr@@crl.edu</a>.
+				</p>
+			</div>
+		</div>
+		<!-- End Content -->
+	</body>
+</html>

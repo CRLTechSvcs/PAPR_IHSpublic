@@ -1,0 +1,156 @@
+﻿@()
+
+@main(title = "search_home") {
+
+  	<script type="text/javascript">
+	var call1 = false;
+	var call2 = false;
+	var holdings = {};
+	var memberid= 0;
+	var members={};
+	var globalHoldingIndex=0;
+	var globalholdings = {};
+	var globalTitleId = 0;
+
+
+	require(["dijit/TitlePane", "dojo/dom", "dojo/domReady!", "dojo/query", "dijit/registry", "dojox/widget/Standby"]);
+
+
+	require(["dijit/form/ComboBox", "dojo/store/Memory", "dojo/dom", "dojo/domReady!"], function(ComboBox, Memory,  dom) {
+
+				//
+
+				 var stateStore = new Memory({
+    			    data: [
+            			{name:"", id:""}
+        				]
+    				});
+
+
+				//
+				var select = ComboBox({
+					name: "stateMember",
+					id: "stateMember",
+					placeHolder: "",
+					store: stateStore,
+					style: "width: 127px; height: 19px;",
+					onChange: function(){
+						var val = dijit.byId("stateMember").get("value");
+						memberid=0;
+						for (var index = 0, len = members.length; index < len; ++index) {
+							if(members[index].name == val){
+								memberid = members[index].id;
+							}
+						}
+					}
+				}, "member");
+
+				select.startup();
+
+				dojo.xhrGet({
+	       			 handleAs: 'json',
+	       				 url: "/search/getMembers",
+	       				 preventCache: false,
+	        	   		 error: function(e) {
+	            			alert("Error: " + e.message);
+	        		},
+	        		load: populateMember
+	    		});
+	});
+
+
+	function getJournalDetail(titleid){
+
+		 dojo.xhrGet({
+	        handleAs: 'json',
+	        url: "/advancedEditing/GetTitles/" + titleid,
+	        preventCache: true,
+	        error: function(e) {
+	            alert("Error: " + e.message);
+	        },
+	        load: populateJournalDetail
+	    });
+
+	    globalTitleId = titleid;
+	    showWaiting();
+	}
+
+	function populateJournalDetail(){
+
+	}
+
+	</script>
+
+
+   <script src="@routes.Assets.at("javascripts/jquery-1.11.1.min.js")" type="text/javascript"></script>
+    <script src="@routes.Assets.at("javascripts/ihs_common.js")" type="text/javascript"></script>
+    <script src="@routes.Assets.at("javascripts/search_home.js")" type="text/javascript"></script>
+	 <script src="@routes.Assets.at("javascripts/ihs_search.js")" type="text/javascript"></script>
+} {
+
+        <div id="content-center">
+            <div id="nav-tabs">
+                <ul id="tabs">
+                    <li class="tab3"><a id="tab2-link" >@Messages("ingestion.home.issue.level.holdings")</a></li>
+                </ul>
+            </div>
+
+				<div id="summary" style="height:250px;" hidden >
+
+					<div id="title-col1">
+					</div>
+
+					<div id="content-col1">
+					</div>
+
+					<div id="content-col2">
+					</div>
+
+					<!--<div id="content-col3">-->
+					<div id="content-col3_OLD_ORIGINAL_CHANGED_BY_AJE_20160111" style="display:none">
+						 	<!--AJE 2016-01-11 16:10:14 per Amy late 2015 : remove relationships view and link to OCLC-->
+							<br><strong>Relationships:</strong>
+							<a class="edit-crl"  title="Start Linking Editing for this Journal"><img class="edit-journal-links"></a><br>
+							Full Relationships Report: HTML | PDF
+							<div id="relationships"><br><br><span class="arrow">→</span></div>
+					</div>
+					<div id="content-col3">
+						 	<!--AJE 2016-01-11 16:10:14 per Amy late 2015 : remove relationships view and link to OCLC-->
+						 <a id="titlehistory_link_CRL" style="font-weight:bold;" href="#" target="_blank">OCLC's History Visualization for this Journal</a>
+					</div>
+					
+				</div>
+
+				<br>
+
+     		<div id="timeline" >
+     		</div>
+
+     		<div id="globaledit">
+     			<div id="childiedit">
+					</div>
+				</div>
+				
+     		<br>
+
+     		<div id="issues">
+					<div id="childissues">
+						<table id="table1">
+						</table>
+					</div>
+				</div>
+				
+				
+        </div><!--AJE 2016-01-11 15:48:56 appears unmatched ending div tag here-->
+        
+        <div id="content-right"><!--AJE 2016-01-11 15:48:56 appears doubled div tag here-->
+        <div id="content-right">
+        	<div id="inner-content-right">
+        	 	<h2>Tools</h2>
+
+						<button id="want-status" value="0" onClick="setJournalWantStatus()">Title Status Not Wanted</button>
+						<button id="collapse-all-volumes" onClick="collapseAllVolumes();" >Collapse Volumes</button>
+						<button id="expand-all-volumes"  onClick="expandAllVolumes();">Expand Volumes</button>
+        	 </div>
+        </div>
+}

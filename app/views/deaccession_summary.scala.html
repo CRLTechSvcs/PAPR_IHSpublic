@@ -1,0 +1,107 @@
+@()
+@import be.objectify.deadbolt.java.views.html._
+@import be.objectify.deadbolt.core.utils.TemplateUtils._
+@import play.api.Play.current
+
+
+@main(title = "deaccession_summary") {
+  	<script type="text/javascript">
+  	
+  		
+  	require(["dojo/dom", "dojo/parser", "dijit/form/Button", "dojo/dom", "dojo/domReady!"]);
+	
+	
+	require(["dojox/grid/DataGrid", "dojo/data/ItemFileReadStore", "dojo/dom", "dojo/domReady!"], function(DataGrid, ItemFileReadStore, dom) {
+						
+		
+		var data = { items: [
+			                   	{ dateInitiated: '', dateCompleted: '', jobName: '', jobStatus: '',  organization: '', user: '', selected: '', deaccessed: '' }
+			                   	]};
+			                   	
+		var store = new ItemFileReadStore({data: data});
+		
+		
+		var layout = [
+		               { 'name': 'Date Initiated', 'field': 'dateInitiated', 'width': '120px'},
+		               { 'name': 'Date Completed', 'field': 'dateCompleted', 'width': '120px'},
+		               { 'name': 'Job Name', 'field': 'jobName', 'width': '150px'},
+		               { 'name': 'Job Status', 'field': 'jobStatus', 'width': '80px'},
+		               { 'name': 'Organization', 'field': 'organization', 'width': '100px'},
+		               { 'name': 'User', 'field': 'user', 'width': '60px'},
+		               { 'name': '# Select', 'field': 'selected', 'width': '70px'},
+		               { 'name': '# Deaccessed', 'field': 'deaccessed', 'width': '70px'}
+		               ];
+		
+		var grid = new DataGrid({
+			id: 'deaccession-job-summary',
+			store: store,
+			structure: layout,
+			autoWidth: true,
+			selectionMode: 'none',
+			escapeHTMLInData: false
+		});
+		
+		grid.placeAt("deaccession-summary-div");
+		grid.startup();
+		
+		getJobs('getAUserDeaccessionJobs');
+	});
+	
+	
+	  function populateIngestionJobSummary(response, ioArgs){          
+	  
+	  		var dataExceptionStore = new dojo.data.ItemFileReadStore({
+	    			 	data: {
+	         			items: response.items
+	     			}
+	 			});
+	 	
+	 			var dataExceptionGrid = dijit.byId('deaccession-job-summary');
+		
+		dataExceptionGrid.setStore(dataExceptionStore); 		   
+	  }
+	  
+	  function getJobs (url){
+			
+	     dojo.xhrGet({
+	     			handleAs: 'json',
+	     			url: "/deaccessionSummary/" + url + "/1",
+	     			preventCache: true,
+	     			error: function (e) {
+	         			alert("Error: " + e.message);
+	     			},
+	     			load: populateIngestionJobSummary
+	  	     });
+	  	}
+			
+		</script>
+} {
+	
+       <div id="content-center">
+            <div id="nav-tabs">
+                <ul id="tabs">
+
+                    <li class="tab3"><a id="tab2-link" >@Messages("ingestion.home.issue.level.holdings")</a></li>
+                </ul>
+            </div>
+            
+            <h1>@Messages("deaccession.summary.deaccession.jobs.summary")</h1><br />
+            
+            <div id="deaccession-summary-div" style="margin-left:16px;height:782px;"> </div>
+          
+        </div>
+        
+        <div id="content-right">
+        
+       		 <div id="inner-content-right">
+        	 	<h2>@Messages("tools")</h2>
+		 		@restrict( scala.collection.immutable.List( as( "admin" ) ) ){
+					<button id="button_1" onClick = "getJobs('getAllDeaccessionJobs');">@Messages("ingestion.home.show.All.Members.Jobs")</button>
+				}
+				<button id="button_2" onClick = "getJobs('getAMemberDeaccessionJobs');">@Messages("ingestion.home.show.only.my.member.jobs")</button>
+				<button id="button_3" onClick = "getJobs('getAUserDeaccessionJobs');">@Messages("ingestion.home.show.only.my.jobs")</button>
+        	 </div>    
+        	 
+        </div>
+  
+}
