@@ -1,5 +1,6 @@
 *.class
 *.cache
-project/
+project/project/
+project/target/
 target/
 log/*
