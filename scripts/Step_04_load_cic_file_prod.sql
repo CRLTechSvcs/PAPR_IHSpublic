@@ -124,7 +124,7 @@ join ihspublicationrange  d on b.titleID = d.titleID;
 
 -- issue for volume level title 
 
-insert into crl.ihsissue( titleID, volumeID, publicationRangeID, issueNumber, issueStatusID)
+insert into ihsissue( titleID, volumeID, publicationRangeID, issueNumber, issueStatusID)
 select
 	b.titleID as titleID,
 	c.volumeID,
