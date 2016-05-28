@@ -4,3 +4,5 @@ project/project/
 project/target/
 target/
 log/*
+public/javascripts/jquery-ui-1.11.3/
+public/javascripts/dojo-release-1.9.0/
