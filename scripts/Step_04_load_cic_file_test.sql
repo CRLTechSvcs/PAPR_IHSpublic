@@ -102,6 +102,7 @@ select
 	b.titleID as titleID,
 	c.volumeID,
 	publicationRangeID,
+	concat(concat(substr(year,1,4), '-01'),'-01'),
     publicationDateId,
 	issueNumber,
 	1
