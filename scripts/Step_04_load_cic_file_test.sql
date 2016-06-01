@@ -96,7 +96,7 @@ join ihspublicationrange  d on b.titleID = d.titleID;
 
 -- issue with custom date
 
- insert into ihsissue( titleID, volumeID, publicationRangeID, publicationDateId, issueNumber, issueStatusID)
+ insert into ihsissue( titleID, volumeID, publicationRangeID, publicationDate, publicationDateId, issueNumber, issueStatusID)
 
 select
 	b.titleID as titleID,
