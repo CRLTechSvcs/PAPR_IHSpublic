@@ -10,7 +10,9 @@ select distinct month month from data.tmp_issue
 
 where lower(month) not in ('january ', 'february', 'march ', 'april', 'may', 
 					      'june', 'july', 'august', 'september', 'october', 
-						   'november', 'december')
+						   'november', 'december', 'january/february', 'march/april', 'may/june', 'july/august', 'september/october', 
+						   'november/december','january/march ', 'april/june', 'july/september', 
+							'october/december') 
 and month <> ''
 ) tmp 
 where lower(month) not in (select lower(publicationDateVal) from spublicationdate);
@@ -108,9 +110,27 @@ select
 	1
 from 
 (
-select oclc_Number, year, publicationDateId, publicationDateVal, volumeNumber, issueNumber 
+
+select oclc_Number, 
+		year, 
+		volumeNumber,
+			case when lower(month) = 'january/february' then 'jan/feb' 
+			when lower(month) = 'march/april' then 'mar/apr' 
+			when lower(month) = 'may/june' then 'may/jun'  
+			when lower(month) = 'july/august' then 'jul/aug'  
+			when lower(month) = 'september/october' then 'jan/feb' 
+			when lower(month) = 'november/december' then 'jan/feb'  
+			when lower(month) = 'january/march' then 'jan/mar'  
+			when lower(month) = 'april/june' then 'apr/jun'  
+			when lower(month) = 'july/september' then 'jul/apr'  
+			when lower(month) = 'april/june' then 'apr/jun'  
+			when lower(month) = 'july/september' then 'jul/sep'  
+			when lower(month) = 'october/december' then 'apr/jun' 
+			else month end
+		month,
+		issueNumber 
 from data.tmp_issue_idx a 
-join spublicationdate on lower(publicationDateVal) = lower(month)
+
 
 where lower(month) not in ('january ', 'february', 'march ', 'april', 'may', 
 					      'june', 'july', 'august', 'september', 'october', 
@@ -118,6 +138,7 @@ where lower(month) not in ('january ', 'february', 'march ', 'april', 'may',
 
 ) a
 
+join spublicationdate on lower(publicationDateVal) = lower(month) 
 join ihstitle b on a.oclc_Number = b.oclcNumber and  volumeLevelFlag = '0'
 join ihsvolume c on c.volumeNumber = a.volumeNumber
 	and b.titleID = c.titleID
