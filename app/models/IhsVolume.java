@@ -43,7 +43,7 @@ import json.VolumeView;
 public class IhsVolume extends Model {
 
 	private static DateTimeFormatter dateFormat = DateTimeFormat
-			.forPattern("MMM-YYYY");
+			.forPattern("MMM");
 	/**
 	 *
 	 */
@@ -283,7 +283,7 @@ public class IhsVolume extends Model {
 
 				if(ihsissue.spublicationDate !=  null){
 					issueView.issueMonth = ihsissue.spublicationDate.publicationDateVal;
-					issueView.issueMonth += ihsissue.publicationDate !=null ? "-" + ihsissue.publicationDate.getYear() : "";
+					//issueView.issueMonth += ihsissue.publicationDate !=null ? "-" + ihsissue.publicationDate.getYear() : "";
 				}else {
 					issueView.issueMonth = ihsissue.publicationDate !=null ? dateFormat.print(ihsissue.publicationDate) : "";
 				}
