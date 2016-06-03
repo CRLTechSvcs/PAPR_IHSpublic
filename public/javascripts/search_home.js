@@ -11,10 +11,12 @@
 		
 	}
 	
-	function populateJournalDetail(response, ioArgs) {
-
+	function populateJournalDetail(response, ioArgs) {// AJE 2016-01-12 modifed how the innerHTML is composed : can find a copy of original function in this dir
+		// AJE 2016-06-03: mine was stepped on so reinstated
 	    document.getElementById("title-col1").innerHTML = '<br>' + response.title;
 
+			/* 
+			// AJE: saving Travant version 2016-06-03
 	    document.getElementById("content-col1").innerHTML = '<ul class="no-decoration"> ' +
 	        '<li><strong>Publisher:</strong> ' + response.publisher +
 	        '</li> <li><strong>Print ISSN:</strong> ' + response.printISSN +
@@ -25,8 +27,25 @@
 	        '</li> <li><strong>Publication Country:</strong> ' + response.country +
 	        '</li> <li><strong>Volume Level:</strong> ' + response.volumeLevelFlag +
 	        '</li> </ul> ';
+			*/
 
-	    call1 = false;
+      var publisherLI = '<li><strong>Publisher:</strong> ' + response.publisher + '</li>';
+			var printISSN_LI = '<li><strong>Print ISSN:</strong> ' + response.printISSN + '</li>';
+			var eISSN_LI = '<li><strong>Electronic ISSN:</strong>  ' + response.eISSN + '</li>';
+	    var OCLC_LI =  '<li><strong>OCLC Number:</strong>  ' + response.oclcNumber + '</li>';
+	    var pub_range_LI = '<li><strong>Publication Range:</strong> ' + response.publicationRange + '</li>';
+	    var language_LI = '<li><strong>Publication Language:</strong> ' + response.language + '</li>';
+	    var country_LI = '<li><strong>Publication Country:</strong> ' + response.country + '</li>';
+			var volume_flag_LI = '<li><strong>Publication Country:</strong> ' + response.volumeLevelFlag + '</li>';
+
+	    document.getElementById("content-col1").innerHTML = '<ul class="no-decoration">' + publisherLI + printISSN_LI + eISSN_LI + OCLC_LI + pub_range_LI + language_LI + country_LI + volume_flag_LI + '<ul>';
+
+			// AJE new: make the link value right
+			$("#titlehistory_link_CRL").attr("href", "http://worldcat.org/xissn/titlehistory?issn=" + response.printISSN);
+			console.warn("search_home.js has set titlehistory_link_CRL.attr.href = ", $("#titlehistory_link_CRL").attr("href") );
+
+
+	    call1 = false; // AJE no idea here ; is original
 	}
 
 	
