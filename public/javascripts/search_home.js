@@ -43,7 +43,7 @@
 
 			// AJE new: make the link value right
 			$("#titlehistory_link_CRL").attr("href", "http://worldcat.org/xissn/titlehistory?issn=" + response.printISSN);
-			console.warn("search_home.js has set titlehistory_link_CRL.attr.href = ", $("#titlehistory_link_CRL").attr("href") );
+			//console.warn("search_home.js has set titlehistory_link_CRL.attr.href = ", $("#titlehistory_link_CRL").attr("href") );
 
 
 	    call1 = false; // AJE no idea here ; is original
@@ -693,8 +693,6 @@
 
 	function populateVolumeDetail(response, ioArgs) {
 
-
-
 		var numberOfIssue=0;
 		var volumeLevelFlag = '0';
 
@@ -1008,11 +1006,12 @@
 		var value = search.value.replace('\\', ' ').replace('\/', ' ').replace('  ', ' ');
 
 		var value1 = search.value.replace(' ', '');
-
+console.info('search_home.js, value1 = ', value1 )
 	    if (value.length < 2 ) {
+console.info('search_home.js, IF: clear results.innerHTML')
 	        results.innerHTML = ' ';
 	    } else {
-
+console.info('search_home.js, ELSE: do sth')
 	        if (value1.length % 3  == 0 || search.value.charAt(search.value.length-1) == ' ') {
 	            dojo.xhrGet({
 	                handleAs: 'json',

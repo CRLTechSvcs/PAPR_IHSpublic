@@ -65,7 +65,7 @@ public class PAPR {
 	static String patternStringMonYear = "(\\(\\w+\\s+\\d+)";
 	// (2000-2012)
 	static String patternStringYearYear = "(\\(\\d+-\\d+\\))";
-	// 2000
+	// (2000)
 	static String patternStringYear = "(\\(\\d+\\))";
 
 	// no.5-no.6
@@ -103,7 +103,7 @@ public class PAPR {
 	static String patternStringMonYear_ = "(\\()(\\w+)(\\s+)(\\d+)";
 	// (2000-2012)
 	static String patternStringYearYear_ = "(\\()(\\d+)(-)(\\d+)(\\))";
-	// 2000
+	// (2000)
 	static String patternStringYear_ = "(\\()(\\d+)(\\))";
 
 	// no.5-no.6
@@ -533,11 +533,11 @@ public class PAPR {
 						paprYear.beginYear = Integer.parseInt(matcher1.group(4));
 						years.add(paprYear);
 					}else {
-						
+
 						PaprYear paprYear = new PaprYear();
 						paprYear.dateVal = matcher1.group(2);
 						paprYear.beginYear = Integer.parseInt(matcher1.group(4));
-						
+
 						yearsOverRide.add(paprYear);
 					}
 					continue;
@@ -557,10 +557,13 @@ public class PAPR {
 					PaprYear paprYear = new PaprYear();
 					paprYear.beginYear = Integer.parseInt(matcher1.group(2));
 					paprYear.endYear = Integer.parseInt(matcher1.group(4));
+
 					years.add(paprYear);
 
 					continue;
 				}
+
+
 				// (2000)
 				// static String patternStringYear_ = "(\\()(\\d+)(\\))";
 
@@ -717,7 +720,7 @@ public class PAPR {
 				return error;
 			}
 		}
-		
+
 		if(yearsOverRide.size() > 0){
 			if (processYearsOverride(ihsIssuesYear, yearsOverRide, ihsMember, ihsLocation, scommitment)) {
 				error = true;
@@ -731,7 +734,7 @@ public class PAPR {
 				errorString.add(singestionExceptionType.description + "|");
 				return error;
 			}
-			
+
 		}
 
 		// Check Holding
@@ -892,23 +895,22 @@ public class PAPR {
 			if (year.endYear > -1) {
 
 				for (;;) {
-					// handle first volume
 
-					if (yearCounter == 0) {
-
+					if (yearCounter == 0) { // handle first volume
 						try {
 							yearCounter = year.beginYear;
 
 							List<IhsIssue> issues = ihsIssuesYear.get(new Integer(yearCounter).toString());
 
+              // AJE : next line replaces Travant original 'for' block below: 2016-07-12 17:29:49
+              saveHolding(issues.get(0), ihsMember, ihsLocation, scommitment); // AJE new 2016-07-12 16:43:41
+
+							/* # AJE 2016-07-12 this 'for' block is Travant original: fails to ingest first Volume when holdings statement like "(1930-1940)"
 							for (IhsIssue ihsIssue : issues) {
-
 								if (ihsIssue.publicationDate.getMonthOfYear() >= year.beginMonth) {
-
 									saveHolding(ihsIssue, ihsMember, ihsLocation, scommitment);
 								}
-
-							}
+							} // end for Travant original */
 
 						} catch (Exception e) {
 
@@ -916,8 +918,7 @@ public class PAPR {
 
 					}
 
-					// handle end Volume
-					else if (yearCounter >= year.endYear) {
+					else if (yearCounter >= year.endYear) { // handle end Volume
 						if (year.endMonth > -1) {
 
 							try {
@@ -925,16 +926,17 @@ public class PAPR {
 
 								if (issues == null) {
 									error = true;
-
 								}
 
+                // AJE : next line replaces Travant original 'for' block below: 2016-07-12 17:29:49
+                saveHolding(issues.get( issues.size()-1 ), ihsMember, ihsLocation, scommitment); // AJE test 2016-07-12 16:53:02
+
+							 /* # AJE 2016-07-12 this 'for' block is Travant original: fails to ingest last Volume when holdings statement like "(1930-1940)"
 								for (IhsIssue ihsIssue : issues) {
-
 									if (ihsIssue.publicationDate.getMonthOfYear() <= year.beginMonth) {
-
 										saveHolding(ihsIssue, ihsMember, ihsLocation, scommitment);
 									}
-								}
+								} // end for Travant original */
 
 							} catch (Exception e) {
 
@@ -942,23 +944,18 @@ public class PAPR {
 						}
 
 						break;
-					} else {
 
-						// handle middle volumes
-
+					} else { // handle middle volumes
 						try {
 							List<IhsIssue> issues = ihsIssuesYear.get(new Integer(yearCounter).toString());
 
 							if (issues == null) {
 								error = true;
-
 							}
 
 							for (IhsIssue ihsIssue : issues) {
-
 								try {
 									saveHolding(ihsIssue, ihsMember, ihsLocation, scommitment);
-
 								} catch (Exception e) {
 
 								}
@@ -972,8 +969,7 @@ public class PAPR {
 				}
 			} else {
 
-				// If Only on year
-				if (yearCounter == 0) {
+				if (yearCounter == 0) { // If Only on year
 					yearCounter = year.beginYear;
 				}
 
@@ -982,16 +978,12 @@ public class PAPR {
 				if (issues == null) {
 					error = true;
 				} else {
-
 					for (IhsIssue ihsIssue : issues) {
-
 						try {
 							saveHolding(ihsIssue, ihsMember, ihsLocation, scommitment);
-
 						} catch (Exception e) {
 
 						}
-
 					}
 				}
 			}
@@ -1003,7 +995,7 @@ public class PAPR {
 			IhsMember ihsMember, IhsLocation ihsLocation, Scommitment scommitment) {
 
 		  boolean error = true;
-		  
+
 		  for(PaprYear year :years){
 			  List<IhsIssue> issues =  ihsIssuesYear.get(new Integer(year.beginYear).toString());
 			  if(issues == null){
@@ -1015,7 +1007,7 @@ public class PAPR {
 					  saveHolding(issue, ihsMember, ihsLocation, scommitment);
 				  }
 			  }
-		  }	 
+		  }
 		  return error;
 	}
 
@@ -1035,6 +1027,7 @@ public class PAPR {
 				.eq("memberID", ihsMember.memberID).eq("locationID", ihsLocation.locationID).findUnique();
 
 		if (ihsHolding == null) {
+
 			new IhsHolding(ihsIssue, ihsMember, ihsLocation, sholdingStatus, sconditionTypeOverall, sihsVarified,
 					svalidationLevel, scommitment).save();
 		}

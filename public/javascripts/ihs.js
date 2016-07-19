@@ -36,7 +36,7 @@ function login() {
 		userName.innerHTML = validUsers[i];
 		org.innerHTML = validOrgs[i];
 		cancel();
-		
+
 		var iu = false;
 		var nw = false;
 		var crl = false;
@@ -49,7 +49,7 @@ function login() {
 				break;
 			case 3:
 				nw = true;
-				break;			
+				break;
 		}
 		require(["dojo/_base/array", "dojo/query"], function (array, query) {
 			array.forEach(
@@ -79,9 +79,9 @@ function login() {
 							editLink.style.visibility = "hidden";
 					}
 				);
-			
+
 		});
-		
+
 	} else {
 		var loginError = document.getElementById('login-error');
 		loginError.innerHTML = "Invalid User Name and Password";
@@ -135,7 +135,7 @@ function toggleIssueTimeline(num) {
 function fileSourceClick(e) {
 	var httpForm = document.getElementById('http-upload-form');
 	var ftpForm = document.getElementById('ftp-upload-form');
-	
+
 	if (document.getElementById('file-source-http').checked) {
 		httpForm.style.display = "inline";
 		ftpForm.style.display = "none";
@@ -147,7 +147,7 @@ function fileSourceClick(e) {
 
 function publishTypeClick(e) {
 	var memberForm = document.getElementById('member-selection-form');
-	
+
 	if (document.getElementById('publish-type-member').checked) {
 		memberForm.style.display = "inline";
 	} else {
@@ -167,9 +167,9 @@ function reportTypeSelect(e) {
 	report2Form.style.display = "none";
 	report3Form.style.display = "none";
 	searchPanel.style.display = "none";
-	
+
 	var selectedValue = document.getElementById('report-type-select').value;
-	
+
 	switch (selectedValue) {
 	case 'report1':
 		report1Form.style.display = "block";
@@ -183,7 +183,7 @@ function reportTypeSelect(e) {
 		searchPanel.style.display = "block";
 		break;
 	}
-	
+
 	var submit = document.getElementById('report-form-submit');
 	if (selectedValue==="") {
 		submit.disabled = true;
@@ -197,7 +197,7 @@ function reportTypeSelect(e) {
 function updateISSN(issn) {
 	var issn1 = document.getElementById('issn1');
 	var issn2 = document.getElementById('issn2');
-	
+
 	issn1.value = issn;
 	issn2.value = issn;
 }
@@ -210,7 +210,7 @@ function showResults(search) {
 	if (search.value=="")
 		results.style.visibility = "hidden";
 	else
-		results.style.visibility = "visible";					
+		results.style.visibility = "visible";
 }
 function timelineClick(e) {
 	var timeline = document.getElementById('timeline');
@@ -237,5 +237,5 @@ function timelineClick(e) {
 	var offset = yearDiv.offsetTop - yearDiv.parentNode.offsetTop;
 	var issuesDiv =  document.getElementById('issues');
 	issuesDiv.scrollTop = offset;
-	
+
 }

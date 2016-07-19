@@ -48,7 +48,7 @@ public class Helper {
 			appRoles.add(new AppRole(ihsSecurityRole.name));
 		}
 
-		
+
 		AppUser appUser = new AppUser(ihsUser.userID, ihsUser.userName,
 				appRoles, ihsUser.ihsMember.memberID, ihsUser.ihsMember.name,
 				ihsUser.ihsMember.ihsLocation.locationID, ihsUser.getName());
@@ -61,28 +61,27 @@ public class Helper {
 	}
 
 	public static String getPublicationRange(
-		
+
 		List<IhsPublicationRange> ihsPublicationRanges) {
 
 		if(ihsPublicationRanges == null){
 			return "";
 		}
-		
-		
+
+
 		DateTime startDate = null;
 		DateTime endDate = null;
 
 		String st = "";
-		
+
 		try{
-		
+
 			for (IhsPublicationRange ihsPublicationRange : ihsPublicationRanges) {
-	
-				
+
 				if (startDate == null) {
 					startDate = ihsPublicationRange.startDate;
 				}
-				
+
 				if (endDate == null) {
 					endDate = ihsPublicationRange.endDate;
 				}
@@ -94,45 +93,44 @@ public class Helper {
 				if (ihsPublicationRange.endDate != null && ihsPublicationRange.endDate.isAfter(endDate)) {
 					endDate = ihsPublicationRange.endDate;
 				}
-				
+
 				if (ihsPublicationRange.endDate == null)
 					endDate = new DateTime(9999, 9, 9, 12, 0, 0, 0);
 			}
-			
-			
+
 			String endDateSt =endDate.isAfter(new DateTime(9999, 9, 8, 12, 0, 0, 0) ) ? " " : dtf.print(endDate);
-			
+
 			st = dtf.print(startDate) + "-" + endDateSt;
 		}catch (Exception e){
-			
+
 		}
-		
+
 		return st;
 	}
-	
+
 	public static String getPublicationRangeVer(
-			
+
 			List<IhsPublicationRangeVer> ihsPublicationRanges) {
 
 			if(ihsPublicationRanges == null){
 				return "";
 			}
-			
-			
+
+
 			DateTime startDate = null;
 			DateTime endDate = null;
 
 			String st = "";
-			
+
 			try{
-			
+
 				for (IhsPublicationRangeVer ihsPublicationRange : ihsPublicationRanges) {
-		
-					
+
+
 					if (startDate == null) {
 						startDate = ihsPublicationRange.startDate;
 					}
-					
+
 					if (endDate == null) {
 						endDate = ihsPublicationRange.endDate;
 					}
@@ -144,24 +142,24 @@ public class Helper {
 					if (ihsPublicationRange.endDate != null && ihsPublicationRange.endDate.isAfter(endDate)) {
 						endDate = ihsPublicationRange.endDate;
 					}
-					
+
 					if (ihsPublicationRange.endDate == null)
 						endDate = new DateTime(9999, 9, 9, 12, 0, 0, 0);
 				}
-				
-				
+
+
 				String endDateSt =endDate.isAfter(new DateTime(9999, 9, 8, 12, 0, 0, 0) ) ? " " : dtf.print(endDate);
-				
+
 				st = dtf.print(startDate) + "-" + endDateSt;
 			}catch (Exception e){
-				
+
 			}
-			
+
 			return st;
 		}
-	
+
 	public static String formatIssn(String issn){
-		
+
 		if(issn == null){
 			return "";
 		}else{
@@ -172,9 +170,9 @@ public class Helper {
 		}
 	}
 
-	
+
 	public static boolean isMonth(String mon) {
-		
+
 		if("jan".equals(mon.toLowerCase())){
 			return true;
 		}
@@ -211,12 +209,12 @@ public class Helper {
 		if("dec".equals(mon.toLowerCase())){
 			return true;
 		}
-		
+
 		return false;
-	
+
 	}
 	public static int getMonthIndex(String mon) throws Exception{
-		
+
 		if("jan".equals(mon.toLowerCase())){
 			return 1;
 		}
@@ -256,7 +254,7 @@ public class Helper {
 		if("spring".equals(mon.toLowerCase())){
 			return 13;
 		}
-		
+
 		if("fall".equals(mon.toLowerCase())){
 			return 14;
 		}
