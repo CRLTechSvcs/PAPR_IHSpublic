@@ -227,11 +227,11 @@
         holdingView.holdingConditionsView[index].checked=0;
       }
 
-      var st = image1+'<br><strong>Commitment: </strong> ' + commitment +
-        '<strong><br><br>Condition:</strong><br>Overall: ' + overallst + '<br>'
-        'Validation Level:' + validation + '<br>'
-        'Verified in IHS:' + ihsVerified + '<br>'
-        'Other Issues:' + tmpOtherissue;
+      var st = image1+'<br><strong>Commitment line : </strong> ' + commitment;
+        st += '<strong><br><br>Condition:</strong><br>Overall: ' + overallst + '<br>';
+        st += 'Validation Level:' + validation + '<br>';
+        st += 'Verified in IHS:' + ihsVerified + '<br>';
+        st += 'Other Issues:' + tmpOtherissue;
 
       document.getElementById('glbchildCntd').innerHTML = st;
       document.getElementById("globaledit").style.display  = "block";
@@ -298,12 +298,12 @@
       }
     }
 
-    var st = '<br> <strong> Commitment </strong> ' + commitment + '<br><br>'
-      '<strong>Condition:</strong><br>Overall: ' + overallst +
-      '<br>Validation Level:' + validation +
-      '<br>Verified in IHS:' + ihsVerified +
-      '<br>Missing Pages:' + missingPages +
-      '<br>Other Issues:' + tmpOtherissue;
+    var st = '<br> <strong> Commitment </strong> ' + commitment + '<br><br>';
+      st += '<strong>Condition:</strong><br>Overall: ' + overallst;
+      st += '<br>Validation Level:' + validation;
+      st += '<br>Verified in IHS:' + ihsVerified;
+      st += '<br>Missing Pages:' + missingPages;
+      st += '<br>Other Issues:' + tmpOtherissue;
 
     document.getElementById(holdingid + 'col12').innerHTML = st;
 	}
@@ -413,12 +413,12 @@
       }
     }
 
-    var st = '<strong>Commitment: </strong>' + commitment + '<br><br>'
-      '<strong>Condition:</strong><br>Overall: ' + overallst +
-      '<br>Validation Level:' + validation +
-      '<br>Verified in IHS:' + ihsVerified +
-      '<br>Missing Pages:' + holdingView.missingPages +
-      '<br>Other Issues:' + tmpOtherissue;
+    var st = '<strong>Commitment: </strong>' + commitment + '<br><br>';
+      st += '<strong>Condition:</strong><br>Overall: ' + overallst;
+      st += '<br>Validation Level:' + validation;
+      st += '<br>Verified in IHS:' + ihsVerified;
+      st += '<br>Missing Pages:' + holdingView.missingPages;
+      st += '<br>Other Issues:' + tmpOtherissue;
 
     return st;
 	}
