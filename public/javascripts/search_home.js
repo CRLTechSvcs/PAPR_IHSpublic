@@ -465,6 +465,8 @@
 	}
 
   function drawPie(response){
+    //console.info("AJE drawPie: response = ", response);
+
   	var width = 150,
   		height = 150,
   		radius = Math.min(width, height) / 2;
@@ -487,7 +489,7 @@
     	.attr("transform", "translate(" + width / 2 + "," + height / 2 + ")");
 
     	var data = response[0].chart;
-
+      //console.info("AJE drawPie: data = ", data);
 
     	data.forEach(function(d) {
     		d.number = +d.number;
@@ -506,7 +508,10 @@
       		.attr("transform", function(d) { return "translate(" + arc.centroid(d) + ")"; })
       		.attr("dy", ".35em")
       		.style("text-anchor", "middle")
-      		.attr("font-size", "10")
+      		//.attr("font-size", "10") // Travant original
+      		.attr("font-size", "12") // AJE 2016-07-20 modified
+      		.attr("font-weight", "bold") // AJE 2016-07-20 added
+      		// .attr("fill", "rgb(255,255,255)") // AJE 2016-07-20 added : will produce white text + can be turned on if anyone chooses
       		.text(function(d) { return d.data.status + '(' + d.data.number + ')' ; });
 
     }
