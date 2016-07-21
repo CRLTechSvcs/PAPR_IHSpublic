@@ -38,7 +38,7 @@ public class BaseData {
 	
 	public static BaseData buildPorticoData(String rawdata) throws Exception {
 		BaseData porticoData = new BaseData();
-		String[] records = rawdata.split(Portico.cvsSplitBy);
+		String[] records = rawdata.split(Portico.csvSplitBy);
 		int index = 0;
 		for (String col : records) {
 			switch (index) {
@@ -77,7 +77,7 @@ public class BaseData {
 
 	public static BaseData buildPAPRData(String rawdata) throws Exception {
 		BaseData paprData = new BaseData();
-		String[] records = rawdata.split(PAPR.cvsSplitBy);
+		String[] records = rawdata.split(PAPR.csvSplitBy);
 		int index = 0;
 		for (String col : records) {
 			switch (index) {
