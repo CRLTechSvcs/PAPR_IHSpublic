@@ -42,7 +42,7 @@ public class Portico {
 	static String DASH = "-";
 	static String queued = "queued";
 	static String EMPTY = "";
-	public static String cvsSplitBy = "\t";
+	public static String csvSplitBy = "\t";
 	static String spaceDashspace =" - ";
 	static String space =" ";
 	static String nospace ="";
