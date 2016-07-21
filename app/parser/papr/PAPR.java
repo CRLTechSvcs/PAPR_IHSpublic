@@ -34,7 +34,7 @@ import models.SvalidationLevel;
 
 public class PAPR {
 
-	public static String cvsSplitBy = "\t";
+	public static String cvsSplitBy = "\t"; // AJE: DEVNOTE: this probably means 'the CSV data is split by tab': fix variable name, it has nothing to do with the drugstore
 
 	// v.10:no.7-v.14:no.91
 	static String patternStringVdot1 = "(v.\\d+:no.\\d+-v.\\d+:no.\\d+)";
@@ -112,6 +112,9 @@ public class PAPR {
 	static String patternStringIssue_ = "(no.)(\\d+)";
 
 	// -----------
+	/* 
+		AJE learning : Pattern.compile() means now can be used multiple times to match regex against multiple texts ; seems to be always better than Pattern.matches(text, pattern)
+	*/
 	static Pattern patternVdot1 = Pattern.compile(patternStringVdot1);
 	static Pattern patternVdot2 = Pattern.compile(patternStringVdot2);
 	static Pattern patternVdot3 = Pattern.compile(patternStringVdot3);
@@ -122,7 +125,7 @@ public class PAPR {
 	static Pattern patternVdot8 = Pattern.compile(patternStringVdot8);
 	static Pattern patternVdot9 = Pattern.compile(patternStringVdot9);
 
-	static Pattern patternMonYaerMonYear = Pattern.compile(patternStringMonYearMonYear);
+	static Pattern patternMonYearMonYear = Pattern.compile(patternStringMonYearMonYear); 
 	static Pattern patternMonYearYear = Pattern.compile(patternStringMonYearYear);
 	static Pattern patternYearMonYear = Pattern.compile(patternStringYearMonYear);
 	static Pattern patternMonYear = Pattern.compile(patternStringMonYear);
@@ -143,7 +146,7 @@ public class PAPR {
 	static Pattern patternVdot8_ = Pattern.compile(patternStringVdot8_);
 	static Pattern patternVdot9_ = Pattern.compile(patternStringVdot9_);
 
-	static Pattern patternMonYaerMonYear_ = Pattern.compile(patternStringMonYearMonYear_);
+	static Pattern patternMonYearMonYear_ = Pattern.compile(patternStringMonYearMonYear_);
 	static Pattern patternMonYearYear_ = Pattern.compile(patternStringMonYearYear_);
 	static Pattern patternYearMonYear_ = Pattern.compile(patternStringYearMonYear_);
 	static Pattern patternMonYear_ = Pattern.compile(patternStringMonYear_);
@@ -461,10 +464,10 @@ public class PAPR {
 				// (Jan 2000-Feb 2012)
 				// String patternStringMonYearMonYear_ =
 				// "(\\()(\\w+)(\\s+)(\\d+)(-)(\\w+)(\\s+)(\\d+)(\\))";
-				matcher = patternMonYaerMonYear.matcher(volumsissue);
+				matcher = patternMonYearMonYear.matcher(volumsissue);
 
 				if (matcher.find()) {
-					Matcher matcher1 = patternMonYaerMonYear_.matcher(matcher.group(1));
+					Matcher matcher1 = patternMonYearMonYear_.matcher(matcher.group(1));
 
 					matcher1.find();
 
