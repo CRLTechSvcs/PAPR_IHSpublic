@@ -209,7 +209,9 @@ public class PAPR {
 			Logger.debug("#################SUCCESS#### " + jsonString);
 		}
 
-	}
+	} // end processPAPR
+
+
 
 	public static void processPapresolve(String username, BaseData porticoData, IhsIngestionRecord ihsIngestionRecord,
 			String jsonString, Scommitment scommitment) {
@@ -242,7 +244,8 @@ public class PAPR {
 			Logger.debug("#################SUCCESS#### " + jsonString);
 		}
 
-	}
+	} // end processPapresolve
+
 
 	public static boolean dataValidateAndInsert(BaseData paprData, IhsIngestionRecord ihsIngestionRecord,
 			IhsUser ihsUser, IhsMember ihsMember, IhsLocation ihsLocation, List<String> errorString,
@@ -272,20 +275,16 @@ public class PAPR {
 		String[] volumsissues = paprData.holding.split(",");
 
 		try {
+			
 			for (String volumsissue : volumsissues) {
-
 				if (volumsissue.toLowerCase().contains("supplement")) {
-
 					// TODO
 					continue;
-
 				}
 
 				if (volumsissue.toLowerCase().contains("index")) {
-
 					// TODO
 					continue;
-
 				}
 
 				// v.10:no.7-v.14:no.91
@@ -563,7 +562,6 @@ public class PAPR {
 					continue;
 				}
 
-
 				// (2000)
 				// static String patternStringYear_ = "(\\()(\\d+)(\\))";
 
@@ -648,15 +646,17 @@ public class PAPR {
 			return error;
 		}
 
+			// AJE learning : find title by printISSN ?
 		IhsTitle ihsTitle = IhsTitle.find.fetch("ihsPublicationRange").where().eq("printISSN", paprData.printISSN)
 				.findUnique();
 
 		if (ihsTitle == null) {
 
+				// AJE learning : failed to find title by printISSN ; so look for it by OCLC?
 			ihsTitle = IhsTitle.find.fetch("ihsPublicationRange").where().eq("oclcNumber", paprData.oclcNumber)
 					.findUnique();
 
-			if (ihsTitle == null) {
+			if (ihsTitle == null) { 			// AJE learning : still failed (printISSN and OCLC all not found), create exception
 				error = true;
 				SingestionExceptionType singestionExceptionType = SingestionExceptionType.find.where()
 						.eq("name", SingestionExceptionType.NoAuthorizedTitle).findUnique();
@@ -740,7 +740,8 @@ public class PAPR {
 		// Check Holding
 
 		return false;
-	}
+	} // end dataValidateAndInsert
+
 
 	static boolean processVolumes(Hashtable<String, List<IhsIssue>> ihsIssues, List<PaprVolume> volumes,
 			IhsMember ihsMember, IhsLocation ihsLocation, Scommitment scommitment) {
@@ -881,7 +882,8 @@ public class PAPR {
 		}
 
 		return error;
-	}
+	} // end processVolumes
+
 
 	static boolean processYears(Hashtable<String, List<IhsIssue>> ihsIssuesYear, List<PaprYear> years,
 			IhsMember ihsMember, IhsLocation ihsLocation, Scommitment scommitment) {
@@ -990,7 +992,9 @@ public class PAPR {
 		}
 
 		return error;
-	}
+	} // end processYears
+	
+	
 	static boolean processYearsOverride(Hashtable<String, List<IhsIssue>> ihsIssuesYear, List<PaprYear> years,
 			IhsMember ihsMember, IhsLocation ihsLocation, Scommitment scommitment) {
 
@@ -1009,7 +1013,8 @@ public class PAPR {
 			  }
 		  }
 		  return error;
-	}
+	} // end processYearsOverride
+	
 
 	static void saveHolding(IhsIssue ihsIssue, IhsMember ihsMember, IhsLocation ihsLocation, Scommitment scommitment) {
 
@@ -1031,5 +1036,5 @@ public class PAPR {
 			new IhsHolding(ihsIssue, ihsMember, ihsLocation, sholdingStatus, sconditionTypeOverall, sihsVarified,
 					svalidationLevel, scommitment).save();
 		}
-	}
-}
+	} // end saveHolding
+} // end class PAPR
