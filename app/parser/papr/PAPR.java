@@ -34,7 +34,7 @@ import models.SvalidationLevel;
 
 public class PAPR {
 
-	public static String cvsSplitBy = "\t"; // AJE: DEVNOTE: this probably means 'the CSV data is split by tab': fix variable name, it has nothing to do with the drugstore
+	public static String csvSplitBy = "\t"; // AJE: 2016-07-21 : fixed variable name, has nothing to do with the drugstore
 
 	// v.10:no.7-v.14:no.91
 	static String patternStringVdot1 = "(v.\\d+:no.\\d+-v.\\d+:no.\\d+)";
