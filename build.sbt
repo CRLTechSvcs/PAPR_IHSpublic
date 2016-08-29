@@ -26,3 +26,4 @@ libraryDependencies ++= Seq(
 resolvers ++= Seq(
   Resolver.url("Objectify Play Repository", url("http://schaloner.github.io/releases/"))(Resolver.ivyStylePatterns)
 )
+
