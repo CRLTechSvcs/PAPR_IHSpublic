@@ -70,8 +70,11 @@ public class IngestionJob extends Controller {
 
 		response().setHeader(CONTENT_TYPE, APP_FORCE_DWN);
 		response().setHeader(CONTENT_DISPOSITION, ATTACHMENT);
+		
+Logger.info("ingestionJob.java, getBadformatFile() will send param to ok(): " +fileName.replace(IhsIngestionRecord.tilde, System.getProperty("file.separator")) +".");
 
 		return ok(new FileInputStream(fileName.replace(
+				// AJE 2016-08-10 18:55:18: preserve Travant original 
 				IhsIngestionRecord.tilde, System.getProperty("file.separator"))));
 	}
 
