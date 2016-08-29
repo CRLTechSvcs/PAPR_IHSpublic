@@ -217,9 +217,13 @@ public class IssuesHeldReport {
 			String dataDir = Play.application().configuration()
 					.getString("application.publishing.process.data.Dir");
 
-			String fileName = rand.nextInt(10000) + "-" + "-IssuesHeldReport.pdf"; // AJE 2016-01-20 was 'IssueHeldReport.pdf'
+			//String fileName = rand.nextInt(10000) + "-" + "-IssuesHeldReport.pdf"; // AJE 2016-01-20 was 'IssueHeldReport.pdf'
+			String fileName = rand.nextInt(10000) + "_IssuesHeldReport.pdf"; // AJE 2016-08-23
 
 			destFileString = dataDir + File.separator + fileName;
+			
+			Logger.info("IssueHeldReport.java, createPdf() will create the file at: " +destFileString);
+
 
 			Document document = new Document(PageSize.A4.rotate());
 
@@ -417,6 +421,7 @@ end AJE 2016-01-20 10:46
 			Logger.error("", e);
 		}
 
+Logger.info("IssuesHeldreport.java, createPdf() will return destFileString = '" +destFileString+ "'.");
 		return destFileString;
 
 	}
