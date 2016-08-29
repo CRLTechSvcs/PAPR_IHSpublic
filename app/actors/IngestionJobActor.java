@@ -151,7 +151,8 @@ public class IngestionJobActor extends UntypedActor {
 			}
 		} catch (Exception e) {
 			running = false;
-			//Logger.error("IhsIngestionJob Exception",e);
+			Logger.error("IhsIngestionJob Exception",e); // AJE 2016-08-25 this line was commented out
+			Logger.info("IhsIngestionJob Exception",e); // AJE 2016-08-25 this line is new
 			
 			SingestionJobStatus singestionJobStatus = SingestionJobStatus.find.where().eq("name", SingestionJobStatus.InternalError).findUnique();
 			
