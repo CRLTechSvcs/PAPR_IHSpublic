@@ -2,6 +2,10 @@
 # This file defines all application routes (Higher priority routes first)
 # ~~~~
 
+# AJE 2016-08-10 https://www.playframework.com/documentation/1.2.4/routes 
+# or maybe this version applies
+# https://www.playframework.com/documentation/2.5.x/ScalaRouting
+
 #Home page
 GET     /                           controllers.Login.login()
 POST    /login						controllers.Login.doLogin()
@@ -128,3 +132,20 @@ GET /administration/getCountryState	    controllers.Administration.getCountrySta
 
 # Map static resources from the /public folder to the /assets URL path
 GET     /assets/*file               controllers.Assets.at(path="/public", file)
+
+# AJE 2016-08-10 : in Travant original version, nothing below this line
+
+# AJE 2016-08-09: this section related to things looked at and tried, in truly tortuous fixing of fact that 'Download' links for 'Reports' caused error, instead of opening nicely formatted PDF
+# https://www.playframework.com/documentation/2.5.x/AssetsOverview
+# AJE 2016-08-10 old reference: http://mariussoutier.com/blog/2012/12/10/playframework-routes-part-1-basics/
+# url possibly also relevant (section 'use the correct router') to final fix, I have tried literally 200 combinations of things: 
+#		https://www.mschweighauser.com/playframework-asset-pipeline/
+# 	that url may explain why some tests below have 'controllers.Assets.versioned' instead of 'controllers.Assets.at'
+# url not consulted but on same topic: http://stackoverflow.com/questions/22469303/404-assets-play-framework
+# "" http://stackoverflow.com/questions/25217624/use-multiple-assets-route-in-play-framework-2
+# next failed, because Travant provided mislabeled information in the application.conf file: see notes there
+# GET     /data/pubprocess/*file					controllers.Assets.versioned(path="/data/pubprocess", file:Asset)
+# GET     /data/pubprocess/*file					controllers.Assets.versioned(path="/data/pubprocess", file)
+# GET     /data/pubprocess/*file					controllers.Assets.at(path="/public", file)
+# next works: allahu akbar, truly god is great
+GET     /public/reports/*file					controllers.Assets.versioned(path="/public/reports", file)
