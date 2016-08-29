@@ -33,6 +33,9 @@ import play.mvc.BodyParser;
 import play.mvc.Controller;
 import play.mvc.Result;
 
+
+
+
 @Restrict(@Group("user"))
 public class Reporting extends Controller {
 
@@ -44,7 +47,7 @@ public class Reporting extends Controller {
 	static DateTimeFormatter dtf = DateTimeFormat
 			.forPattern("MMM dd, yyyy HH:mm aa");
 
-	
+
 	public static Result reporting_previous_reports(){
 		return ok(reporting_previous_reports.render());
 	}
