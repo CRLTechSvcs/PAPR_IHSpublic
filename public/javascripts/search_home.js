@@ -793,10 +793,16 @@
       error: function(e) { alert("Error: " + e.message); },
       load:  function(response) {
         if (response.status == 0){
-          document.getElementById('want-status').innerHTML = " Title Status Wanted ";
+          /* document.getElementById('want-status').innerHTML = " Title Status Wanted ";
+          AJE 2016-09-14 changed buttons to hrefs, see app\views\search_home.scala.html,
+          they have new id now
+          */
+          document.getElementById('want-status-trigger').innerHTML = " Title Status Wanted ";
           document.getElementById('want-status').value = 0;
         } else {
-          document.getElementById('want-status').innerHTML = " Title Status Not Wanted ";
+          /* AJE 2016-09-14 as above, so below
+          document.getElementById('want-status').innerHTML = " Title Status Not Wanted "; */
+          document.getElementById('want-status-trigger').innerHTML = " Title Status Not Wanted ";
           document.getElementById('want-status').value = 1;
         }
       }
