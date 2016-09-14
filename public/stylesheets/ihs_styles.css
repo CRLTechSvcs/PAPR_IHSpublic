@@ -1,7 +1,7 @@
 /*Site structure*/
 
 body {
-	background-color: #fff; 
+	background-color: #fff;
 	margin: 0;
 	padding: 0;
 	font-family: Arial, Helvetica, sans-serif;
@@ -15,14 +15,14 @@ button {
 }
 
 .nihilo div.dojoxGrid {
-	font-size: 10px; 
+	font-size: 10px;
 }
 
 #container {
 	width: 1140px;
 	margin: 0 auto 0 auto;
 	text-align: center;
-	/*border: 1px solid #000;*/	
+	/*border: 1px solid #000;*/
 }
 
 #relationships {
@@ -134,7 +134,7 @@ p#search-criteria {
 
 #content {
 	width: 100%;
-	overflow: hidden;	
+	overflow: hidden;
 	margin: 10px 0 0 0;
 }
 
@@ -220,7 +220,7 @@ div.exception-list {
 
 div.timeline {
 	height:30px;
-	float:left;	
+	float:left;
 }
 
 
@@ -283,7 +283,7 @@ div.history-col1 {
 	height: auto;
 	float:left;
 	text-align: left;
-}	
+}
 
 div.history-col2 {
 	width: 250px;
@@ -340,7 +340,7 @@ div.link-list {
     background-color: white;
     background-color: -moz-field;
     border: 1px solid darkgray;
-    box-shadow: 1px 1px 1px 0 lightgray inset;  
+    box-shadow: 1px 1px 1px 0 lightgray inset;
 	height: 772px;
 	overflow-y:scroll;
 }
@@ -349,7 +349,7 @@ div.link-item {
 	padding:10px;
 	border: 1px solid darkgreen;
 	border-style: none none solid;
-	
+
 }
 
 div.link-item:nth-child(odd) {
@@ -399,7 +399,7 @@ a.edit-nw {
 .rotate-text {
 	-webkit-transform: rotate(-50deg);
 	-moz-transform:rotate(-50deg);
-	-ms-transform:rotate(-50deg); 
+	-ms-transform:rotate(-50deg);
 	position:relative;
 	width:60px;
 }
@@ -525,7 +525,7 @@ img.edit-pub-range {
 	margin-left:16px;
 	text-align:left;
 }
-	
+
 /* Content-col1 and content-col2 create the two column layouts for the Directory and Title Detail pages */
 
 #content-col1 {
@@ -534,7 +534,15 @@ img.edit-pub-range {
 	height: auto;
 	float:left;
 	text-align: left;
-}	
+}
+#content-col1_A { /* AJE 2016-09-14 new div for holding 'Tools' on search_home: see app/views/search_home.scala.html */
+	clear: both;
+	/* width:275px; */
+	height: auto;
+	float:left;
+	text-align: left;
+	margin: 15px;
+}
 
 #content-col2 {
 	width: 270px;
@@ -603,7 +611,7 @@ ul#tabs{ /* general settings */
 }
 
 ul#tabs li { /* do not change */
-	display: inline; 
+	display: inline;
 }
 
 body#tab1 li.tab1, body#tab2 li.tab2, body#tab3 li.tab3 { /* settings for selected tab */
@@ -619,14 +627,14 @@ body#tab1 li.tab1 a, body#tab2 li.tab2 a, body#tab3 li.tab3 a { /* settings for 
 	padding-top: 10px; /* must change with respect to padding (X) above and below */
 	font-weight:bold;
 	text-align:center;
-	float:left;	
+	float:left;
 	width:155px;
-	
+
 	/* Top left corner */
 	border-top-left-radius: 10px;
 	-moz-border-radius-topleft: 10px;
 	-webkit-border-top-left-radius: 10px;
-	
+
 	/* Top right corner*/
 	border-top-right-radius: 10px;
 	-moz-border-radius-topright: 10px;
@@ -650,7 +658,7 @@ ul#tabs li a { /* settings for all tab links */
 	border-top-left-radius: 10px;
 	-moz-border-radius-topleft: 10px;
 	-webkit-border-top-left-radius: 10px;
-	
+
 	/* Top right corner*/
 	border-top-right-radius: 10px;
 	-moz-border-radius-topright: 10px;
@@ -662,7 +670,7 @@ ul#tabs a:hover { /* settings for hover effect */
 }
 
 /* End CSS tabs */
- 
+
 
 /* Headings and Font Sizing */
 
@@ -707,30 +715,30 @@ h3 {
 }
 
 h4 {
-	font-size:100%; 
+	font-size:100%;
 	font-weight:normal;
 }
 
 
 /* Links */
 
-a:link, 
+a:link,
 a:visited {
 	color: #485b2e;
 	text-decoration: none;
 }
 
-a:active, 
+a:active,
 a:hover { /*hover state CSS*/
 	color: #485b2e;
 	text-decoration: underline;
 }
 
-#content-center p a:link, #content-center p a:visited, 
+#content-center p a:link, #content-center p a:visited,
 #content-center p a:hover, #content-center p a:active {
 	color: #485b2e;
 	/*font-size: 90%;*/
-	font-weight: normal;	
+	font-weight: normal;
 }
 
 #content-center p a:link, #content-center p a:visited {
@@ -744,9 +752,9 @@ a:hover { /*hover state CSS*/
 #footer a:link, #footer a:visited,
 #footer a:hover, #footer a:active,
 #subhead a:link, #subhead a:visited,
-#subhead a:hover, #subhead a:active, 
+#subhead a:hover, #subhead a:active,
 #subhead-details a:link, #subhead-details a:visited,
-#subhead-details a:hover, #subhead-details a:active, 
+#subhead-details a:hover, #subhead-details a:active,
 table#pagination a:link, table#pagination a:visited,
 table#pagination a:hover, table#pagination a:active,
 table.generic-table-results a:link, table.generic-table-results a:visited,
@@ -755,15 +763,15 @@ table.generic-table a:link, table.generic-table a:visited,
 table.generic-table a:hover, table.generic-table a:active,
 table.four-col th a:link, table.four-col th a:visited,
 table.four-col th a:hover, table.four-col th a:active,
-table.four-col-title td a:link, table.four-col-title td a:visited,  
-table.four-col-title td a:hover, table.four-col-title td a:active,  
-#header-right a:link, #header-right a:visited, 
+table.four-col-title td a:link, table.four-col-title td a:visited,
+table.four-col-title td a:hover, table.four-col-title td a:active,
+#header-right a:link, #header-right a:visited,
 #header-right a:hover, #header-right a:active,
 ul.no-decoration a:hover, ul.no-decoration a:active,
 ul.no-decoration a:link, ul.no-decoration a:visited {
 	color: #485b2e;
 	/*font-size: 90%;*/
-	font-weight: normal;	
+	font-weight: normal;
 }
 
 #footer a:link, #footer a:visited,
@@ -771,21 +779,21 @@ ul.no-decoration a:link, ul.no-decoration a:visited {
 #subhead-details a:link, #subhead-details a:visited,
 table#pagination a:link, table#pagination a:visited,
 table.four-col th a:link,  table.four-col th a:visited,
-table.four-col-title td a:link, table.four-col-title td a:visited,    
+table.four-col-title td a:link, table.four-col-title td a:visited,
 table.generic-table a:link, table.generic-table a:visited,
-#header-right a:link, #header-right a:visited, 
+#header-right a:link, #header-right a:visited,
 ul.no-decoration a:link, ul.no-decoration a:visited {
 	text-decoration: none;
 }
 
 #footer a:hover, #footer a:active,
-#subhead a:hover, #subhead a:active,  
+#subhead a:hover, #subhead a:active,
 #subhead-details a:hover, #subhead-details a:active,
-table#pagination a:hover, table#pagination a:active, 
+table#pagination a:hover, table#pagination a:active,
 table.four-col th a:hover, table.four-col th a:active,
 table.four-col-title td a:hover, table.four-col-title td a:active,
-table.generic-table a:hover, table#generic-table a:active, 
-#header-right a:hover, #header-right a:active, 
+table.generic-table a:hover, table#generic-table a:active,
+#header-right a:hover, #header-right a:active,
 ul.no-decoration a:hover, ul.no-decoration a:active {
 	text-decoration: underline;
 }
@@ -843,20 +851,20 @@ ul.no-decoration li, ul.no-decoration li a {
 
 
 /* The sub-nav section controls the secondory nav menu with search box and Directory options   */
- 
+
 #sub-nav {width:750px;overflow:hidden;margin:16px 100px 0 0;padding-left:16px;}
 
 #sub-nav #column-right {float:right;width:400px;margin:0;padding:0;}
 
 #sub-nav #column-left {float:left;width:350px;margin:0;padding:0;}
 
-#sub-nav #column-left a:link, 
+#sub-nav #column-left a:link,
 #sub-nav #column-left a:visited,
-#sub-nav #column-left a:hover, 
+#sub-nav #column-left a:hover,
 #sub-nav #column-left a:active {
 	color: #485b2e;
 	/*font-size: 90%;*/
-	font-weight: normal;	
+	font-weight: normal;
 }
 
 #sub-nav #column-left a:link,
@@ -865,7 +873,7 @@ ul.no-decoration li, ul.no-decoration li a {
 	text-decoration: none;
 }
 
-#sub-nav #column-left a:hover, 
+#sub-nav #column-left a:hover,
 #sub-nav #column-left a:active {
 	text-decoration: underline;
 }
@@ -899,7 +907,7 @@ ul.no-decoration li, ul.no-decoration li a {
 	cursor:pointer;
 	*cursor:hand; /*alternate cursor for IE*/
  }
- 
+
  /* End sub-nav styles */
 
 /* subhead ID is used on the Main Directory and Saerch Results pages */
@@ -908,19 +916,19 @@ ul.no-decoration li, ul.no-decoration li a {
 	margin-top:16px;
 	margin-left:16px;
 	margin-bottom:16px;
-	} 
+	}
 
 #subhead a {
-	padding-left:0; 
+	padding-left:0;
 	margin-right:8px;
 	font-size: 125%;
 	}
-	
+
 /* subhead-details ID is used on the Program and Facility Directory pages */
 
 #subhead-details {
-	text-align:left; 
-	margin-top:16px; 
+	text-align:left;
+	margin-top:16px;
 	margin-left:16px;
 	margin-bottom:16px;
 	line-height: 2em;
@@ -990,7 +998,7 @@ table.four-col-title th {
 
 table#five-col td,
 table#five-col th {
-	width:170px; 
+	width:170px;
 	overflow:hidden;
 	}
 
@@ -1075,13 +1083,13 @@ table.pagination td.pagination-link {
 
 #content-center #results-page .caption  {
 	padding-right:0;
-	/*border: 1px green solid;*/ 
+	/*border: 1px green solid;*/
  	}
 
 #content-center #results-page span  {
 	margin-left: 2px;
-	margin-right: 2px;		
-	/* border: 1px red solid;*/  
+	margin-right: 2px;
+	/* border: 1px red solid;*/
     }
 
 
@@ -1107,7 +1115,7 @@ img {border:none;}
 	margin-left:16px;
 }
 
-/* #search_results_dropdown {width:150px;height:22px;margin-top:16px;margin-left:16px;} 
+/* #search_results_dropdown {width:150px;height:22px;margin-top:16px;margin-left:16px;}
 I can't find where this is used; not sure that it is but I don't want to delete it until I'm certain. */
 
 /* CSS for collapsible menus - not used any more*/
@@ -1131,7 +1139,7 @@ I can't find where this is used; not sure that it is but I don't want to delete 
 	*cursor:hand; /*alternate cursor for IE*/
 	border: 1px solid #485b2e;
 	text-align:center;
-	font-size:98%; 	
+	font-size:98%;
 	margin-bottom: 0; /*bottom spacing between header and rest of content*/
 	padding: 7px 0 7px 0; /*31px is left indentation of header text*/
 }
@@ -1140,7 +1148,7 @@ I can't find where this is used; not sure that it is but I don't want to delete 
 	background: #e9e6d3; /*url(arrowstop.gif) no-repeat 8px 6px;*/ /*last 2 values are the x and y coordinates of bullet image*/
 	border: 1px solid #485b2e;
 	text-align:center;
-	font-size:98%; 	
+	font-size:98%;
 	margin-bottom: 0; /*bottom spacing between header and rest of content*/
 	padding: 7px 0 7px 0; /*31px is left indentation of header text*/
 }
