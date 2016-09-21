@@ -579,7 +579,6 @@
     document.getElementById("timeline").innerHTML=html;
   }
 
-
 	function populateVolumeDetail(response, ioArgs) {
 		var numberOfIssue=0;
 		var volumeLevelFlag = '0';
@@ -700,7 +699,15 @@
 			  document.getElementById("content-col2").innerHTML ='<img src="/assets/images/empty.gif" height="42" width="42" />' ;
 		  }
 
+	    /* AJE 2016-09-15 : Travant original, all on 1 line
 	    if( volumeLevelFlag == 0){ drawTimeBar(response, numberOfIssue); }
+
+	    // but don't we always want to see the timebar? if there are issues?
+
+	    */
+	    console.info('AJE 2016-09-15 : end of populateVolumeDetail: if numberOfIssue > 0 [now: ', numberOfIssue, '] then call drawTimeBar');
+	    if( numberOfIssue > 0){ drawTimeBar(response, numberOfIssue); }
+	    // AJE 2016-09-15 resume Travant original
 
 		drawGlobaledit();
 
@@ -709,7 +716,14 @@
 	} // end populateVolumeDetail
 
 
+
 	function getJournalDetail(id) {
+
+	    // AJE 2016-09-15 if search results are in main whitespace area (as per Amy req.) then they need to be hidden first of all
+	    // document.getElementById("results").style.visibility = "hidden"; // still takes up space
+	    toggle_search_home_title_components('getJournalDetail'); // in ihs_search.js
+	    // end AJE 2016-09-15
+
 	    if (call1 || call2) { return; }
 	    call1 = true;
 	    call2 = true;
@@ -793,46 +807,24 @@
       error: function(e) { alert("Error: " + e.message); },
       load:  function(response) {
         if (response.status == 0){
-          /* document.getElementById('want-status').innerHTML = " Title Status Wanted ";
-          AJE 2016-09-14 changed buttons to hrefs, see app\views\search_home.scala.html,
-          they have new id now
-          */
-          document.getElementById('want-status-trigger').innerHTML = " Title Status Wanted ";
+          document.getElementById('want-status').innerHTML = " Title Status Wanted "; // Travant original
           document.getElementById('want-status').value = 0;
         } else {
-          /* AJE 2016-09-14 as above, so below
-          document.getElementById('want-status').innerHTML = " Title Status Not Wanted "; */
-          document.getElementById('want-status-trigger').innerHTML = " Title Status Not Wanted ";
+          document.getElementById('want-status').innerHTML = " Title Status Not Wanted "; // Travant original
           document.getElementById('want-status').value = 1;
         }
       }
     });
 	}
 
-
-	function populateSearchList(response, ioArgs) {
-    var results = document.getElementById('results');
-    results.style.visibility = "visible";
-
-    var ul = document.getElementById('search-list');
-    if (ul != null) { results.removeChild(ul); }
-    ul = document.createElement('ul');
-    ul.setAttribute('id', 'search-list');
-
-    for (i = 0; i < response.items.length; i++) {
-      var li = document.createElement('li');
-      var a = document.createElement('a');
-
-      a.innerHTML = response.items[i].title;
-      a.setAttribute('href', 'javascript:getJournalDetail(' + response.items[i].titleId + ');');
-      a.setAttribute('title', response.items[i].title);
-      li.appendChild(a);
-      ul.appendChild(li);
-    }
-    results.appendChild(ul);
-	}
+/*
+  AJE 2016-09-21 moved populateSearchList to ihs_search.js, where it can live with searchJournalByTitle, etc.
+*/
 
 
+
+// AJE 2016-09-21 Travant misspelled function name ; appears to be unused: see ihs_search.js : function searchJournalByTitle
+/**************************************************
 	function seachJournalByTitle(search) {
 		var results = document.getElementById('results');
 
@@ -861,9 +853,11 @@
         });
       }
     }
-	}
+	} // end seachJournalByTitle
+**************************************************/
 
-
+// AJE 2016-09-21 Travant misspelled function name ; appears to be unused: see ihs_search.js : function searchJournalByISSN
+/**************************************************
 	function seachJournalByISSN(search) {
 	  var results = document.getElementById('results');
 
@@ -889,8 +883,10 @@
       }
     }
 	}
+**************************************************/
 
-
+// AJE 2016-09-21 Travant misspelled function name ; appears to be unused: see ihs_search.js : function searchJournalByOCLC
+/**************************************************
 	function seachJournalByOCLC(search) {
     var results = document.getElementById('results');
 
@@ -916,7 +912,7 @@
       }
     }
   }
-
+**************************************************/
 
 	function collapseAllVolumes() {
 		var volDivs = dojo.query(".dijitTitlePane");
