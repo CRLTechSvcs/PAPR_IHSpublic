@@ -6,21 +6,21 @@
 
 @main(title = "deaccession_summary") {
   	<script type="text/javascript">
-  	
-  		
+
+
   	require(["dojo/dom", "dojo/parser", "dijit/form/Button", "dojo/dom", "dojo/domReady!"]);
-	
-	
+
+
 	require(["dojox/grid/DataGrid", "dojo/data/ItemFileReadStore", "dojo/dom", "dojo/domReady!"], function(DataGrid, ItemFileReadStore, dom) {
-						
-		
+
+
 		var data = { items: [
 			                   	{ dateInitiated: '', dateCompleted: '', jobName: '', jobStatus: '',  organization: '', user: '', selected: '', deaccessed: '' }
 			                   	]};
-			                   	
+
 		var store = new ItemFileReadStore({data: data});
-		
-		
+
+
 		var layout = [
 		               { 'name': 'Date Initiated', 'field': 'dateInitiated', 'width': '120px'},
 		               { 'name': 'Date Completed', 'field': 'dateCompleted', 'width': '120px'},
@@ -31,7 +31,7 @@
 		               { 'name': '# Select', 'field': 'selected', 'width': '70px'},
 		               { 'name': '# Deaccessed', 'field': 'deaccessed', 'width': '70px'}
 		               ];
-		
+
 		var grid = new DataGrid({
 			id: 'deaccession-job-summary',
 			store: store,
@@ -40,29 +40,29 @@
 			selectionMode: 'none',
 			escapeHTMLInData: false
 		});
-		
+
 		grid.placeAt("deaccession-summary-div");
 		grid.startup();
-		
+
 		getJobs('getAUserDeaccessionJobs');
 	});
-	
-	
-	  function populateIngestionJobSummary(response, ioArgs){          
-	  
+
+
+	  function populateIngestionJobSummary(response, ioArgs){
+
 	  		var dataExceptionStore = new dojo.data.ItemFileReadStore({
 	    			 	data: {
 	         			items: response.items
 	     			}
 	 			});
-	 	
+
 	 			var dataExceptionGrid = dijit.byId('deaccession-job-summary');
-		
-		dataExceptionGrid.setStore(dataExceptionStore); 		   
+
+		dataExceptionGrid.setStore(dataExceptionStore);
 	  }
-	  
+
 	  function getJobs (url){
-			
+
 	     dojo.xhrGet({
 	     			handleAs: 'json',
 	     			url: "/deaccessionSummary/" + url + "/1",
@@ -73,35 +73,52 @@
 	     			load: populateIngestionJobSummary
 	  	     });
 	  	}
-			
+
 		</script>
 } {
-	
+
        <div id="content-center">
             <div id="nav-tabs">
                 <ul id="tabs">
-
+<!--
+AJE 2016-09-21
+note that the AT_Messages value in the next line refers to ingestion, not deaccession, and may be an example of Travant copy/paste without changing for new context (i.e., sloppiness) and may be unused or unneeded -->
                     <li class="tab3"><a id="tab2-link" >@Messages("ingestion.home.issue.level.holdings")</a></li>
                 </ul>
             </div>
-            
+
             <h1>@Messages("deaccession.summary.deaccession.jobs.summary")</h1><br />
-            
+<!--
+AJE 2016-09-21 per Amy, moving tools widgets from content-right to content-center -->
+        	 	<h2>@Messages("tools")</h2>
+<!-- AJE wrapped in new div, added line breaks -->
+            <div style="margin-left:10px;">
+      		 		@restrict( scala.collection.immutable.List( as( "admin" ) ) ){
+      					<button id="button_1" onClick = "getJobs('getAllDeaccessionJobs');">@Messages("ingestion.home.show.All.Members.Jobs")</button>
+      				}
+      				<button id="button_2" onClick = "getJobs('getAMemberDeaccessionJobs');">@Messages("ingestion.home.show.only.my.member.jobs")</button>
+      				<button id="button_3" onClick = "getJobs('getAUserDeaccessionJobs');">@Messages("ingestion.home.show.only.my.jobs")</button>
+      			</div>
+<!-- end AJE 2016-09-21 -->
+
             <div id="deaccession-summary-div" style="margin-left:16px;height:782px;"> </div>
-          
+
         </div>
-        
+
         <div id="content-right">
-        
+
        		 <div id="inner-content-right">
+       		  <!-- AJE 2016-09-21 per Amy, moving these widgets to content-center
         	 	<h2>@Messages("tools")</h2>
 		 		@restrict( scala.collection.immutable.List( as( "admin" ) ) ){
 					<button id="button_1" onClick = "getJobs('getAllDeaccessionJobs');">@Messages("ingestion.home.show.All.Members.Jobs")</button>
 				}
 				<button id="button_2" onClick = "getJobs('getAMemberDeaccessionJobs');">@Messages("ingestion.home.show.only.my.member.jobs")</button>
 				<button id="button_3" onClick = "getJobs('getAUserDeaccessionJobs');">@Messages("ingestion.home.show.only.my.jobs")</button>
-        	 </div>    
-        	 
+				// end AJE 2016-09-21
+				-->
+        	 </div>
+
         </div>
-  
+
 }
