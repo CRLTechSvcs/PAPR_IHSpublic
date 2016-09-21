@@ -2,10 +2,10 @@ var groupView={}
 groupView.groupName='';
 
 var searchGroupView={};
-var serchResponce;
+var searchResponse;
 
 $( window ).load(function() {
-	
+
 	$("#search").hide();
 });
 
@@ -13,7 +13,7 @@ function addGroupName(obj){
 	groupView.groupName=obj.value;
 	$("#status").html("");
 	$("#search").html("");
-	$("#detail").html("");	
+	$("#detail").html("");
 	$("#groupSearch").val('');
 	searchGroupView={};
 }
@@ -22,7 +22,7 @@ function addGroupDesc(obj){
 	groupView.groupDesc=obj.value;
 	$("#status").html("")
 	$("#search").html("");
-	$("#detail").html("");	
+	$("#detail").html("");
 	$("#groupSearch").val('');
 	searchGroupView={};
 }
@@ -33,10 +33,10 @@ function addGroup(){
 		alert("Enter a Group Name ");
 		return;
 	}
-	
+
 	$("#status").html("")
-	
-	
+
+
 	dojo.rawXhrPost({
 		url: "/administration/addAGroup",
 		postData: dojo.toJson(groupView),
@@ -45,14 +45,14 @@ function addGroup(){
 			"Accept": "application/json"
 		},
 		handleAs: "text",
-    
+
 		load: updateStatus,
 		error: function(error) {
 			hideWaiting();
 			alert("Error:" + error);
 			}
 	});
-	
+
 	showWaiting();
 }
 
@@ -68,7 +68,7 @@ function searchGroupName(obj){
 	searchGroupView.groupName=obj.value;
 	$("#status").html("");
 	$("#search").html('');
-	$("#detail").html('');	
+	$("#detail").html('');
 	$("#addName").val('');
 	$("#addDesc").val('');
 	groupView={}
@@ -99,15 +99,15 @@ function searchGroup(){
 
 
 function submiteGroupChange(i){
-	searchGroupView.groupId= serchResponce[i].groupId;
+	searchGroupView.groupId= searchResponse[i].groupId;
 	searchGroupView.groupName = $("#editgroupName").val();
 	searchGroupView.groupDesc = $("#editgroupDesc").val();
-	
+
 	if(searchGroupView.groupName == ''){
 		alert("Enter a Group Name ");
 		return;
 	}
-	
+
 	dojo.rawXhrPost({
 		url: "/administration/editGroup",
 		postData: dojo.toJson(searchGroupView),
@@ -116,50 +116,50 @@ function submiteGroupChange(i){
 			"Accept": "application/json"
 		},
 		handleAs: "text",
-    
+
 		load: updateEditStatus,
 		error: function(error) {
 			hideWaiting();
 			alert("Error:" + error);
 			}
 	});
-	
+
 	 showWaiting();
 }
 
 function updateEditStatus(response){
 	$("#search").html('');
 	$("#detail").html("Group updated");
-	
+
 	hideWaiting();
 }
 
 function showdetail(i){
-	
-	$("#search").hide();	
-	
-	var str = '&nbsp;Group Name:&nbsp;<input class="ingestion-form" id="editgroupName" type="text" value="'+ serchResponce[i].groupName  +'" /><br /><br />'
-   	str += '&nbsp;Group Description:&nbsp;<input class="ingestion-form"  id="editgroupDesc" type="text" value="'+ serchResponce[i].groupDesc  +'" /><br /><br />'
+
+	$("#search").hide();
+
+	var str = '&nbsp;Group Name:&nbsp;<input class="ingestion-form" id="editgroupName" type="text" value="'+ searchResponse[i].groupName  +'" /><br /><br />'
+   	str += '&nbsp;Group Description:&nbsp;<input class="ingestion-form"  id="editgroupDesc" type="text" value="'+ searchResponse[i].groupDesc  +'" /><br /><br />'
    	str += '&nbsp; &nbsp;&nbsp; <input type="submit" value="Submit Group Change" onclick="submiteGroupChange('+  i  +')"><br /><br />'
-	
-   	$("#detail").html(str);	
+
+   	$("#detail").html(str);
 	$("#detail").show();
-	
+
 }
 function populateSearchList(response, ioArgs){
-	
-	serchResponce = response;
+
+	searchResponse = response;
 	var str = '<ul >';
-	
+
 	for (i = 0; i < response.length; i++) {
 		str += '<li> <a href="#" onclick="showdetail('  + i + ');">' + response[i].groupName+' </a></li>';
     }
-	
+
 	str += '</ul>';
-	
-	$("#search").html(str);	
+
+	$("#search").html(str);
 	$("#search").show();
 	$("#detail").hide();
-	
+
 	hideWaiting();
 }
