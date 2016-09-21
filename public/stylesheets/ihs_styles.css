@@ -40,11 +40,13 @@ button {
 }
 
 #header {
-	width: 974px;
+	/* width: 974px; Travant value */
+	width:1062px; /* AJE 2016-09-21 */
 	background: #fff;
 	overflow:hidden;
 	height: 22px;
-	margin: 20px auto 8px auto;
+	/* margin: 20px auto 8px auto; Travant value */
+	margin: 20px auto 8px 0px; /* AJE 2016-09-21 */
 	padding: 3px 0 10px 0;
 	text-align: left;
 	/*border: 1px solid #000;*/
@@ -144,6 +146,10 @@ p#search-criteria {
 	float:left;
 }
 
+#content-left #logo {
+	margin: 40px 0 40px 0;
+}
+
 #inner-content-left {
 	width:184px;
 	height:835px;
@@ -173,33 +179,39 @@ input.search-small {
 	width: 50px;
 }
 
+#content-center {
+	width:867px;
+	height:auto;
+	float:left;
+	text-align:left;
+}
+
+
 #results {
-	visibility: hidden;
-	height: 458px;
+	/* visibility: hidden; # AJE 2016-09-16 changed this Travant original */
+
+	height: 458px; /* AJE 2016-09-15 this line is Travant original */
+	/* AJE 2016-09-15 -- allow list of found titles to expand */
+	display:flex;overflow:auto;
+
+}
+#search_results_header{ /* AJE 2016-09-16 new placement in content-center (was content-left, the sidebar) means hide it most of time */
+  display:none;
 }
 
 #results ul {
 	list-style-type: none;
 	padding:0;
-	margin:0;
+	/* margin:0; # Travant; use if search results are in sidebar */
+	margin: 20px; /* # AJE 2016-09-16 */
 	overflow:hidden;
 	white-space:nowrap;
 	text-align:left;
 }
 
 #results li:nth-child(odd) {
-	background: white;
-}
-
-#content-left #logo {
-	margin: 40px 0 40px 0;
-}
-
-#content-center {
-	width:867px;
-	height:auto;
-	float:left;
-	text-align:left;
+	/* background: white;  # AJE 2016-09-15 this is for when title results are on beige sidebar; in center white area, change the color */
+	background: #e9e6d3; /* AJE: new */
 }
 
 div.exception-list {
@@ -216,7 +228,7 @@ div.exception-list {
 	width:800px;
 	margin: 20px auto;
 	cursor: pointer;
-	clear: both; /* AJE 2016-09-14 15:29:19 */
+	clear: both; /* # AJE 2016-09-14 15:29:19 */
 }
 
 div.timeline {
@@ -509,13 +521,14 @@ img.edit-pub-range {
 }
 
 #content-right {
-	width:83px;
+	/* width:83px;  Travant original value ; AJE 2016-09-21 changed */
+	width:5px;
 	height:887px;
 	float:left;
 }
 
 #inner-content-right {
-	width:77px;
+	/* width:77px; Travant original value ; AJE 2016-09-21 changed to nothing */
 	height:835px;
 	background-color:#e9e6d3;
 	padding:49px 3px 3px 3px;
@@ -536,7 +549,8 @@ img.edit-pub-range {
 	float:left;
 	text-align: left;
 }
-#content-col1_A { /* AJE 2016-09-14 new div for holding 'Tools' on search_home: see app/views/search_home.scala.html */
+#tools_for_title_issues { /* AJE 2016-09-14 new div for holding 'Tools' on search_home: see app/views/search_home.scala.html */
+  display:none; /* is changed in ihs_search.js : function toggle_search_home_title_components */
 	clear: both;
 	/* width:275px; */
 	height: auto;
@@ -1096,7 +1110,12 @@ table.pagination td.pagination-link {
 
 /* Misc */
 
-.hr {width:974px; color:#e9e6d3; background-color:#e9e6d3; height:1px; margin:8px auto 0 auto;}
+.hr { /* width:974px; Travant value */
+  width: 1062px; /* AJE 2016-09-21 */
+  color:#e9e6d3; background-color:#e9e6d3; height:1px;
+  /* margin:8px auto 0 auto; Travant value */
+  margin:8px auto 0px 0px; /* AJE 2016-09-21 */
+}
 
 .hr-bottom {width:974px; color:#e9e6d3; background-color:#e9e6d3; height:1px; margin:32px auto 0 auto;}
 
