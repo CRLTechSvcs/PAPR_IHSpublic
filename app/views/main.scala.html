@@ -54,17 +54,26 @@
 								@Messages("search.journal.oclc"): <input class="search" onkeyup="searchJournalByOCLC(this);" type="text" id="oclcid" /><br />
 
 								<div>
-								<div style="float: left	;">@Messages("search.journal.member") </div>: <div id="member" style="float: right;"> </div><br /><br />
+								<div style="float: left	;">@Messages("search.journal.member") </div>:
+								<div id="member" style="float: right;"> </div>
+								<br /><br />
 								</div>
-								@Messages("search.journal.number.of.issues"):<br />
-								@Messages("search.journal.min"): <input class="search-small" type="text" /> @Messages("search.journal.max"): <input class="search-small" type="text" /><br />
+								<!-- AJE 2016-09-14 per Amy, hide the search boxes for 'Number of Issues: Min: Max
+								@Messages("search.journal.number.of.issues"):
+								<br />
+								@Messages("search.journal.min"):
+								<input class="search-small" type="text" />
+								@Messages("search.journal.max"): <input class="search-small" type="text" />
+								<br />
+								-->
 							</p>
 							<hr />
-							<h2>@Messages("search.journal.results")</h2>
-							<div id="results">
 
+							<!--h2>@Messages("search.journal.results")</h2-->
+              <!-- AJE 2016-09-15 per Amy, move title search results to main whitespace area
+                the empty div '#results' has been moved from here to search_home.scala.html
+              -->
 
-							</div>
 						</div>
 						}
 						<!--
