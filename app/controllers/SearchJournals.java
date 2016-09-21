@@ -108,16 +108,21 @@ public class SearchJournals extends Controller {
 
 	public static Result getMembers() {
 
-		List<IhsMember> ihsMembers = IhsMember.find.findList();
+		/* AJE 2016-09-14 make the select drop-downs show the members alphabetically by name
+		List<IhsMember> ihsMembers = IhsMember.find.findList(); // Travant original code: */
+		List<IhsMember> ihsMembers = IhsMember.find.orderBy("name ASC").findList();
+    /* AJE 2016-09-14 appears to have worked; 'members' <select> in search_home + in Reporting > New Report both alphabetical now
+    resume Travant original */
 
 		List<MemberView> memberViews = new ArrayList<MemberView>();
 
 		for (IhsMember ihsMember : ihsMembers) {
 			memberViews.add(new MemberView(ihsMember.memberID, ihsMember.name));
+			//Logger.info("AJE 2016-09-15: for ihsMember : ihsMembers...: ihsMember.memberID='"+ihsMember.memberID+"', ihsMember.name='"+ihsMember.name+".");
 		}
 
+    // AJE 2016-09-15 app/json/Data.java ; Data() is an ArrayList
 		Data data = new Data();
-
 		data.data = memberViews;
 
 		return ok(toJson(data));
@@ -151,7 +156,7 @@ public class SearchJournals extends Controller {
 							ihsHolding.scommitment = scommitment;
 						}
 					}
-					
+
 					for (OverallView overallView : holdingView.overalls) {
 						if (overallView.checked == 1) {
 							SconditionTypeOverall sconditionTypeOverall = SconditionTypeOverall.find
@@ -200,7 +205,7 @@ public class SearchJournals extends Controller {
 							.in("holdingID", holdingView.holdingIds).findList();
 
 					for (IhsHolding ihsHolding : ihsHoldings) {
-							
+
 						for (CommitmentView sommitmentView : holdingView.commitmentView) {
 							if (sommitmentView.checked == 1) {
 								Scommitment scommitment = Scommitment.find
@@ -208,7 +213,7 @@ public class SearchJournals extends Controller {
 								ihsHolding.scommitment = scommitment;
 							}
 						}
-						
+
 						for (OverallView overallView : holdingView.overalls) {
 							if (overallView.checked == 1 && overallView.id !=0) {
 								SconditionTypeOverall sconditionTypeOverall = SconditionTypeOverall.find
@@ -235,19 +240,19 @@ public class SearchJournals extends Controller {
 							}
 
 						}
-						
+
 
 						for (HoldingConditionsView holdingConditionsView : holdingView.holdingConditionsView) {
 
 							if (holdingConditionsView.checked == 1 ){
-								
+
 								ihsHolding.sconditionType.add(SconditionType.find
 										.byId(holdingConditionsView.conditionId));
 							}
 						}
 
 						ihsHolding.update();
-						
+
 					}
 
 				}
@@ -298,46 +303,46 @@ public class SearchJournals extends Controller {
 
 		return ok();
 	}
-	
+
 	public static Result  getJournalWantStatus(int titleId)
-		
+
 	{
 	    AppUser appuser = Helper.getAppUserFromCache(session().get(Login.User));
 		int memberId = appuser.memberId;
-		
+
 		WantStatus wantStatus = new WantStatus();
-		
+
 		PwantTitleMember pwanttitlemember = PwantTitleMember.find.where().eq("titleID", titleId).eq("memberID", memberId).findUnique();
-		
+
 		wantStatus.status = pwanttitlemember != null ?  0 :  1;
-		
+
 		return ok(toJson(wantStatus));
 	}
 
 	public static Result  setJournalWantStatus(int titleId,  int status){
-		
+
 		AppUser appuser = Helper.getAppUserFromCache(session().get(Login.User));
 		int memberId = appuser.memberId;
-			
+
 		WantStatus wantStatus = new WantStatus();
-		
+
 		if(status == 0){
-			
+
 			PwantTitleMember pwanttitlemember = PwantTitleMember.find.where().eq("titleID", titleId).eq("memberID", memberId).findUnique();
-			
+
 			pwanttitlemember.delete();
-			
+
 			wantStatus.status = 1;
-			
+
 		}else {
-		
+
 			PwantTitleMember pwanttitlemember = new PwantTitleMember(titleId,memberId);
 			pwanttitlemember.save();
 			wantStatus.status = 0;
-		
+
 		}
-		
+
 		return ok(toJson(wantStatus));
-	
+
 	}
 }
