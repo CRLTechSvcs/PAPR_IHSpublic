@@ -79,22 +79,45 @@
        <div id="content-center">
             <div id="nav-tabs">
                 <ul id="tabs">
-
-                    <li class="tab3"><a id="tab2-link" >@Messages("ingestion.home.issue.level.holdings")</a></li>
+<!--
+AJE 2016-09-22
+note that the AT_Messages value in the next line refers to ingestion, not publishing, and may be an example of Travant copy/paste without changing for new context (i.e., sloppiness) and may be unused or unneeded -->
+                    <li class="tab3">
+                    	<a id="tab2-link">@Messages("ingestion.home.issue.level.holdings")</a>
+                    </li>
                 </ul>
             </div>
             
            <h1>@Messages("publishing.publishing.jobs.summary")</h1><br />
+ <!-- AJE 2016-09-22 per Amy, moving tools widgets from content-right to content-center -->
+        	<h2>@Messages("tools")</h2>
+<!-- AJE wrapped in new div, added line breaks -->
+            <div style="margin-left:10px;">
+					 		@restrict( scala.collection.immutable.List( as( "admin" ) ) ){
+								<button id="button_1" onClick = "getJobs('getAllPublishingJobs');">@Messages("ingestion.home.show.All.Members.Jobs")</button>
+							}
+							<button id="button_2" onClick = "getJobs('getAMemberPublishingJobs');">@Messages("ingestion.home.show.only.my.member.jobs")</button>
+							<button id="button_3" onClick = "getJobs('getAUserPublishingJobs');">@Messages("ingestion.home.show.only.my.jobs")</button>
+           	</div>
+<!-- end AJE -->           	
+           
   			  <div id="publishing-summary-div" style="margin-left:16px;height:782px;"> </div>
   			  
         </div>
+        
+        <!--
+        AJE 2016-09-22 more Travant sloppiness: opening div tag with this ID is repeated below, and closed there 
         <div id="content-right">
+        -->
+
+<!-- AJE 2016-09-22 per Amy, moving these widgets to content-center
         	<h2>@Messages("tools")</h2>
 		 		@restrict( scala.collection.immutable.List( as( "admin" ) ) ){
 					<button id="button_1" onClick = "getJobs('getAllPublishingJobs');">@Messages("ingestion.home.show.All.Members.Jobs")</button>
 				}
 				<button id="button_2" onClick = "getJobs('getAMemberPublishingJobs');">@Messages("ingestion.home.show.only.my.member.jobs")</button>
 				<button id="button_3" onClick = "getJobs('getAUserPublishingJobs');">@Messages("ingestion.home.show.only.my.jobs")</button>
+-->				
         <div id="content-right">
         	 <div id="inner-content-right">
         	 </div>    
