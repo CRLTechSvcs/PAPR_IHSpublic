@@ -11,15 +11,18 @@
        <div id="content-center">
             <div id="nav-tabs">
                 <ul id="tabs">
-
-                    <li class="tab3"><a id="tab2-link" href="index.html">@Messages("ingestion.home.issue.level.holdings")</a></li>
-
+                    <li class="tab3">
+                    <!-- Travant ; fixed by AJE 2016-09-26
+                    <a id="tab2-link" >@Messages("ingestion.home.issue.level.holdings")</a>
+                    -->
+                    <a id="tab2-link">@Messages("menu.admin.group")</a>
+                    </li>
                 </ul>
             </div>
 
 
            <h2>Add a Member</h2>
-           <h3>&nbsp;&nbsp;&nbsp;Select a Group </h3>
+           <h3 class="admin_form_alignment">Select a Group </h3>
            <div id="groupList"> </div><br>
 
            <div id="newMemberDetail"> </div><br>
@@ -27,19 +30,27 @@
 
            	<hr style="width:95%;" />
 
-           	<h2>&nbsp;&nbsp;&nbsp;Search a Member</h2>
+           	<h2>Search a Member</h2>
 
-           	&nbsp;&nbsp;&nbsp;Member Name:<input id ="memberSearch" class="ingestion-form" type="text" onkeyup="searchMemberName(this);"/><br /><br />
-           	&nbsp;&nbsp;&nbsp;<input type="submit" value="Search Members" onclick="searchMemberByName()"><br /><br />
+           	<!-- AJE 2016-09-26 add div tag to move the form widgets off the left edge; other minor changes-->
+            <div id="memberSearchFormHolder" class="admin_form_alignment">
+             	Member Name:
+             	<input id ="memberSearch" class="ingestion-form" type="text" onkeyup="searchMemberName(this);" />
+             	<br /><br />
+             	<input type="submit" value="Search Members" onclick="searchMemberByName()" />
+             	<br /><br />
+            </div>
+
            	<hr style="width:95%;" />
-
-           	<h2>&nbsp;&nbsp;&nbsp;Edit a Member</h2>
-
-           	 <div id="search" style="width: 600px; height: 300px; overflow-y: scroll;"> </div><br>
-           	 <div id="detail"> </div><br>
-
+           	<!-- AJE 2016-09-26 add div tag to move the form widgets off the left edge; other minor changes-->
+            <div id="memberEditFormHolder" class="admin_form_alignment">
+           	<h2>Edit a Member</h2>
+           	 <div id="search" style="width: 600px; height: 300px; overflow-y: scroll;"> </div>
+           	 <br />
+           	 <div id="detail"> </div>
+           	 <br />
+            </div>
         </div>
-        <div id="content-right">
 
         <div id="content-right">
         	 <div id="inner-content-right">
