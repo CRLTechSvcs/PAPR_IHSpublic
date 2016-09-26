@@ -5,9 +5,9 @@
 
 @main(title = "ingestion_exception") {
 	<script type="text/javascript">
-		
+
 			require(["dojo/dom", "dojo/parser", "dijit/form/Button", "dojo/dom", "dojo/domReady!"]);
-			
+
 			require(["dojox/grid/DataGrid", "dojo/data/ItemFileWriteStore", "dojo/dom", "dojo/domReady!"], function(DataGrid, ItemFileWriteStore, dom) {
 				var dataExceptionLayout = [
 				               { 'name': 'Field', 'field': 'field', 'width': '80px'},
@@ -15,14 +15,14 @@
 				               { 'name': 'Corrected Data', 'field': 'corrected', 'width': '250px', 'editable': true},
 				               { 'name': 'Info', 'field': 'info', 'width': '225px'}
 				               ];
-				
+
 				var dataExceptionData = { items: [
 					                   	{ field: '', original: '', corrected: '', info: '' },
-					                  
+
 				                ]};
-				                
+
 				var dataExceptionStore = new ItemFileWriteStore({data: dataExceptionData});
-				
+
 				var dataExceptionGrid = new DataGrid({
 					id: 'dialog1-list',
 					store: dataExceptionStore,
@@ -32,32 +32,32 @@
 					selectionMode: 'none',
 					escapeHTMLInData: false
 				});
-		
-				
+
+
 				dataExceptionGrid.placeAt("dialog1-grid-div");
 				dataExceptionGrid.startup();
-				
+
 			});
-	
-			
+
+
 			require(["dojox/grid/DataGrid", "dojo/data/ItemFileReadStore", "dojo/dom", "dojo/domReady!"], function(DataGrid, ItemFileReadStore, dom) {
-				    
+
 				var layout = [
-				               { 'name': '@Messages("ingestion.excpetion.exception.date")', 'field': 'exceptionDate', 'width': '120px'},
-				               { 'name': '@Messages("ingestion.excpetion.job.name")', 'field': 'jobName', 'width': '140px'},
-				               { 'name': '@Messages("ingestion.excpetion.record.title")', 'field': 'recordTitle', 'width': '156px'},
-				               { 'name': '@Messages("ingestion.excpetion.issues")', 'field': 'issues', 'width': '180px'},
-				               { 'name': '@Messages("ingestion.excpetion.status")', 'field': 'status', 'width': '90px'},
-				               { 'name': '@Messages("ingestion.excpetion.resolve.owner")', 'field': 'owner', 'width': '100px'},
+				               { 'name': '@Messages("ingestion.exception.exception.date")', 'field': 'exceptionDate', 'width': '120px'},
+				               { 'name': '@Messages("ingestion.exception.job.name")', 'field': 'jobName', 'width': '140px'},
+				               { 'name': '@Messages("ingestion.exception.record.title")', 'field': 'recordTitle', 'width': '156px'},
+				               { 'name': '@Messages("ingestion.exception.issues")', 'field': 'issues', 'width': '180px'},
+				               { 'name': '@Messages("ingestion.exception.status")', 'field': 'status', 'width': '90px'},
+				               { 'name': '@Messages("ingestion.exception.resolve.owner")', 'field': 'owner', 'width': '100px'},
 				             ];
 
-			
+
 				var data1 = { items: [
 					                   	{ exceptionDate: '', jobName: '', recordTitle: '', issues: '', status: '', owner: '' },
 					                 ]};
-					                 
+
 				var store1 = new ItemFileReadStore({data: data1});
-				
+
 				var grid = new DataGrid({
 					id: 'ingestion-job-summary',
 					store: store1,
@@ -70,22 +70,22 @@
 				getException();
 				grid.placeAt("ingestion-exception-div");
 				grid.startup();
-				
+
 			});
 	</script>
-	
+
 	<script type="text/javascript">
-	     
+
 	    var recordId = '';
 	    var maxrecord = 0;
 		var size = 0;
 		var offset = 0;
 		var exceptionUrl = '@url';
 		var first = 0;
-	   
-	
+
+
 	</script>
- 
+
     <script src="@routes.Assets.at("javascripts/ihs_exception.js")" type="text/javascript"></script>
 
     } {
@@ -95,14 +95,14 @@
                     <li class="tab3"><a id="tab2-link" >@Messages("ingestion.home.issue.level.holdings")</a></li>
                 </ul>
           </div>
-          <h1>@Messages("ingestion.excpetion.ingestion.excpetion")</h1><br />
-            
-           <h2>@Messages("ingestion.excpetion.Data.Parsing.or.Logic.Error")</h2>
+          <h1>@Messages("ingestion.exception.ingestion.exception")</h1><br />
+
+           <h2>@Messages("ingestion.exception.Data.Parsing.or.Logic.Error")</h2>
            <div id="ingestion-exception-div" class="exception-list"></div>
             <br>
-            
+
              <div id="ingestion-paging-div">
-            
+
              <button  data-dojo-type="dijit/form/Button" type="submit" id="previous"  disabled>Previous
             	<script type="dojo/on" data-dojo-event="click" data-dojo-args="evt">
         			require(["dojo/dom","dijit/registry"], function(dom, registry){
@@ -111,55 +111,55 @@
         			});
     			</script>
              </button>
-            
+
 			<button  data-dojo-type="dijit/form/Button" type="submit" id="next" >Next
-				
-				<script type="dojo/on" data-dojo-event="click" data-dojo-args="evt">			    
+
+				<script type="dojo/on" data-dojo-event="click" data-dojo-args="evt">
         			require(["dojo/dom","dijit/registry"], function(dom, registry){
-            			offset = offset + maxrecord; 
+            			offset = offset + maxrecord;
             			getException();
             			first = 1;
         			});
     			</script>
 			</button>
-	
-    
-			</div>		     
-           
+
+
+			</div>
+
             <br><br>
                 <div id="resolve-data-error-div" style="display:none"  class="exception-list">
-                
-                <h3>@Messages("ingestion.excpetion.exception.resolve.data.error")</h3>
-                 
+
+                <h3>@Messages("ingestion.exception.exception.resolve.data.error")</h3>
+
     		      <div id="dialog1-grid-div" >
-        			
+
         		  </div>
-        		  
+
         		  <div class="dijitDialogPaneActionBar">
 					  <button data-dojo-type="dijit/form/Button" type="submit" id="cancel1" onClick="document.getElementById('resolve-data-error-div').style.display = 'none';">Cancel</button>
 					  <button data-dojo-type="dijit/form/Button" type="submit" id="delete" onClick="ignore();">Don't Ingest This Record</button>
 					  <button data-dojo-type="dijit/form/Button" type="submit" id="hold1"  onClick="onhold();">Place Record on Hold</button>
 					  <button data-dojo-type="dijit/form/Button" type="submit" id="reprocess" onClick="reprocessDataErrorRecord();">Reprocess Record</button>
 				   </div>
-                    
-				   
-                 </div>				
-			
+
+
+                 </div>
+
      </div>
      <div id="content-right">
             <div id="inner-content-right">
                 <h2>@Messages("tools")</h2>
                 @restrict( scala.collection.immutable.List( as( "admin" ) ) ){
-                <button id="button_1"  onClick="offset = 0; exceptionUrl = 'getAllUserExceptions/'; getException();">@Messages("ingestion.excpetion.Show.All.Members.Exceptions")</button>
-                <button id="button_2"  onClick="offset = 0; exceptionUrl = 'getAllUserAvailableExceptions/'; getException()">@Messages("ingestion.excpetion.Show.Only.Available.Exceptions")</button>
-                <button id="button_3"  onClick="offset = 0; exceptionUrl = 'getAllUserOnholdExceptions/'; getException()">@Messages("ingestion.excpetion.Show.Only.Onhold.Exceptions")</button>
+                <button id="button_1"  onClick="offset = 0; exceptionUrl = 'getAllUserExceptions/'; getException();">@Messages("ingestion.exception.Show.All.Members.Exceptions")</button>
+                <button id="button_2"  onClick="offset = 0; exceptionUrl = 'getAllUserAvailableExceptions/'; getException()">@Messages("ingestion.exception.Show.Only.Available.Exceptions")</button>
+                <button id="button_3"  onClick="offset = 0; exceptionUrl = 'getAllUserOnholdExceptions/'; getException()">@Messages("ingestion.exception.Show.Only.Onhold.Exceptions")</button>
                 }
-                <button id="button_4"  onClick="offset = 0; exceptionUrl = 'getMyMemberExceptions/'; getException()">@Messages("ingestion.excpetion.Show.Only.My.Member.Exceptions")</button>
-                <button id="button_4"  onClick="offset = 0; exceptionUrl = 'getMyMemberAvailableExceptions/'; getException()">@Messages("ingestion.excpetion.Show.Only.My.Member.Available.Exceptions")</button>
-                
-                <button id="button_4"  onClick="offset = 0; exceptionUrl = 'getAUserExceptions/'; getException()">@Messages("ingestion.excpetion.Show.Only.My.Exceptions")</button>
-                <button id="button_5"  onClick="offset = 0; exceptionUrl = 'getAUserAvailableExceptions/'; getException()">@Messages("ingestion.excpetion.Show.Only.My.Available.Exceptions")</button>
-                <button id="button_6"  onClick="offset = 0; exceptionUrl = 'getAUserOnholdExceptions/'; getException()">@Messages("ingestion.excpetion.Show.Only.My.Held.Exceptions")</button>
+                <button id="button_4"  onClick="offset = 0; exceptionUrl = 'getMyMemberExceptions/'; getException()">@Messages("ingestion.exception.Show.Only.My.Member.Exceptions")</button>
+                <button id="button_4"  onClick="offset = 0; exceptionUrl = 'getMyMemberAvailableExceptions/'; getException()">@Messages("ingestion.exception.Show.Only.My.Member.Available.Exceptions")</button>
+
+                <button id="button_4"  onClick="offset = 0; exceptionUrl = 'getAUserExceptions/'; getException()">@Messages("ingestion.exception.Show.Only.My.Exceptions")</button>
+                <button id="button_5"  onClick="offset = 0; exceptionUrl = 'getAUserAvailableExceptions/'; getException()">@Messages("ingestion.exception.Show.Only.My.Available.Exceptions")</button>
+                <button id="button_6"  onClick="offset = 0; exceptionUrl = 'getAUserOnholdExceptions/'; getException()">@Messages("ingestion.exception.Show.Only.My.Held.Exceptions")</button>
             </div>
      </div>
 }
