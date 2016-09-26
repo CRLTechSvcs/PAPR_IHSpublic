@@ -79,12 +79,14 @@
 
        <div id="content-center">
             <div id="nav-tabs">
-                <ul id="tabs">
-<!--
-AJE 2016-09-21
-note that the AT_Messages value in the next line refers to ingestion, not deaccession, and may be an example of Travant copy/paste without changing for new context (i.e., sloppiness) and may be unused or unneeded -->
-                    <li class="tab3"><a id="tab2-link">@Messages("ingestion.home.issue.level.holdings")</a></li>
-                </ul>
+              <ul id="tabs">
+                  <li class="tab3">
+                  <!-- Travant ; fixed by AJE 2016-09-26
+                  <a id="tab2-link" >@Messages("ingestion.home.issue.level.holdings")</a>
+                  -->
+                  <a id="tab2-link">@Messages("deaccession.summary.deaccession.jobs.summary")</a>
+                  </li>
+              </ul>
             </div>
 
             <h1>@Messages("deaccession.summary.deaccession.jobs.summary")</h1><br />
