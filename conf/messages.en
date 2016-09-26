@@ -3,7 +3,7 @@ cancel=Cancel
 tools=Tools
 edit=Edit
 
-# 
+#
 login.invalid.user.password=Invalid User Name and Password
 
 #menu
@@ -23,9 +23,15 @@ menu.deaccession.summary=Summary
 menu.deaccession.new.deaccession=New Deaccession
 menu.deaccession.finalizejob=Finalize Job
 
-menu.publishing=Publishing
-menu.publishing.published.data=Published Data
-menu.publishing.publish.new.data=Publish New Data
+# 2016-09-26 Travant original messages; AJE changed per Amy
+# menu.publishing=Publishing
+menu.publishing=Export Data
+# menu.publishing.published.data=Published Data
+menu.publishing.published.data=Exported Data
+# menu.publishing.publish.new.data=Publish New Data
+menu.publishing.publish.new.data=Export New Data
+
+
 
 menu.reporting=Reporting
 menu.reporting.previous.reports=Previous Reports
@@ -87,30 +93,30 @@ ingestion.new.start.ingestion=Start Ingestion
 
 #Ingestion Exception
 
-ingestion.excpetion.ingestion.excpetion=Ingestion Exceptions
-ingestion.excpetion.Data.Parsing.or.Logic.Error=Data Parsing or Logic Error
-ingestion.excpetion.uncertain.match=Uncertain Match
-ingestion.excpetion.conflict.with.existing.record=Conflict with Existing Record
+ingestion.exception.ingestion.exception=Ingestion Exceptions
+ingestion.exception.Data.Parsing.or.Logic.Error=Data Parsing or Logic Error
+ingestion.exception.uncertain.match=Uncertain Match
+ingestion.exception.conflict.with.existing.record=Conflict with Existing Record
 
-ingestion.excpetion.Show.All.Members.Exceptions=Show All Members' Exceptions
-ingestion.excpetion.Show.Only.Available.Exceptions=Show Only Available Exceptions
-ingestion.excpetion.Show.Only.My.Exceptions=Show Only My Exceptions
-ingestion.excpetion.Show.Only.My.Available.Exceptions=Show Only My Available Exceptions
-ingestion.excpetion.Show.Only.My.Member.Exceptions=Show Only My Member Exceptions
-ingestion.excpetion.Show.Only.My.Member.Available.Exceptions=Show Only My Member Available Exceptions
-ingestion.excpetion.Show.Only.My.Held.Exceptions=Show Only My Held Exceptions
-ingestion.excpetion.Show.Only.Onhold.Exceptions=Show Only On Hold Exceptions
-ingestion.excpetion.exception.date=Exception Date
-ingestion.excpetion.job.name=Job Name
-ingestion.excpetion.record.title=Record Title
-ingestion.excpetion.issues=Issue(s)
-ingestion.excpetion.status=Status
-ingestion.excpetion.resolve.owner=Resolve/Owner
-ingestion.excpetion.exception.field=Field
-ingestion.excpetion.exception.original.data=Original Data
-ingestion.excpetion.exception.corrected.data=Corrected Data
-ingestion.excpetion.exception.info=Info
-ingestion.excpetion.exception.resolve.data.error=Resolve Data Parsing or Logic Error
+ingestion.exception.Show.All.Members.Exceptions=Show All Members' Exceptions
+ingestion.exception.Show.Only.Available.Exceptions=Show Only Available Exceptions
+ingestion.exception.Show.Only.My.Exceptions=Show Only My Exceptions
+ingestion.exception.Show.Only.My.Available.Exceptions=Show Only My Available Exceptions
+ingestion.exception.Show.Only.My.Member.Exceptions=Show Only My Member Exceptions
+ingestion.exception.Show.Only.My.Member.Available.Exceptions=Show Only My Member Available Exceptions
+ingestion.exception.Show.Only.My.Held.Exceptions=Show Only My Held Exceptions
+ingestion.exception.Show.Only.Onhold.Exceptions=Show Only On Hold Exceptions
+ingestion.exception.exception.date=Exception Date
+ingestion.exception.job.name=Job Name
+ingestion.exception.record.title=Record Title
+ingestion.exception.issues=Issue(s)
+ingestion.exception.status=Status
+ingestion.exception.resolve.owner=Resolve/Owner
+ingestion.exception.exception.field=Field
+ingestion.exception.exception.original.data=Original Data
+ingestion.exception.exception.corrected.data=Corrected Data
+ingestion.exception.exception.info=Info
+ingestion.exception.exception.resolve.data.error=Resolve Data Parsing or Logic Error
 
 
 #Advanced Editing
