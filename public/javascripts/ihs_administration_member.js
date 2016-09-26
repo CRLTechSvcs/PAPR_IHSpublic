@@ -54,14 +54,12 @@ function populateCountryState(response, ioArgs){
 function populateGroupList(response, ioArgs){
 
 	searchResponse = response;
-	var str = '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<select id="groupSelect" onchange="updateGroup(event);">';
-
+	var str = '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;';
+	str += '<select id="groupSelect" onchange="updateGroup(event);">';
 	str += '<option value="0"> </option>';
-
 	for (var i = 0; i < response.length; i++) {
 		str += '<option value="'+ response[i].groupId +'">' + response[i].groupName +'</option>';
-    }
-
+  }
 	str += '</select>';
 
 	$("#groupList").html(str);
@@ -98,24 +96,24 @@ function updateGroup(e){
 	editMemberView = {};
 
 	var countryDropDown = '<select id="newcountry" onchange="updateState()" >';
-
 	for(var i = 0; i < countryState.length ; i++){
 		countryDropDown += '<option>' + countryState[i].name + '</option>';
 	}
-
 	countryDropDown  += '</select>';
 
 	var stateDropDown = '<select id="newstate" >';
-
 	for(var j = 0; j < countryState[0].stateProvinces.length ; j++){
 			stateDropDown += '<option>' + countryState[0].stateProvinces[j] + '</option>';
 	}
-
 	stateDropDown  += '</select>';
 
 	if(groupId != '0'){
 
+    // AJE 2016-09-26 massive reformatting of this section
+    var dbl_break = '<br /><br />'; // AJE 2016-09-26 new
 		var str =
+		  '<div id="memberSearchFormHolder" class="admin_form_alignment">';
+      /* // Travant original
 			'&nbsp;Member Name:&nbsp;<input id ="newMemberName" class="ingestion-form" type="text" /><br /><br />'+
 			'&nbsp;Member Desc:&nbsp;<input id ="newMemberDesc" class="ingestion-form" type="text" /><br><br />'+
 			'&nbsp;Address 1:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input id ="newAddress1" class="ingestion-form" type="text" /><br /><br />'+
@@ -125,13 +123,30 @@ function updateGroup(e){
 			'&nbsp;Postal Code:&nbsp;&nbsp;<input id ="newPostal" class="ingestion-form" type="text" /><br /><br />'+
 			'&nbsp;Country:' +
 			countryDropDown +
-
 		'<br /><br /> &nbsp; &nbsp;&nbsp; <input type="submit" value="Add Member" onclick="addMember()"><br />';
+		*/
+		  str += 'Member Name:&nbsp;';
+		  str += '<input id ="newMemberName" class="ingestion-form" type="text" />' + dbl_break;
+			str += 'Member Desc:&nbsp;&nbsp;';
+			str += '<input id ="newMemberDesc" class="ingestion-form" type="text" />' + dbl_break;
+			str += 'Address 1:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;';
+			str += '<input id ="newAddress1" class="ingestion-form" type="text" />' + dbl_break;
+			str += 'Address 2:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;';
+			str += '<input id ="newAddress2" class="ingestion-form" type="text" />' + dbl_break;
+			str += 'City:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;';
+			str += '<input id ="newCity" class="ingestion-form" type="text" />' + dbl_break;
+			str += 'State or Province:&nbsp;'+ stateDropDown + '&nbsp;&nbsp;';
+			str += 'Postal Code:&nbsp;&nbsp;';
+			str += '<input id ="newPostal" class="ingestion-form" type="text" size="20" />' + dbl_break;
+			//str += 'Country:' + countryDropDown + dbl_break;
+			str += countryDropDown + dbl_break;
+		  str += '<input type="submit" value="Add Member" onclick="addMember()">';
+		str += '</div>';
+
 		$("#newMemberDetail").html(str);
 	}else{
 		$("#newMemberDetail").html('');
 	}
-
 
 	$("#editMemberDetail").html('');
 
