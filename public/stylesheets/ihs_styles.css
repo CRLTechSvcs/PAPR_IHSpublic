@@ -128,6 +128,11 @@ div#menu-contents_administration {
 	height:559px;
 	text-align:left;
 }
+
+.admin_form_alignment { /* AJE 2016-09-26 new class to move administration search forms off the left sidebar and align them without using &nbsp;, as Travant tried to do */
+  margin-left:15px;
+}
+
 p#search-criteria {
 	text-align: right;
 }
