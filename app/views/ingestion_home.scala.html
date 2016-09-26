@@ -6,17 +6,17 @@
 @main(title = "ingestion_home") {
 <script type="text/javascript">
 	require(["dojo/dom", "dojo/parser", "dijit/form/Button", "dojo/dom", "dojo/domReady!"]);
-	
-	
+
+
 	require(["dojox/grid/DataGrid", "dojo/data/ItemFileReadStore", "dojo/dom", "dojo/domReady!"], function(DataGrid, ItemFileReadStore, dom) {
-						
-		
+
+
 		var data = { items: [
 			                   	{ creationDate: '', jobName: '', dataSource: '', member: '', User: '', jobStatus: '', statusDetail: '' }
 			                   	]};
-			                   	
+
 		var store = new ItemFileReadStore({data: data});
-		
+
 		var layout = [
 		               { 'name': '@Messages("ingestion.home.start.date")', 'field': 'creationDate', 'width': '120px'},
 		               { 'name': '@Messages("ingestion.home.job.name")', 'field': 'jobName', 'width': '150px'},
@@ -26,9 +26,9 @@
 		               { 'name': '@Messages("ingestion.home.job.status")', 'field': 'jobStatus', 'width': '90px'},
 		               { 'name': '@Messages("ingestion.home.status.detail")', 'field': 'statusDetail', 'width': '190px'}
 		               ];
-		
-	
-		               
+
+
+
 		var grid = new DataGrid({
 			id: 'ingestion-job-summary',
 			store: store,
@@ -37,29 +37,29 @@
 			selectionMode: 'none',
 			escapeHTMLInData: false
 		});
-		
+
 		grid.placeAt("ingestion-summary-div");
 		grid.startup();
-		
+
 		getJobs('getAUserIngestionJobs');
 	});
-	
-	
-	  function populateIngestionJobSummary(response, ioArgs){          
-	  
+
+
+	  function populateIngestionJobSummary(response, ioArgs){
+
 	  		var dataExceptionStore = new dojo.data.ItemFileReadStore({
 	    			 	data: {
 	         			items: response
 	     			}
 	 			});
-	 	
+
 	 			var dataExceptionGrid = dijit.byId('ingestion-job-summary');
-		
-		dataExceptionGrid.setStore(dataExceptionStore); 		   
+
+		dataExceptionGrid.setStore(dataExceptionStore);
 	  }
-	  	
+
 	function getJobs (url){
-			
+
 	     dojo.xhrGet({
 	     			handleAs: 'json',
 	     			url: "ingestion/" + url,
@@ -70,14 +70,19 @@
 	     			load: populateIngestionJobSummary
 	  	     });
 	  	}
-	  	
+
 </script>
 } {
 <div id="content-center">
 	<div id="nav-tabs">
-		<ul id="tabs">
-			<li class="tab3"><a id="tab2-link" >@Messages("ingestion.home.issue.level.holdings")</a></li>
-		</ul>
+    <ul id="tabs">
+        <li class="tab3">
+        <!-- Travant ; fixed by AJE 2016-09-26
+        <a id="tab2-link" >@Messages("ingestion.home.issue.level.holdings")</a>
+        -->
+        <a id="tab2-link">@Messages("ingestion.home.ingestion.jobs.summary")</a>
+        </li>
+    </ul>
 	</div>
 	<h1>@Messages("ingestion.home.ingestion.jobs.summary")</h1>
 	<br />
@@ -94,7 +99,7 @@
 		}
 		<button id="button_2" onClick = "getJobs('getAMemberIngestionJobs');">@Messages("ingestion.home.show.only.my.member.jobs")</button>
 		<button id="button_2" onClick = "getJobs('getAUserIngestionJobs');">@Messages("ingestion.home.show.only.my.jobs")</button>
-		
+
 	</div>
 </div>
 }
