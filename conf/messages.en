@@ -45,6 +45,8 @@ menu.admin.user=Manage User
 
 
 #Search Journal
+# AJE added this next one 2016-09-26
+search.journal.home=Search Journals
 search.journal.title=Title
 search.journal.issn=ISSN
 search.journal.oclc=OCLC
@@ -135,8 +137,12 @@ deaccession.summary.deaccession.criteria.in.progress=Choose an In-Progress Deacc
 publishing.publishing.jobs.summary=Exporting Jobs Summary
 # publishing.start.a.new.publishing.Job=Start a New Publishing Job
 publishing.start.a.new.publishing.Job=Start a New Exporting Job
+# AJE added this next one 2016-09-26
+publishing.published.data=Published data
 
 ##Reporting
+# AJE added this next one 2016-09-26
+reporting.previous.reports=Previous Reports
 reporting.reports.summary=Reports Summary
 reporting.create.a.new.report=Create a New Report
 
