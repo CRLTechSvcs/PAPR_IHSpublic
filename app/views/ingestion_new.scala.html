@@ -3,36 +3,36 @@
 <script type="text/javascript">
 	var grid = null;
 	var flag =0 ;
-	
+
 	var layout = [
 	         { 'name': 'File Name', 'field': 'fileName', 'width': '300px'},
 	       ];
-	
-	
+
+
 	var data1 = { items: [
-	              	{ fileName: 'Test' },	
+	              	{ fileName: 'Test' },
 	            ]};
-	
+
 	require(["dojox/grid/DataGrid", "dojo/data/ItemFileReadStore", "dojo/dom", "dojo/domReady!"], function(DataGrid, ItemFileReadStore, dom) {
-	
-	
+
+
 	});
-	
+
 	function showhttp(){
 		document.getElementById('http').style.display = 'block';
 		document.getElementById('ftp').style.display = 'none';
 		document.getElementById("htpcheck").checked = true;
 	}
-	
-	function populateFileList(response, ioArgs){          
-	
+
+	function populateFileList(response, ioArgs){
+
 	var store1 = new dojo.data.ItemFileReadStore({
 	 	data: {
 	  			items: response
 		}
 	});
-	
-	if(grid  == null ){ 
+
+	if(grid  == null ){
 	   grid = new dojox.grid.DataGrid({
 	   id: 'ingestion-job-summary',
 	   store: store1,
@@ -41,50 +41,50 @@
 	   selectionMode: 'none',
 	   escapeHTMLInData: false
 	});
-	
+
 	dojo.connect(grid, "onCellClick", function (e) {
     	var colField = e.cell.field; // field name
     	var rowIndex = e.rowIndex; // row index
-    	
+
     	var item = e.grid.getItem(rowIndex);//data store item
-		
+
 		var tmfilename = e.grid.store.getValue(item, colField);
-    	
+
     	var i = 0;
-    	
-    	
+
+
     	var hfilename = document.getElementById("fileName");
     	hfilename.value=tmfilename;
-    	
+
     	var btn = document.getElementById("ftpsubmit");
 		btn.disabled = false;
 
-	   
+
 	});
-	
+
 	grid.placeAt("ingestion-exception-div");
 	grid.startup();
-	
-	
+
+
 
 	} else {
-	grid.setStore(store1); 
-	} 
-	
-	flag = 1;		   
+	grid.setStore(store1);
 	}
-	
+
+	flag = 1;
+	}
+
 	function showftp(){
-	
+
 	document.getElementById('http').style.display = 'none';
 	document.getElementById('ftp').style.display = 'block';
-	
-	
+
+
 	document.getElementById("ftpcheck").checked = true;
-	
-	
-	
-	if ( flag == 0){ 
+
+
+
+	if ( flag == 0){
 	dojo.xhrGet({
 		  handleAs: 'json',
 		  url: "/ingestion/ingestionFtpFilelist",
@@ -94,12 +94,12 @@
 		  },
 		  load: populateFileList
 	   });
-	 
+
 	 }
 	}
-	
+
 	function refreshFileList(){
-		
+
 		dojo.xhrGet({
 		  handleAs: 'json',
 		  url: " /ingestion/ingestionFtpFilelist",
@@ -109,15 +109,21 @@
 		  },
 		  load: populateFileList
 	   });
-		
+
 	}
 </script>
 } {
 <div id="content-center">
 	<div id="nav-tabs">
-		<ul id="tabs">
-			<li class="tab3"><a id="tab2-link" >Issue Level Holdings</a></li>
-		</ul>
+    <ul id="tabs">
+        <li class="tab3">
+        <!-- Travant ; fixed by AJE 2016-09-26
+        <li class="tab3"><a id="tab2-link" >Issue Level Holdings</a></li>
+        -->
+        <a id="tab2-link">@Messages("ingestion.new.start.a.new.ingestion")</a>
+        </li>
+    </ul>
+
 	</div>
 	<div class="new-form">
 		<h1>@Messages("ingestion.new.start.a.new.ingestion")</h1>
@@ -132,29 +138,29 @@
 					}
 				</select>
 				<br /><br />
-				
+
 				@Messages("ingestion.new.commitment.type"):
 				<select class="ingestion-form" name="commitmentID">
 					@for(scommitment <- scommitments){
 					<option value="@scommitment.commitmentID">@scommitment.description</option>
 					}
 				</select>
-				
+
 				<br /><br />
-				
+
 				@Messages("ingestion.new.file.source"):
 				<div style="width:200px;float:right;"><input type="radio" name="file-source" value="ftp" id = 'ftpcheck'   onclick="showftp();" checked/>@Messages("ingestion.new.ftp.upload")</div>
 				<div style="width:200px;float:right;"><input type="radio" name="file-source" value="http"   onclick="showhttp();" />@Messages("ingestion.new.http.upload")</div>
 				<br /><br />
 				@Messages("ingestion.new.data.file"):&nbsp;
 				<div style="width:400px;float:right;">&nbsp;</div>
-				<br /> 
+				<br />
 				<div style="width:200px;float:left">&nbsp;</div>
 				<div id="ingestion-exception-div" style="margin-left:16px;height:100px;"></div>
 				<br>
-				<button id="refresh-ftp-list" type="button" onClick = "refreshFileList();">Refresh File List</button>	 	
+				<button id="refresh-ftp-list" type="button" onClick = "refreshFileList();">Refresh File List</button>
 				<br /><br />
-				@Messages("ingestion.new.authorized.source"):&nbsp; 
+				@Messages("ingestion.new.authorized.source"):&nbsp;
 				<select class="ingestion-form" name="authorizedSource">
 					@for(ihsAuthorizedSource <- ihsAuthorizedSources){
 					<option value="@ihsAuthorizedSource.authorizedSourceID">@ihsAuthorizedSource.name</option>
@@ -164,20 +170,20 @@
 				<div style="float:right">
 					<input type="submit" id = "ftpsubmit" value="@Messages("ingestion.new.start.ingestion")" disabled title="Please Select a File"/>
 				</div>
-				
+
 				<input type="hidden" id="fileName" name="fileName" value="">
 			</form>
 			<form method="POST" action="@routes.Ingestion.ingestion_home()">
 				<div style="float:left">
 					<input type="submit" value="@Messages("cancel")" />
 				</div>
-			
+
 			</form>
 			<br>
 			<div id="ftp-filelist-div" style="margin-left:16px;height:5px;"></div>
 		</div>
-		
-		
+
+
 		<div id ='http' >
 			<form method="POST" enctype="multipart/form-data" action="@routes.IngestionNew.ingestionHttpStart()">
 				@Messages("ingestion.new.ingestion.name"):&nbsp;<input class="ingestion-form" type="text" name="ingestionName" required/><br /><br />
@@ -188,7 +194,7 @@
 					}
 				</select>
 				<br /><br />
-				
+
 				@Messages("ingestion.new.commitment.type"):
 				<select class="ingestion-form" name="commitmentID">
 					@for(scommitment <- scommitments){
@@ -196,13 +202,13 @@
 					}
 				</select>
 				<br /><br />
-				
+
 				@Messages("ingestion.new.file.source"):
 				<div style="width:200px;float:right;"><input type="radio" name="file-source" value="ftp"   onclick="showftp();" />@Messages("ingestion.new.ftp.upload")</div>
 				<div style="width:200px;float:right;"><input type="radio" name="file-source" value="http" id = 'htpcheck' onclick="showhttp();" checked/>@Messages("ingestion.new.http.upload")</div>
 				<br /><br />
-				
-				
+
+
 				@Messages("ingestion.new.data.file"):&nbsp;
 				<div style="width:400px;float:right;">&nbsp;</div>
 				<br />
@@ -210,7 +216,7 @@
 					<input class="ingestion-form" type="file" name="filePart1" id="filePart1"  required>
 				</div>
 				<br /><br />
-				@Messages("ingestion.new.authorized.source"):&nbsp; 
+				@Messages("ingestion.new.authorized.source"):&nbsp;
 				<select class="ingestion-form" name="authorizedSource">
 					@for(ihsAuthorizedSource <- ihsAuthorizedSources){
 					<option value="@ihsAuthorizedSource.authorizedSourceID">@ihsAuthorizedSource.name</option>
