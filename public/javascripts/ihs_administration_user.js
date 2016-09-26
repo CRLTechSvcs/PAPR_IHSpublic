@@ -26,14 +26,11 @@ $( window ).load(function() {
 function populateMemberList(response, ioArgs){
 
 	searchResponse = response;
-	var str = '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<select id="memberSelect" onchange="updateMember(event);">';
-
+	var str = '<select id="memberSelect" onchange="updateMember(event);">';
 	str += '<option value="0"> </option>';
-
 	for (var i = 0; i < response.length; i++) {
 		str += '<option value="'+ response[i].id +'">' + response[i].name +'</option>';
-    }
-
+  }
 	str += '</select>';
 
 	$("#memberList").html(str);
@@ -48,18 +45,23 @@ function updateMember(e){
 	$("#userSearch").val('');
 
 	if(memberId != '0'){
-
+// AJE 2016-09-26 massive reformatting of this section
+    var dbl_break = '<br /><br />'; // AJE 2016-09-26 new
 		var str =
-			'&nbsp;First Name:&nbsp;<input id ="newFirstName" class="ingestion-form" type="text" /><br /><br />'+
-			'&nbsp;Last Name:&nbsp;<input id ="newLastName" class="ingestion-form" type="text" /><br><br />'+
-			'&nbsp;User Name:&nbsp;<input id ="newUserName" class="ingestion-form" type="text" /><br /><br />'+
-			'&nbsp;User Password:&nbsp;<input id ="newUserPassword" class="ingestion-form" type="text" /><br><br />'+
-
-			'&nbsp;Choose a role: '+
-			'<div style="width:150px;float:left;"><input type="radio" name="group" value="user" checked>User</div>'+
+		  '<div id="userAddFormHolder" class="admin_form_alignment">';
+			str += 'First Name:&nbsp;<input id ="newFirstName" class="ingestion-form" type="text" />'+ dbl_break;
+			str += 'Last Name:&nbsp;<input id ="newLastName" class="ingestion-form" type="text" />'+ dbl_break;
+			str += 'User Name:&nbsp;<input id ="newUserName" class="ingestion-form" type="text" />'+ dbl_break;
+			str += 'User Password:&nbsp;<input id ="newUserPassword" class="ingestion-form" type="text" />'+ dbl_break;
+			/* '<div style="width:150px;float:left;"><input type="radio" name="group" value="user" checked>User</div>'+
 			'<div style="width:200px;float:left;"><input type="radio" name="group" value="admin" >Admin</div> <br><br>'+
-
-			'&nbsp; &nbsp;&nbsp; <input style="float:left;" type="submit" value="Add User" onclick="addUser()"><br />';
+			*/
+      str += '<div id="new_user_role_radio_set" style="float:left;">Choose a role: ';
+       str += 'User: <input type="radio" name="group" value="user" checked>';
+		  	str += 'Administrator: <input type="radio" name="group" value="admin" >';
+			str += '</div>'+ dbl_break;
+			str += '<input style="float:left;" type="submit" value="Add User" onclick="addUser()">';
+		str += '</div>'+ dbl_break;
 
 		$("#newUserDetail").html(str);
 
