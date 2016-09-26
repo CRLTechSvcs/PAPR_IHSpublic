@@ -7,47 +7,65 @@
   	<script src="@routes.Assets.at("javascripts/ihs_common.js")" type="text/javascript"></script>
 	<script src="@routes.Assets.at("javascripts/ihs_administration.js")" type="text/javascript"></script>
   	<script type="text/javascript">
-			
+
 		</script>
 } {
-	
+
        <div id="content-center">
             <div id="nav-tabs">
                 <ul id="tabs">
+                  <li class="tab3">
+                    <!-- Travant ; fixed by AJE 2016-09-26
+                    <a id="tab2-link" >@Messages("ingestion.home.issue.level.holdings")</a>
+                    -->
+                    <a id="tab2-link">@Messages("menu.admin.group")</a>
+                  </li>
 
-                    <li class="tab3"><a id="tab2-link">@Messages("ingestion.home.issue.level.holdings")</a></li>
-                   
                 </ul>
             </div>
-            
-            <h2>Add a Group</h2><br />
-            
-           	&nbsp;Group Name:&nbsp;<input id="addName" class="ingestion-form" type="text" onkeyup="addGroupName(this);"/><br /><br />
-           	&nbsp;Group Description:&nbsp;<input id="addDesc" class="ingestion-form" type="text" onkeyup="addGroupDesc(this);"/><br /><br />
-           	&nbsp; &nbsp;&nbsp; <input type="submit" value="Add Group" onclick="addGroup()"><br /><br />
-           	<div id=status></div><br><br>
-           	
+
+            <h2>Add a Group</h2>
+            <br />
+           <!-- AJE 2016-09-26 add div tag to move the form widgets off the left edge; add line breaks, other minor changes-->
+           <div id="groupAddFormHolder" class="admin_form_alignment">
+
+           	Group Name:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+           	  <input id="addName" class="ingestion-form" type="text" onkeyup="addGroupName(this);"/><br /><br />
+           	Group Description:&nbsp;
+           	  <input id="addDesc" class="ingestion-form" type="text" onkeyup="addGroupDesc(this);"/><br /><br />
+           	<input type="submit" value="Add Group" onclick="addGroup()"><br /><br />
+           	<div id=status></div>
+           	<br /><br />
+          </div><!--AJE 2016-09-26 end #groupAddFormHolder-->
            	<hr style="width:95%;" />
 
 			<h2>Search a Group</h2><br />
-            
-           	&nbsp;Group Name:&nbsp;<input id ="groupSearch" class="ingestion-form" type="text" onkeyup="searchGroupName(this);"/><br /><br />
-           	&nbsp; &nbsp;&nbsp; <input type="submit" value="Search Groups" onclick="searchGroup()"><br /><br />
-           	
+			     <!-- AJE 2016-09-26 add div tag to move the form widgets off the left edge; other minor changes-->
+           <div id="groupSearchFormHolder" class="admin_form_alignment">
+
+
+           	Group Name:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+           	<input id ="groupSearch" class="ingestion-form" type="text" onkeyup="searchGroupName(this);" />
+           	<br /><br />
+           	<input type="submit" value="Search Groups" onclick="searchGroup()" />
+           	<br /><br />
+          </div><!--AJE 2016-09-26 end #groupSearchFormHolder-->
+
            	<hr style="width:95%;" />
-           	
-           	<h2>Edit a Group</h2><br />
-           	
-           	<div id=search style="width: 600px; height: 300px; overflow-y: scroll;"></div><br><br>
-           	<div id=detail></div><br><br>
-           	
-           	           	            
-        </div>
-        <div id="content-right">
-        
+
+           	<h2>Edit a Group</h2>
+           	<br />
+           	<div id=search style="width: 600px; height: 300px; overflow-y: scroll;"></div>
+           	<br /><br />
+           	<div id=detail></div>
+           	<br /><br />
+
+
+        </div><!-- end #content-center -->
+
         <div id="content-right">
         	 <div id="inner-content-right">
-        	 </div>    
+        	 </div>
         </div>
-  
+
 }
