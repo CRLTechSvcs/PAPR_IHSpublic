@@ -11,27 +11,34 @@
        <div id="content-center">
             <div id="nav-tabs">
                 <ul id="tabs">
-
-                    <li class="tab3"><a id="tab2-link" >@Messages("ingestion.home.issue.level.holdings")</a></li>
-                    User
+                    <li class="tab3">
+                      <!-- Travant ; fixed by AJE 2016-09-26
+                      <a id="tab2-link" >@Messages("ingestion.home.issue.level.holdings")</a>
+                      -->
+                      <a id="tab2-link" >@Messages("menu.admin.user")</a>
+                    </li>
                 </ul>
             </div>
 
             <h2>Add a User</h2>
-
-           	<h3>&nbsp;&nbsp;&nbsp;Select a Member </h3>
-           	<div id="memberList"> </div><br>
-           	<div id=status></div><br><br>
-
-
-           <div id="newUserDetail"> </div><br>
+             	<h3>Select a Member </h3>
+           	<!-- AJE 2016-09-26 add div tag to move the form widgets off the left edge; other minor changes-->
+            <div id="userSearchMemberFormHolder" class="admin_form_alignment">
+             	<div id="memberList"> </div><br>
+             	<div id=status></div><br><br>
+              <div id="newUserDetail"> </div><br>
+            </div>
 
             <hr style="width:95%;" />
-
-           	<h2>&nbsp;&nbsp;&nbsp;Search a User</h2>
-
-           	&nbsp;&nbsp;&nbsp;User Name:<input id ="userSearch" class="ingestion-form" type="text" onkeyup="updateUserName(this);"/><br /><br />
-           	&nbsp;&nbsp;&nbsp; <input type="submit" value="Search Users" onclick="searchUserName()"><br /><br />
+           	<!-- AJE 2016-09-26 add div tag to move the form widgets off the left edge; other minor changes-->
+            <div id="userSearchFormHolder" class="admin_form_alignment">
+             	<h2>Search a User</h2>
+             	User Name:
+             	<input id ="userSearch" class="ingestion-form" type="text" onkeyup="updateUserName(this);" />
+             	<br /><br />
+             	<input type="submit" value="Search Users" onclick="searchUserName()" />
+             	<br /><br />
+            </div>
            	<hr style="width:95%;" />
 
 
