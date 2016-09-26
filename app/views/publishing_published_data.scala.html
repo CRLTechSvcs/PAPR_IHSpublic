@@ -6,20 +6,20 @@
 
 @main(title = "publishing_published_data") {
   	<script type="text/javascript">
-			
+
 				require(["dojo/dom", "dojo/parser", "dijit/form/Button", "dojo/dom", "dojo/domReady!"]);
-	
-	
+
+
 	require(["dojox/grid/DataGrid", "dojo/data/ItemFileReadStore", "dojo/dom", "dojo/domReady!"], function(DataGrid, ItemFileReadStore, dom) {
-						
-		
+
+
 		var data = { items: [
 			                   	{ dateInitiated: '', jobName: '', formatType: '',  organization: '', user: '', dateRange: '', jobStatus:'',  link:''}
 			                   	]};
-			                   	
+
 		var store = new ItemFileReadStore({data: data});
-		
-		
+
+
 		var layout = [
 		               { 'name': 'Date Initiated', 'field': 'dateInitiated', 'width': '120px'},
 		               { 'name': 'Job Name', 'field': 'jobName', 'width': '150px'},
@@ -30,7 +30,7 @@
 		               { 'name': 'Job Status', 'field': 'jobStatus', 'width': '70px'},
 		               { 'name': 'Link', 'field': 'link', 'width': '70px'}
 		               ];
-		
+
 		var grid = new DataGrid({
 			id: 'publishing-job-summary',
 			store: store,
@@ -39,29 +39,29 @@
 			selectionMode: 'none',
 			escapeHTMLInData: false
 		});
-		
+
 		grid.placeAt("publishing-summary-div");
 		grid.startup();
-		
+
 		getJobs('getAUserPublishingJobs');
 	});
-	
-	
-	  function populatepublishingJobSummary(response, ioArgs){          
-	  
+
+
+	  function populatepublishingJobSummary(response, ioArgs){
+
 	  		var dataExceptionStore = new dojo.data.ItemFileReadStore({
 	    			 	data: {
 	         			items: response.items
 	     			}
 	 			});
-	 	
+
 	 			var dataExceptionGrid = dijit.byId('publishing-job-summary');
-		
-		dataExceptionGrid.setStore(dataExceptionStore); 		   
+
+		dataExceptionGrid.setStore(dataExceptionStore);
 	  }
-	  
+
 	  function getJobs (url){
-			
+
 	     dojo.xhrGet({
 	     			handleAs: 'json',
 	     			url: "/publishing/" + url ,
@@ -72,41 +72,44 @@
 	     			load: populatepublishingJobSummary
 	  	     });
 	  	}
-			
+
 		</script>
 } {
-	
+
        <div id="content-center">
             <div id="nav-tabs">
                 <ul id="tabs">
-<!--
-AJE 2016-09-22
-note that the AT_Messages value in the next line refers to ingestion, not publishing, and may be an example of Travant copy/paste without changing for new context (i.e., sloppiness) and may be unused or unneeded -->
                     <li class="tab3">
-                    	<a id="tab2-link">@Messages("ingestion.home.issue.level.holdings")</a>
+                    <!--
+                    AJE 2016-09-22: note the tab2-link AT_Messages value below  refers to ingestion, not publishing, and may be an example of Travant copy/paste without changing for new context (i.e., sloppiness) and may be unused or unneeded
+                    Travant ; fixed by AJE 2016-09-26
+                    <a id="tab2-link" >@Messages("ingestion.home.issue.level.holdings")</a>
+                    -->
+                    <a id="tab2-link">@Messages("menu.admin.group")</a>
                     </li>
                 </ul>
+
             </div>
-            
+
            <h1>@Messages("publishing.publishing.jobs.summary")</h1><br />
  <!-- AJE 2016-09-22 per Amy, moving tools widgets from content-right to content-center -->
         	<h2>@Messages("tools")</h2>
 <!-- AJE wrapped in new div, added line breaks -->
-            <div style="margin-left:10px;">
+            <div style="margin-left:15px;">
 					 		@restrict( scala.collection.immutable.List( as( "admin" ) ) ){
 								<button id="button_1" onClick = "getJobs('getAllPublishingJobs');">@Messages("ingestion.home.show.All.Members.Jobs")</button>
 							}
 							<button id="button_2" onClick = "getJobs('getAMemberPublishingJobs');">@Messages("ingestion.home.show.only.my.member.jobs")</button>
 							<button id="button_3" onClick = "getJobs('getAUserPublishingJobs');">@Messages("ingestion.home.show.only.my.jobs")</button>
            	</div>
-<!-- end AJE -->           	
-           
+<!-- end AJE -->
+
   			  <div id="publishing-summary-div" style="margin-left:16px;height:782px;"> </div>
-  			  
+
         </div>
-        
+
         <!--
-        AJE 2016-09-22 more Travant sloppiness: opening div tag with this ID is repeated below, and closed there 
+        AJE 2016-09-22 more Travant sloppiness: opening div tag with this ID is repeated below, and closed there
         <div id="content-right">
         -->
 
@@ -117,10 +120,10 @@ note that the AT_Messages value in the next line refers to ingestion, not publis
 				}
 				<button id="button_2" onClick = "getJobs('getAMemberPublishingJobs');">@Messages("ingestion.home.show.only.my.member.jobs")</button>
 				<button id="button_3" onClick = "getJobs('getAUserPublishingJobs');">@Messages("ingestion.home.show.only.my.jobs")</button>
--->				
+-->
         <div id="content-right">
         	 <div id="inner-content-right">
-        	 </div>    
+        	 </div>
         </div>
-  
+
 }
