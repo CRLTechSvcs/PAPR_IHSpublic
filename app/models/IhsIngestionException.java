@@ -25,10 +25,10 @@ import java.util.List;
 @Table(name="ihsingestionexception")
 public class IhsIngestionException extends Model {
 
-	static String deleteallExcpetion =" DELETE FROM ihsingestionexception WHERE ingestionRecordID = ingestionRecordid ";
-   
+	static String deleteallException =" DELETE FROM ihsingestionexception WHERE ingestionRecordID = ingestionRecordid ";
+
 	/**
-	 * 
+	 *
 	 */
 	private static final long serialVersionUID = 1L;
 
@@ -36,33 +36,33 @@ public class IhsIngestionException extends Model {
     @GeneratedValue
     @Column(name="ingestionExceptionID")
     public int ingestionExceptionID;
-    
+
     @ManyToOne(fetch=FetchType.LAZY)
     @JoinColumn(name="ingestionRecordID")
     public IhsIngestionRecord ihsIngestionRecord;
-    
+
     @ManyToOne(fetch=FetchType.LAZY)
     @JoinColumn(name="ingestionExceptionTypeID")
     public SingestionExceptionType singestionExceptionType;
-    
-    
+
+
     @Column(name="recordTitle")
     public String recordTitle;
-    
+
     @Column(name="issues")
     public String issues;
-    
+
     @ManyToOne(fetch=FetchType.LAZY)
     @JoinColumn(name="ingestionExceptionStatusID")
     public SingestionExceptionStatus singestionExceptionStatus;
- 
+
     @ManyToOne(fetch=FetchType.LAZY)
     @JoinColumn(name="userID")
     public IhsUser ishUser;
-    
+
     @Column(name="lockDate")
     Date lockDate;
-    
+
     public IhsIngestionException(IhsIngestionRecord ihsIngestionRecord, SingestionExceptionType singestionExceptionType,
     		String recordTitle,String issues, SingestionExceptionStatus singestionExceptionStatus, IhsUser ishUser){
     	this.ihsIngestionRecord= ihsIngestionRecord;
@@ -71,17 +71,17 @@ public class IhsIngestionException extends Model {
     	this.issues = issues;
     	this.singestionExceptionStatus = singestionExceptionStatus;
     	this.ishUser = ishUser;
-    	
+
     }
     public static Finder<Integer, IhsIngestionException> find = new Finder<Integer, IhsIngestionException>(
 			Integer.class, IhsIngestionException
 			.class);
-  
+
     public static void deleteIhsIngestionExceptions( int ingestionRecordID){
-    	
-    	SqlUpdate update = Ebean.createSqlUpdate(deleteallExcpetion);
+
+    	SqlUpdate update = Ebean.createSqlUpdate(deleteallException);
 		update.setParameter("ingestionRecordid", ingestionRecordID);
 		Ebean.execute(update);
-    
+
     }
 }
