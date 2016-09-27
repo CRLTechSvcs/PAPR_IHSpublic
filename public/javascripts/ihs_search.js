@@ -142,7 +142,7 @@
 
 	    if (value.length < 2 ) {
 	        //results.innerHTML = ' '; // Travant
-	        console.log = 'searchJournalByTitle, value.length < 2 [no results found for '+value+' yet]'); // AJE 2016-09-21
+	        console.log('searchJournalByTitle, value.length < 2 [no results found for '+value+' yet]'); // AJE 2016-09-21
 	    } else {
           /*
             AJE 2016-09-21 DEVNOTE: why is this is condition even here?
