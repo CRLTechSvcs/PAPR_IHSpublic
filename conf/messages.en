@@ -122,12 +122,18 @@ ingestion.exception.exception.resolve.data.error=Resolve Data Parsing or Logic E
 
 
 #Advanced Editing
-
 advanced.editing.search.journals.to.edit.history=Search Journals to Edit History
 advanced.editing.search.journals.to.edit.linking=Search Journals to Edit Linking
+# AJE added next 2 on 2016-09-26 : above versions overflow the tab2-link
+advanced.editing.search.journals.edit.history.tab=Edit Journal History
+advanced.editing.search.journals.edit.linking.tab=Edit Journal Linking
+
+
 
 ##Deaccession
 deaccession.summary.deaccession.jobs.summary=Deaccession Jobs Summary
+# AJE new 2016-09-26 smaller for tab
+deaccession.summary.tab=Deaccession Jobs
 deaccession.summary.deaccession.criteria=Deaccession Criteria
 deaccession.summary.deaccession.criteria.in.progress=Choose an In-Progress Deaccession Job to Finalize
 
@@ -137,8 +143,9 @@ deaccession.summary.deaccession.criteria.in.progress=Choose an In-Progress Deacc
 publishing.publishing.jobs.summary=Exporting Jobs Summary
 # publishing.start.a.new.publishing.Job=Start a New Publishing Job
 publishing.start.a.new.publishing.Job=Start a New Exporting Job
-# AJE added this next one 2016-09-26
-publishing.published.data=Published data
+# AJE added next 2 2016-09-26
+publishing.published.data=Exported data
+publishing.summary.tab=Export data
 
 ##Reporting
 # AJE added this next one 2016-09-26
