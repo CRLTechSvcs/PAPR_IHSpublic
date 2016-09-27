@@ -49,13 +49,13 @@ require(["dijit/TitlePane","dojo/dom","dojo/domReady!"], function(dom) {
             radiotTxt += '<input type="radio" name="include" value="0" checked onclick="updateCommitField(this);"/>All</div><br>';
             */
 
-            var radioTxt = '<div class="admin_form_alignment" style="width:200px;float:left;">';
+            var radioTxt = '<div style="float:left;">';
               radioTxt += 'Holdings to Include: <br />';
               radioTxt += '<div class="admin_form_alignment">';
               radioTxt += 'All: <input type="radio" name="include" value="0" checked onclick="updateCommitField(this);"/>';
             for(var index = 0;  index < view.commitmentView.length; index++){
-              radioTxt += '|' + view.commitmentView[index].name;
-              radioTxt += '<input type="radio" name="include" value="'+view.commitmentView[index].id+'" onclick="updateCommitField(this);" /> <br />';
+              radioTxt += '&nbsp;&nbsp;' + view.commitmentView[index].name + ':&nbsp;';
+              radioTxt += '<input type="radio" name="include" value="'+view.commitmentView[index].id+'" onclick="updateCommitField(this);" />';
               // AJE 2016-09-26 note there may be no function updateCommitField for the onclick, though we do have 'updateCommitFiled' [sic]
             }
             radioTxt += '</div></div>'; // one for the whole group, one for just radio buttons
