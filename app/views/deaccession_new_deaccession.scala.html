@@ -19,7 +19,7 @@
                   <!-- Travant ; fixed by AJE 2016-09-26
                   <a id="tab2-link" >@Messages("ingestion.home.issue.level.holdings")</a>
                   -->
-                  <a id="tab2-link">@Messages("deaccession.summary.deaccession.criteria")</a>
+                  <a id="tab2-link">@Messages("menu.deaccession")</a>
                   </li>
               </ul>
             </div>
@@ -27,46 +27,75 @@
             <h1>@Messages("deaccession.summary.deaccession.criteria")</h1><br />
 
             <div id="standard1" style="float:right;margin-right:16px;width:240px;height:200px;">
+            <!-- AJE 2016-09-26 standard1 and standard2 are filled by script in ihs_deaccesion.js
+              for some ungodly reason -->
+      			</div>
+      			<div id="standard2" style="float:right;margin-right:16px;width:240px;height:200px;display:none;">
 
-			</div>
-			<div id="standard2" style="float:right;margin-right:16px;width:240px;height:200px;display:none;">
+      			</div>
 
-			</div>
+            <div class="admin_form_alignment"> <!--AJE 2016-09-26 -->
+            	Deaccession Job Name:&nbsp;&nbsp;&nbsp;
+            	<input class="ingestion-form" type="text" onkeyup="updateJobname(this);"/>
+            	<br /><br />
+  						Standard for Deaccession:&nbsp;
+  						<select style="width:275px;" onchange="deaccessionStandard(event);">
+  							<option value="standard2" selected>CRL Preservation Criteria</option>
+  							<option value="standard1">Ithaka What to Withdraw Criteria</option>
+  						</select>
+						</div>
 
-          	&nbsp;Deaccession Job Name:&nbsp;<input class="ingestion-form" type="text" onkeyup="updateJobname(this);"/><br /><br />
-						&nbsp;Standard for Deaccession:&nbsp;<select style="width:275px;" onchange="deaccessionStandard(event);">
-							<option value="standard1" selected>Ithaka What to Withdraw Criteria</option>
-							<option value="standard2" >CRL Preservation Criteria</option>
-						</select>
 						<br /><br />
-			<div id="commit">
-			</div>
+
+      			<div id="commit" class="admin_form_alignment">
+      			  <!-- AJE 2016-09-26 #commit filled in by script in ihs_deaccesion.js ; added class to move it off the left side -->
+      			</div>
+
 						<br /><br /><br /><br /><br />	<br />
 						&nbsp;Min % of Journal to Deaccess :&nbsp;<input type="number"  onKeyUp="updateFiled('updateMinDeacc', this)" value="0"> </input><br /><br />
 
-						&nbsp;Chosse Group Or All:
-						<div style="width:150px;float:right;"><input type="radio" name="group" value="group" checked onclick="updateGroupFlag(this);"/>Group</div>
-						<div style="width:200px;float:right;"><input type="radio" name="group" value="all" onclick="updateGroupFlag(this);"/>All IHS</div>
+<!-- Travant : AJE changed layout 2016-09-26
+						&nbsp;Choose Group or All:
+						<div style="width:150px;float:left;"><input type="radio" name="group" value="group" checked onclick="updateGroupFlag(this);"/>Group</div>
+						<div style="width:200px;float:left;"><input type="radio" name="group" value="all" onclick="updateGroupFlag(this);"/>All IHS</div>
 
 												<br /><br />
-						&nbsp;Chosse A File Type:
+						&nbsp;Choose a File Type:
 						<div style="width:150px;float:right;"><input type="radio" name="filetype" value="oclc"  onclick="updatefileType(this)"/>OCLC</div>
 						<div style="width:200px;float:right;"><input type="radio" name="filetype" value="issn"  onclick="updatefileType(this)" checked/>ISSN</div>
-						<br /><br />&nbsp; <input  type="file" id="file-input" />
+-->
+						<div style="float:left;" class="admin_form_alignment" style="border-right:2px;">
+						  Choose Group or All:
+						  <div class="admin_form_alignment">
+						  Group: <input type="radio" name="group" value="group" checked onclick="updateGroupFlag(this);" />
+						  All IHS: <input type="radio" name="group" value="all" onclick="updateGroupFlag(this);" />
+						  </div>
+						</div>
 
-						<br /><br /> <br />
+            <div style="float:right;">
+  						Choose a File Type:
+  						<div class="admin_form_alignment">
+  						  OCLC: <input type="radio" name="filetype" value="oclc" checked onclick="updatefileType(this)" />
+  						  ISSN: <input type="radio" name="filetype" value="issn"  onclick="updatefileType(this)" />
+  						</div>
+            </div>
 
-						&nbsp;  <input type="submit" value="Search with These Criteria" onclick="submitReport()">
+            <div style="clear:both;" class="admin_form_alignment">
+  						<input type="file" id="file-input" />
+						</div>
 
-						</br>
+            <div style="clear:both;" class="admin_form_alignment">
+  						<input type="submit" value="Search with These Criteria" onclick="submitReport()" />
+						</div>
 
+						<br />
 
 						<hr style="width:95%;" />
 						<div id="count" style="width:800px;margin:10px auto;display:none;">
 
 						</div>
 
-           				<div id="issues" style="display: none;height:451px;">
+           				<div id="issues" style="display:none;height:451px;">
            					<div style="height:35px;margin-top:20px;">
 								<div class="rotate-text">
 									Preserve
