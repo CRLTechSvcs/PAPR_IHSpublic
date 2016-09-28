@@ -64,11 +64,11 @@
       console.info('toggle_...',calling_function,' just set #timeline to ', document.getElementById('timeline').style.display);
       document.getElementById('issues').style.display = "none"; // AJE new
       console.info('toggle_...',calling_function,' just set #issues to ', document.getElementById('issues').style.display);
+      document.getElementById('tools_for_title_issues').style.display = "none"; // AJE new
+      console.warn('toggle_...',calling_function,' just set #tools_for_title_issues to ', document.getElementById('tools_for_title_issues').style.display);
       // show these
       document.getElementById('search_results_header').style.display = "block"; // AJE new
       console.warn('toggle_...',calling_function,' just set #search_results_header to ', document.getElementById('search_results_header').style.display);
-      document.getElementById('tools_for_title_issues').style.display = "block"; // AJE new
-      console.warn('toggle_...',calling_function,' just set #tools_for_title_issues to ', document.getElementById('tools_for_title_issues').style.display);
       // # results is done in populateSearchList, but sometimes fails to appear, so explicitly do it now
       document.getElementById('results').style.display = "block"; // AJE new
       console.warn('toggle_...',calling_function,' just set #results to ', document.getElementById('tools_for_title_issues').style.display);
