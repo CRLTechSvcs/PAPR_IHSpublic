@@ -18,7 +18,13 @@
 		<link rel="stylesheet" type="text/css" media="screen" href="@routes.Assets.at("javascripts/dojo-release-1.9.0/dijit/themes/nihilo/nihilo.css")">
 		<link rel="stylesheet" type="text/css" media="screen" href="@routes.Assets.at("javascripts/dojo-release-1.9.0/dojox/grid/resources/nihiloGrid.css")">
 		<script>dojoConfig = {parseOnLoad: true}</script>
-		<script src="@routes.Assets.at("javascripts/dojo-release-1.9.0/dojo/dojo.js")" data-dojo-conifg="async: true"></script>
+
+		<!-- AJE 2016-09-27 fix Travant spelling error 'conifg' > 'config', which is how this directive is expressed in 45 other files
+	  <script src="@routes.Assets.at("javascripts/dojo-release-1.9.0/dojo/dojo.js")" data-dojo-conifg="async: true"></script>
+	  -->
+	  <script src="@routes.Assets.at("javascripts/dojo-release-1.9.0/dojo/dojo.js")" data-dojo-config="async: true"></script>
+
+
 		<script type="text/javascript">
 			require(["dijit/Dialog", "dijit/form/TextBox", "dijit/form/Button"]);
 
@@ -31,7 +37,7 @@
 			<div id="header">
 				<div id="header-left">
 					<a id="logo-link" href="../index.html"><img id="logo"
-					src="@routes.Assets.at("images/papr_logo.gif")" width="268" height="40"
+					src="@routes.Assets.at("images/papr_ihs_logo.gif")" width="268" height="40"
 					alt="Print Archives Preservation Registry" /></a>
 				</div>
 				<div id="header-right">
