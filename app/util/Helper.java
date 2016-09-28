@@ -21,7 +21,7 @@ import play.Logger;
 import play.cache.Cache;
 
 public class Helper {
-	static DateTimeFormatter dtf = DateTimeFormat.forPattern("yyyy ");
+	static DateTimeFormatter dtf = DateTimeFormat.forPattern("yyyy"); /* AJE 2016-09-28 remove Travant's spurious space after start year */
 	static String MD5 = "MD5";
 
 	public static String getMD5hash(String s) {
