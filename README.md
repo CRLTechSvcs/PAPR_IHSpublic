@@ -16,6 +16,12 @@ git clone https://github.com/CRLTechSvcs/PAPR_IHS.git
 
 -- NEW 2016-08-29 for output of pdf reports:
 mkdir ./public/reports
+-- NEW 2016-09-29 other folders referenced in application.conf but found to be missing after clone to reset AJE mistakes:
+mkdir ./data
+mkdir ./data/httpdata
+mkdir ./data/ftpdata
+mkdir ./data/ftpprocess
+mkdir ./data/pubprocess
 
 -- make activator executable
 chmod 755 activator
