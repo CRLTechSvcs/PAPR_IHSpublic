@@ -22,8 +22,21 @@
 		<!-- AJE 2016-09-27 fix Travant spelling error 'conifg' > 'config', which is how this directive is expressed in 45 other files
 	  <script src="@routes.Assets.at("javascripts/dojo-release-1.9.0/dojo/dojo.js")" data-dojo-conifg="async: true"></script>
 	  -->
-	  <script src="@routes.Assets.at("javascripts/dojo-release-1.9.0/dojo/dojo.js")" data-dojo-config="async: true"></script>
 
+	  <!-- AJE 2016-09-29 fix from 27th: reverted to Travant's spelling mistake because it makes new dojo errors disappear!
+	  <script src="@routes.Assets.at("javascripts/dojo-release-1.9.0/dojo/dojo.js")" data-dojo-config="async: true"></script>
+    async false did not resolve problems on advanced editing page
+    <script src="@routes.Assets.at("javascripts/dojo-release-1.9.0/dojo/dojo.js")" data-dojo-config="async: false"></script>
+    with Travant's script tag, there are no errors loading pages except on advanced editing, where Travant used the wrong syntax for required dojo components.
+    Test if all is well now that that has been fixed: can we use 'config'?
+    No, we cannot: error reappears on search_home, which had no problems until this change:
+
+Error: Tried to register widget with id==stateMember but that id is already registered
+http://127.0.0.1:9000/assets/javascripts/dojo-release-1.9.0/dijit/registry.js
+Line 6
+
+    -->
+    <script src="@routes.Assets.at("javascripts/dojo-release-1.9.0/dojo/dojo.js")" data-dojo-conifg="async: true"></script>
 
 		<script type="text/javascript">
 			require(["dijit/Dialog", "dijit/form/TextBox", "dijit/form/Button"]);
