@@ -4,114 +4,118 @@ var currentTitle = {};
 	var prevTitleId, prevTitleVesrionId;
 	var strLen=25;
 	var globalTitleId=0;
-	
-	require(["dojo/dom", "dojo/domReady!", "dojo.parser", "dijit.form.DateTextBox"]);
-	
-	
-		
+
+	// AJE 2016-09-29 next is Travant original: try dojo/parser instead of dojo[dot]parser
+	// require(["dojo/dom", "dojo/domReady!", "dojo.parser", "dijit.form.DateTextBox"]);
+	// AJE 2016-09-29 next solved the first error, now it looks like the same again with DateTextBox
+	// require(["dojo/dom", "dojo/domReady!", "dojo/parser", "dijit.form.DateTextBox"]);
+	require(["dojo/dom", "dojo/domReady!", "dojo/parser", "dijit/form/DateTextBox"]);
+
+
+
 	function populateJournalDetail(response, ioArgs){
-					
+
 		var html ="";
-		
+
 		for (var i=0; i < response.length; i++) {
-				
+
 			if( response[i].currentVersionFlag == "Y"){
 					currentTitle = response[i];
-					currentTitleChanged= clone(currentTitle);	
+					currentTitleChanged= clone(currentTitle);
 					document.getElementById('currentTitle').innerHTML =  drawCurrentTitle();
 			}else{
-				
+
 				var preTitle=   response[i];
 				html+=drawPreviousTitle(preTitle);
-				
+
 			}
-			
-			
+
+
 		}
-		
+
 		document.getElementById('serrch').style.display = 'none';
-		
+
 		document.getElementById('currentTitle').style.display = 'block';
-		
+
 		document.getElementById('previousTitle').innerHTML =  html;
-		
+
 		document.getElementById('previousTitle').style.display = 'block';
-		
+
 		hideWaiting();
-		
+
 	}
-	
+
 	function 	finalSavePrevTitle(){
-	
+
 		dojo.xhrGet({
 	        handleAs: 'json',
 	        url: "/advancedEditing/restorePreviousTitle/" + prevTitleId + "/" + prevTitleVesrionId,
 	        preventCache: true,
 	        load: function(data) {
-	        	
+
 				hideWaiting();
 				getJournalDetail(globalTitleId);
-				
+
 	        },
 	        error: function(e) {
 	        	hideWaiting();
 	            alert("Error: " + e.message);
 	        }
 	    });
-		
+
 	 	$( "#dialog-pre-confirm" ).dialog('close');
 	 	showWaiting();
-	    
+
 	}
-	
+
 	function cancelSavePrevTitle(){
 		try {
 			$( "#dialog-pre-confirm" ).dialog('close');
 		}catch(err) {
-    	
+
     	}
 	}
-	
-	
+
+
 	function restorePreviousTitle(titleId, titleVesrionId){
-		
+
 		prevTitleId = titleId;
 		prevTitleVesrionId = titleVesrionId;
-		
+
 		$(function() {
     			 $( "#dialog-pre-confirm" ).dialog({title:'Confirm Save of Changes to Previous Version', width: 500,  height: 100, modal: true});
   		});
-	
+
 	}
-	
+
 	function drawPreviousTitle(previousTitle){
-	
-		
-		var tmptitle = ""; 
-		
+
+
+		var tmptitle = "";
+
 		if(previousTitle.title.length > strLen +1 ){
 			tmptitle = previousTitle.title.substring(0,strLen);
 		}else {
 			tmptitle = previousTitle.title;
 		}
-					
-		
-		var innerhtml = 
-				 		'<div id="current">'+	
-							'<div class="history-title1">'+ 
+
+
+		var innerhtml =
+				 		'<div id="current">'+
+							'<div class="history-title1">'+
 							'<span id="previus-title" title="' + previousTitle.title +'">'+ tmptitle + '</span>'+
 						    '</div>'+
 							'<div class="history-title2" id="edit-button">'+
 								'<a href="javascript:restorePreviousTitle('+ previousTitle.titleId +','+ previousTitle.titleVesrionId +');" title="Edit the Current Version"><img src="/assets/images/restore.gif" /></a>'+
 							'</div>'+
-							
+
 						'<div class="history-col1">'+
 							'<ul class="no-decoration">'+
 								'<li class="edit-only"><strong>Title:</strong> <span id="edit-title"></span></li>'+
 								'<li class="edit-only"><strong>Alpha Title:</strong> <span id="edit-alphatitle">Africa Today.</span></li>'+
-								
+
 								'<li><strong>Publisher:</strong> <span id="edit-publisher">' + previousTitle.publisherName +'</span></li>'+
-								
+
 								'<li><strong>Print ISSN:</strong> <span id="edit-issn">'+previousTitle.printISSN +'</span></li>'+
 								'<li><strong>Electronic ISSN:</strong> <span id="edit-eissn">'+previousTitle.eISSN +'</span></li>'+
 								'<li><strong>OCLC Number:</strong> <span id="edit-oclc">'+previousTitle.oclcNumber +'</span></li>'+
@@ -122,64 +126,64 @@ var currentTitle = {};
 								'<li><strong>Publication Language:</strong> <span id="edit-note">'+previousTitle.language +'</span></li>'+
 								'<li><strong>Publication Country:</strong> '+previousTitle.country +'</li>'+
 							'</ul>'+
-				
+
 						'</div>'+
-						
+
 						'<div class="history-col2" style="padding:0px 10px;">'+
 								'<strong>Frequency Ranges:</strong><br /><br />'+
 								'<div style="overflow-y:scroll;padding-right:5px;height:140px;">'+
-								drawPubRange(previousTitle) +	
-									
+								drawPubRange(previousTitle) +
+
 								'</div>'+
 							'</div>'+
-					
+
 				'</div>' +
 				'<br/><br/><br/><br/><br/><hr />'+
 					'&emsp;<strong>Date Changed:'+ previousTitle.changeDate + '</strong>'+
 					'&emsp;&emsp;<strong>Changed by User:'+ previousTitle.changeUser + ' </strong>'+
 					'&emsp;&emsp;<strong>Changed by Member:'+ previousTitle.changeMember + ' </strong>'+
 					'<hr />';
-					
+
 			 return innerhtml;
-	
+
 	}
-	
+
 	function drawCurrentTitle(){
-	
-		var tmptitle = ""; 
-		
+
+		var tmptitle = "";
+
 		if(currentTitle.title.length > strLen + 1){
 			tmptitle = currentTitle.title.substring(0,strLen);
 		}else {
 			tmptitle = currentTitle.title;
 		}
-		
+
 		var publisherName;
-		
+
 		for(var i = 0; i< publisher.length; i++){
 			if (publisher[i].id == currentTitle.publisher ){
 				publisherName=publisher[i].name;
 			}
 		}
-					
-		
-		var innerhtml = 
-				 		'<div id="current" >'+	
-							'<div class="history-title1">'+ 
+
+
+		var innerhtml =
+				 		'<div id="current" >'+
+							'<div class="history-title1">'+
 								'<span id="current-title" title="'+ currentTitle.title +'">'+ tmptitle + '</span>&emsp;&emsp;(Current Version)'+
 						    '</div>'+
 							'<div class="history-title2" id="edit-button">'+
 								'<a href="javascript:drawEditCurrentTitle();" id="edit-current" title="Edit the Current Version"><img src="/assets/images/edit.gif" /></a>'+
 							'</div>'+
-							
+
 						'<div class="history-col1" >'+
-						    
+
 							'<ul class="no-decoration">'+
 								'<li class="edit-only"><strong>Title:</strong> <span ></span></li>'+
 								'<li class="edit-only"><strong>Alpha Title:</strong> <span >Africa Today.</span></li>'+
-								
+
 								'<li><strong>Publisher:</strong> <span >' + publisherName +'</span></li>'+
-								
+
 								'<li><strong>Print ISSN:</strong> <span >'+currentTitle.printISSN +'</span></li>'+
 								'<li><strong>Electronic ISSN:</strong> <span >'+currentTitle.eISSN +'</span></li>'+
 								'<li><strong>OCLC Number:</strong> <span >'+currentTitle.oclcNumber +'</span></li>'+
@@ -189,33 +193,33 @@ var currentTitle = {};
 								'<li><strong>Publication Range:</strong> '+currentTitle.publicationRange +'</li>'+
 								'<li><strong>Publication Language:</strong> '+currentTitle.language +'</li>'+
 								'<li><strong>Publication Country:</strong> '+currentTitle.country +'</li>'+
-								
+
 							'</ul>'+
-				
+
 						'</div>'+
-						
+
 						'<div  class="history-col2" style="padding:0px 10px;">'+
 								'<strong>Frequency Ranges:</strong><br /><br />'+
 								'<div style="overflow-y:scroll;padding-right:5px;height:140px;">'+
-								drawPubRange(currentTitle) +	
+								drawPubRange(currentTitle) +
 								'</div>'+
 						'</div>'+
-					
+
 				'</div>' +
 				'<br/><br/> <br/><br/><br/><br/>'+
 				'<div> <hr/> '+
-					
+
 					'&emsp;<strong>Date Changed:'+ currentTitle.changeDate + '</strong>'+
 					'&emsp;&emsp;<strong>Changed by User:'+ currentTitle.changeUser + ' </strong>'+
 					'&emsp;&emsp;<strong>Changed by Member:'+ currentTitle.changeMember + ' </strong>'+
 					'<hr /> </div>';
-					
+
 			 return innerhtml;
-	
+
 	}
-	
+
 	function finalSaveCurrentTitle(){
-	
+
 		dojo.rawXhrPost({
 	        url: "/advancedEditing/postTitle",
 	        postData: dojo.toJson(currentTitleChanged),
@@ -224,12 +228,12 @@ var currentTitle = {};
 	            "Accept": "application/json"
 	        },
 	        handleAs: "text",
-	        
+
 	        load: function(data) {
-	        	
+
 				hideWaiting();
 				getJournalDetail(globalTitleId);
-				
+
 	        },
 	        error: function(error) {
 	        	 hideWaiting();
@@ -238,170 +242,170 @@ var currentTitle = {};
 	    });
 	    $( "#dialog-cur-confirm" ).dialog('close');
 	    showWaiting();
-	    
+
 	}
-	
+
 	function cancelSaveCurrentTitle(){
 		try {
 			$( "#dialog-cur-confirm" ).dialog('close');
-			
+
 		}catch(err) {
-    	
+
     	}
 	}
-	
+
 	function saveCurrentTitle(){
-	    
-	    
+
+
 	    try {
 			$( "#dialog" ).dialog('close');
 			$( "#dialog-cur-confirm" ).dialog('close');
 		}catch(err) {
-    	
+
 		}
-		
+
 		$(function() {
     			 $( "#dialog-cur-confirm" ).dialog({title:'Confirm Save of Changes to Current Version', width: 500,  height: 100, modal: true});
   		});
-  		
+
 	}
-	
+
 	function cancelCurrentTitle(){
-		
+
 		try {
 			$( "#dialog" ).dialog('close');
 			$( "#dialog-cur-confirm" ).dialog('close');
 		}catch(err) {
-    	
+
     	}
-    	
-		currentTitleChanged= clone(currentTitle);	
+
+		currentTitleChanged= clone(currentTitle);
 		document.getElementById('currentTitle').innerHTML =  drawCurrentTitle();
 	}
-	
+
 	function updateTitle(field, txt){
-	
+
 		if(field == 'title'){
 			currentTitleChanged.title = txt.value;
 		}
-		
+
 		if(field == 'publisher'){
 			currentTitleChanged.publisher = txt.value;
 		}
-		
+
 		if(field == 'alphaTitle'){
 			currentTitleChanged.alphaTitle = txt.value;
 		}
-		
+
 		if(field == 'printISSN'){
 			currentTitleChanged.printISSN = txt.value;
 		}
-		
+
 		if(field == 'eISSN'){
 			currentTitleChanged.eISSN = txt.value;
 		}
-		
+
 			if(field == 'oclcNumber'){
 			currentTitleChanged.oclcNumber = txt.value;
 		}
-		
+
 		if(field == 'lccn'){
 			currentTitleChanged.lccn = txt.value;
 		}
-		
+
 		if(field == 'note'){
 			currentTitleChanged.note = txt.value;
 		}
-		
+
 		if(field == 'ImagePageRatio'){
 			currentTitleChanged.ImagePageRatio = txt.value;
 		}
-		
+
 		if(field == 'language'){
 			currentTitleChanged.language = txt.value;
 		}
-		
+
 		if(field == 'country'){
 			currentTitleChanged.country = txt.value;
 		}
-		
+
 	}
-	
+
 	function saveChangePubRange(i){
-		
+
 		var pubRange = currentTitle.publicationRangeViews[i];
-		
+
 		var startDate =  $('#startDate1').val();
 		var endDate =  $('#endDate1').val();
-		
+
 		if( !validateDate(startDate) ){
 			alert( 'Enter a  valid Start Date' );
 			return;
-		} 
-		
+		}
+
 		if(endDate != '' ) {
 			if( !validateDate(endDate) ){
 				alert( 'Enter a valid End Date' );
 				return;
 			}
-		} 
-		
+		}
+
 		var prdrng  = document.getElementById('dialog-select-drop1');
-		
-		
+
+
 		currentTitleChanged.publicationRangeViews[i].startDate=startDate;
 		currentTitleChanged.publicationRangeViews[i].endDate=endDate;
 		currentTitleChanged.publicationRangeViews[i].pubRangeId=prdrng.options[prdrng.selectedIndex].value;
 		currentTitleChanged.publicationRangeViews[i].status="change";
-		
+
 		document.getElementById('pubRange').innerHTML = drawEditPubRange(currentTitleChanged);
-		
+
 		$( "#dialog1" ).dialog('close');
-		
+
 	}
-	
+
 	function savePubRange(){
 
 		var startDate =  $('#startDate').val();
 		var endDate =  $('#endDate').val();
-		
+
 		if( !validateDate(startDate) ){
 			alert( 'Enter a  valid Start Date' );
 			return;
-		} 
-		
+		}
+
 		if(endDate != '' ) {
 			if( !validateDate(endDate) ){
 				alert( 'Enter a valid End Date' );
 				return;
 			}
-		} 
-		
-		
+		}
+
+
 		var prdrng  = document.getElementById('dialog-select-drop');
-		
-		
+
+
 		var obj = { "status": "new", "startDate" : startDate, "endDate" : endDate,  "pubRangeId" : prdrng.options[prdrng.selectedIndex].value }
-		
+
 		currentTitleChanged.publicationRangeViews.push(obj);
-		
+
 		document.getElementById('pubRange').innerHTML = drawEditPubRange(currentTitleChanged);
-		
+
 		$( "#dialog" ).dialog('close');
-				
+
 	}
-	
+
 	function addPubRange(){
-		
+
 		var html = '<select id = "dialog-select-drop">';
-		
-		for(var i = 0; i <periodicityType.length; i++){ 
+
+		for(var i = 0; i <periodicityType.length; i++){
 				html += '<option value="'+ periodicityType[i].id  +'" >' + periodicityType[i].name +'</option>';
-		}			
+		}
 		html += "</select>";
-		
+
 		document.getElementById('dialog-select').innerHTML =html;
-		
+
 		$(function() {
 				 $('#startDate').datepicker();
 				 $('#startDate').datepicker('setDate' , '');
@@ -409,78 +413,78 @@ var currentTitle = {};
 				 $('#endDate').datepicker('setDate' , '');
     			 $( "#dialog" ).dialog({title:'New Frequency Ranges', modal: true});
   			});
-  			
+
 	}
-	
+
 	function changePubRange(index){
-		
+
 		var pubRange = currentTitle.publicationRangeViews[index];
-		
-		
+
+
 		var html = '<select id = "dialog-select-drop1">';
-		
-		for(var i = 0; i <periodicityType.length; i++){ 
+
+		for(var i = 0; i <periodicityType.length; i++){
 				if(pubRange.pubRangeId == periodicityType[i].id ){
 					html += '<option value="'+ periodicityType[i].id  +'" selected>' + periodicityType[i].name +'</option>';
 				}else{
 					html += '<option value="'+ periodicityType[i].id  +'" >' + periodicityType[i].name +'</option>';
 				}
-		}			
+		}
 		html += "</select>";
-		
+
 		document.getElementById('dialog-select1').innerHTML =html;
-		
+
 		document.getElementById('dialog1-save').innerHTML = '<a href="javascript:saveChangePubRange('+ index + ');" ><img src="/assets/images/add.gif" /></a> ';
 		$(function() {
 				 $('#startDate1').datepicker();
 				 $('#startDate1').datepicker('setDate' , pubRange.startDate);
 				 $('#endDate1').datepicker();
 				 $('#endDate1').datepicker('setDate' , pubRange.endDate);
-				 
+
     			 $( "#dialog1" ).dialog({title:'Change Frequency Ranges', modal: true});
   		});
-  		
+
 	}
-	
-	
+
+
 	function drawEditCurrentTitle(){
-		
+
 			var publisherDrop = '<select onchange="updateTitle(\'publisher\', this.options[this.selectedIndex])">';
-			
+
 			for(var i = 0; i< publisher.length ; i++){
-				
+
 				if(	currentTitle.publisher == publisher[i].id){
 					publisherDrop += '<option selected="selected" value="'+ publisher[i].id  +'"> ' + publisher[i].name +'</option>';
 				}else{
 					publisherDrop += '<option value="'+ publisher[i].id  +'" >' + publisher[i].name +'</option>';
-				}			
+				}
 			}
-				
-			var tmptitle = ""; 
-		
+
+			var tmptitle = "";
+
 			if(currentTitle.title.length > strLen+1){
 				tmptitle = currentTitle.title.substring(0,strLen);
 			}else {
 				tmptitle = currentTitle.title;
 			}
-							
-			publisherDrop += "</select>";						
-		
-			var innerhtml = 
-				 		'<div id="current">'+	
-							'<div class="history-title1">'+ 
+
+			publisherDrop += "</select>";
+
+			var innerhtml =
+				 		'<div id="current">'+
+							'<div class="history-title1">'+
 							'<span id="current-title">'+ tmptitle + '</span>&emsp;&emsp;(Current Version)'+
 						    '</div>'+
 							'<div class="history-title2" id="edit-button">'+
 								'<a href="javascript:saveCurrentTitle();" id="save-current" title="Save the Current Version"><img src="/assets/images/save.gif" /></a> &nbsp; &nbsp;'+
 								'<a href="javascript:cancelCurrentTitle();" id="cancel-current" title="Cancel the Current Version"><img src="/assets/images/cancel.gif" /></a>'+
-								
+
 							'</div>' +
-							
+
 						'<div class="history-col1">'+
 							'<ul class="no-decoration">'+
 							    '<li><strong>Title:</strong> <input type="text" size="15" value ="' + currentTitle.title + '" onkeyup="updateTitle(\'title\', this);"> </li>' +
-								'<li><strong>Alpha Title:</strong> <input type="text" size="18" value ="' + currentTitle.alphaTitle + '" onkeyup="updateTitle(\'alphaTitle\', this);"> </li>' + 
+								'<li><strong>Alpha Title:</strong> <input type="text" size="18" value ="' + currentTitle.alphaTitle + '" onkeyup="updateTitle(\'alphaTitle\', this);"> </li>' +
 								'<li><strong>Publisher:</strong> <span id="edit-publisher">' + publisherDrop +'</span></li>'+
 								'<li><strong>Print ISSN:</strong> <input type="text" size="18" value ="' + currentTitle.printISSN + '" onkeyup="updateTitle(\'printISSN\', this);"> </li>' +
 								'<li><strong>Electronic ISSN:</strong> <input type="text" size="14" value ="' + currentTitle.eISSN + '" onkeyup="updateTitle(\'eISSN\', this);"> </li>' +
@@ -490,111 +494,111 @@ var currentTitle = {};
 								'<li><strong>Image Page Ratio:</strong> <input type="text" size="10" value ="' + currentTitle.imagePageRatio + '" onkeyup="updateFiled(\'imagePageRatio\', this);"></li>' +
 								'<li><strong>Publication Language:</strong> <input type="text" size="10" value ="' + currentTitle.language + '" onkeyup="updateTitle(\'language\', this);"></li>' +
 								'<li><strong>Publication Country:</strong> <input type="text" size="10" value ="' + currentTitle.country + '" onkeyup="updateTitle(\'country\', this);"></li>' +
-								
-								
+
+
 								//'<li><strong>Publication Range:</strong> '+currentTitle.publicationRange +'</li>'+
 							'</ul>'+
 						'</div>'+
-						
-							
+
+
 						'<div class="history-col2" style="padding:0px 10px;">'+
 								'<strong>Frequency Ranges:</strong>&emsp;'+
-								
+
 								'<a href="javascript:addPubRange();"> <img src="/assets/images/add.gif" height="15" width="30"> </a><br /><br />' +
-								
+
 								'<div id = "pubRange" style="overflow-y:scroll;padding-right:5px;height:140px;">'+
-								
-								
-									drawEditPubRange(currentTitleChanged) +	
-									
+
+
+									drawEditPubRange(currentTitleChanged) +
+
 								'</div>'+
 							'</div>'+
-					
+
 				'</div>' +
 				'<br/><br/><br/><br/><br/><br/><br/><br/><hr /> '+
 					'&emsp;<strong>Date Changed: </strong>'+
 					'&emsp;&emsp;<strong>Changed by User: </strong>'+
 					'&emsp;&emsp;<strong>Changed by Member: </strong>'+
 					'<hr />';
-				
-			
+
+
 			document.getElementById('currentTitle').innerHTML = innerhtml;
-	
+
 	}
-	
+
 	function drawPubRange(currentTitle){
-	
+
 		var pabRange ="";
-		
-		var timerange = ' ' ; 
-		
+
+		var timerange = ' ' ;
+
 		for(var i = 0; i < currentTitle.publicationRangeViews.length; i++) {
-		
+
 			for(var j = 0; j < periodicityType.length; j++){
 				if(periodicityType[j].id == currentTitle.publicationRangeViews[i].pubRangeId){
 					pabRange = periodicityType[j].name;
 				}
 			}
-			
-			 timerange += '<div style="float:left;"> ' + 
-							currentTitle.publicationRangeViews[i].startDate + 
+
+			 timerange += '<div style="float:left;"> ' +
+							currentTitle.publicationRangeViews[i].startDate +
 							' to ' +
-							currentTitle.publicationRangeViews[i].endDate +	 
-						    
+							currentTitle.publicationRangeViews[i].endDate +
+
 						  '</div> <br/>' +
-						 
+
 						  '<div style="padding-left:20px;"> ' +
 							  pabRange +
 						  '</div>' +
-						  
+
 						  '<hr/>';
-			
+
 		   }
-		   
+
 		   return  	timerange;
 	}
-	
+
 	function drawEditPubRange(currentTitle){
-	
+
 		var pabRange ="";
-		
-		var timerange = ' ' ; 
-		
+
+		var timerange = ' ' ;
+
 		for(var i = 0; i < currentTitle.publicationRangeViews.length; i++) {
-		
+
 			for(var j = 0; j < periodicityType.length; j++){
 				if(periodicityType[j].id == currentTitle.publicationRangeViews[i].pubRangeId){
 					pabRange = periodicityType[j].name;
 				}
 			}
-			
-			 timerange += '<div style="float:left;"> ' + 
-							currentTitle.publicationRangeViews[i].startDate + 
+
+			 timerange += '<div style="float:left;"> ' +
+							currentTitle.publicationRangeViews[i].startDate +
 							' to ' +
-							currentTitle.publicationRangeViews[i].endDate +	 
-						    
+							currentTitle.publicationRangeViews[i].endDate +
+
 						  '</div> '+
 						  '<div style="width:100%;text-align:right;">'+
-						   
+
 						  '<a href="javascript:changePubRange('+i+');"> <img  src="/assets/images/edit.gif" height="15" width="30"> </a><br /><br />' +
 						  '</div>'+
-						 
+
 						  '<div style="padding-left:20px;"> ' +
 							  pabRange +
 						  '</div>' +
-						  
+
 						  '<hr/>';
-			
+
 		   }
-		   
+
 		   return  	timerange;
 	}
-	
-	
-	
-	
+
+
+
+
 	function getJournalDetail(titleid){
-			
+
 		 dojo.xhrGet({
 	        handleAs: 'json',
 	        url: "/advancedEditing/GetTitles/" + titleid,
@@ -604,12 +608,12 @@ var currentTitle = {};
 	        },
 	        load: populateJournalDetail
 	    });
-	    
+
 	    globalTitleId = titleid;
 	    showWaiting();
 	}
-	
-	
+
+
 	function populateSearchList(response, ioArgs) {
 	    var results = document.getElementById('results');
 
@@ -635,19 +639,19 @@ var currentTitle = {};
 	        ul.appendChild(li);
 	    }
 	    results.appendChild(ul);
-	    
-	   
+
+
 	}
-	
+
 	function updateFiled(field, obj){
-		
+
 		var value= obj.value;
-		
+
 		if(!$.isNumeric(obj.value)){
 			obj.value = '';
 			value=0;
 		}
-		
+
 		if(field == 'imagePageRatio'){
 	    	if(value>100){
 				obj.value='100'; value=100;
