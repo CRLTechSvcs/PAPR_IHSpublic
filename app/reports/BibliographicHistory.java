@@ -112,18 +112,21 @@ public class BibliographicHistory {
 
 					document.add(image1);
 
+          /* AJE 2016-09-30 executive decision that we don't need to see this giant header at all
 					ColumnText.showTextAligned(
 							writer.getDirectContent(),
 							Element.ALIGN_LEFT,
 							new Phrase(report, FontFactory.getFont(
 									FontFactory.HELVETICA, 25, Font.NORMAL)),
 							rect.getRight() - 480, rect.getHeight() - 70, 0f);
+					*/
 
 					table = new PdfPTable(1);
 					table.setWidthPercentage(100);
 
 					//cell = new PdfPCell(new Phrase("For " + org, // AJE 2016-09-30 Travant original
-					cell = new PdfPCell(new Phrase(report + " for " + title,
+					cell = new PdfPCell(new Phrase(report + " for " +
+					        System.getProperty("line.separator") + title,
 							// FontFactory.getFont(FontFactory.HELVETICA, 15, Font.NORMAL))); // AJE 2016-09-30 Travant original
 							FontFactory.getFont(FontFactory.HELVETICA, 18, Font.BOLD))); // AJE 2016-09-30 embiggen and embolden
 
