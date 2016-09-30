@@ -133,22 +133,7 @@
 					</div>
 				</div><!-- end div#summary-->
 
-        <!--AJE 2016-09-16 moved tools from content-right -->
-				<div id="tools_for_title_issues">
-      	 	<!-- AJE 2016-09-28 per Amy, remove 'Tools' header from button group
-      	 	<h2>Tools</h2> -->
-      	 	<!--
-      	 	  AJE 2016-09-28 per Amy, hide 'Title Status Not Wanted' button until further notice;
-      	 	  just commenting out causes script error;
-      	 	  if we're reinstating it, easiest to set it to display:none here
-      	 	-->
-					<button id="want-status" style="display:none;" value="0" onClick="setJournalWantStatus()">Title Status Not Wanted</button>
 
-					<button id="collapse-all-volumes" onClick="collapseAllVolumes();" >Collapse Volumes</button>
-					<button id="expand-all-volumes"  onClick="expandAllVolumes();">Expand Volumes</button>
-				</div>
-				<br/>
-				<!-- AJE 2016-09-16 end -->
 
         <br/>
 
@@ -163,6 +148,27 @@
      		<br>
 
      		<div id="issues">
+
+          <!--
+            AJE 2016-09-16 moved tools from content-right
+            AJE 2016-09-30 Amy enhancement list 2016-09-27, #7: only display collapse/expand issues buttons when there are issues
+          -->
+  				<div id="tools_for_title_issues">
+        	 	<!-- AJE 2016-09-28 per Amy, remove 'Tools' header from button group
+        	 	<h2>Tools</h2> -->
+        	 	<!--
+        	 	  AJE 2016-09-28 per Amy, hide 'Title Status Not Wanted' button until further notice;
+        	 	  just commenting out causes script error;
+        	 	  if we're reinstating it, easiest to set it to display:none here
+        	 	-->
+  					<button id="want-status" style="display:none;" value="0" onClick="setJournalWantStatus()">Title Status Not Wanted</button>
+
+  					<button id="collapse-all-volumes" onClick="collapseAllVolumes();" >Collapse Volumes</button>
+  					<button id="expand-all-volumes"  onClick="expandAllVolumes();">Expand Volumes</button>
+  				</div>
+  				<br/>
+  				<!-- AJE 2016-09-16 end -->
+
 					<div id="childissues">
 						<table id="table1">
 						</table>
