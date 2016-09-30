@@ -145,7 +145,7 @@ public class IssuesHeldReport {
 					table = new PdfPTable(1);
 					table.setWidthPercentage(100);
 
-					//cell = new PdfPCell(new Phrase("For " + org, // AJE 2016-09-30 original
+					//cell = new PdfPCell(new Phrase("For " + org, // AJE 2016-09-30 Travant original
 					cell = new PdfPCell(new Phrase(report + " for " + org,
 							//FontFactory.getFont(FontFactory.HELVETICA, 25, Font.NORMAL))); // AJE 2016-01-21 original values here
 							//FontFactory.getFont(FontFactory.HELVETICA, 14, Font.NORMAL))); // AJE 2016-01-21 no way do we need a size 25 font ever
