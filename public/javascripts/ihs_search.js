@@ -58,10 +58,14 @@
       // hide these
       document.getElementById('summary').style.display = "none"; // AJE new
       console.info('toggle_...',calling_function,' just set #summary to ', document.getElementById('summary').style.display);
-      document.getElementById('tools_for_title_issues').style.display = "none";
-      console.info('toggle_...',calling_function,' just set #tools_for_title_issues to ', document.getElementById('tools_for_title_issues').style.display);
       document.getElementById('timeline').style.display = "none"; // AJE new
       console.info('toggle_...',calling_function,' just set #timeline to ', document.getElementById('timeline').style.display);
+      /*
+      AJE 2016-09-30: Amy enhancement list 2016-09-27, #7: only display collapse/expand issues buttons when there are issues
+      - #tools_for_title_issues will now only display when #issues does
+      document.getElementById('tools_for_title_issues').style.display = "none";
+      console.info('toggle_...',calling_function,' just set #tools_for_title_issues to ', document.getElementById('tools_for_title_issues').style.display);
+      */
       document.getElementById('issues').style.display = "none"; // AJE new
       console.info('toggle_...',calling_function,' just set #issues to ', document.getElementById('issues').style.display);
       // show these
@@ -80,8 +84,12 @@
 	    // show these
 	    document.getElementById('summary').style.display = "block";
       console.warn('toggle_...',calling_function,' just set #summary to ', document.getElementById('summary').style.display);
+      /*
+      AJE 2016-09-30: Amy enhancement list 2016-09-27, #7: only display collapse/expand issues buttons when there are issues
+      - #tools_for_title_issues will now only display when #issues does
 	    document.getElementById("tools_for_title_issues").style.display = "block";
       console.warn('toggle_...',calling_function,' just set #tools_for_title_issues to ', document.getElementById('tools_for_title_issues').style.display);
+      */
 	    document.getElementById("timeline").style.display = "block";
       console.warn('toggle_...',calling_function,' just set #timeline to ', document.getElementById('timeline').style.display);
 	    document.getElementById('issues').style.display = "block";
