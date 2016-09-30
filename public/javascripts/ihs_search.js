@@ -57,43 +57,22 @@
     if (calling_function == 'populateSearchList'){
       // hide these
       document.getElementById('summary').style.display = "none"; // AJE new
-      console.info('toggle_...',calling_function,' just set #summary to ', document.getElementById('summary').style.display);
       document.getElementById('timeline').style.display = "none"; // AJE new
-      console.info('toggle_...',calling_function,' just set #timeline to ', document.getElementById('timeline').style.display);
-      /*
-      AJE 2016-09-30: Amy enhancement list 2016-09-27, #7: only display collapse/expand issues buttons when there are issues
-      - #tools_for_title_issues will now only display when #issues does
-      document.getElementById('tools_for_title_issues').style.display = "none";
-      console.info('toggle_...',calling_function,' just set #tools_for_title_issues to ', document.getElementById('tools_for_title_issues').style.display);
-      */
       document.getElementById('issues').style.display = "none"; // AJE new
-      console.info('toggle_...',calling_function,' just set #issues to ', document.getElementById('issues').style.display);
       // show these
       document.getElementById('search_results_header').style.display = "block"; // AJE new
-      console.warn('toggle_...',calling_function,' just set #search_results_header to ', document.getElementById('search_results_header').style.display);
       // # results is done in populateSearchList, but sometimes fails to appear, so explicitly do it now
       document.getElementById('results').style.display = "block"; // AJE new
-      console.warn('toggle_...',calling_function,' just set #results to ', document.getElementById('tools_for_title_issues').style.display);
     }
     else if (calling_function == 'getJournalDetail'){
 	    // hide these
 	    document.getElementById('search_results_header').style.display = "none";
-      console.info('toggle_...',calling_function,' just set #search_results_header to ', document.getElementById('search_results_header').style.display);
 	    document.getElementById('results').style.display = "none"; // list of titles
-      console.info('toggle_...',calling_function,' just set #results to ', document.getElementById('results').style.display);
 	    // show these
 	    document.getElementById('summary').style.display = "block";
-      console.warn('toggle_...',calling_function,' just set #summary to ', document.getElementById('summary').style.display);
-      /*
-      AJE 2016-09-30: Amy enhancement list 2016-09-27, #7: only display collapse/expand issues buttons when there are issues
-      - #tools_for_title_issues will now only display when #issues does
-	    document.getElementById("tools_for_title_issues").style.display = "block";
-      console.warn('toggle_...',calling_function,' just set #tools_for_title_issues to ', document.getElementById('tools_for_title_issues').style.display);
-      */
 	    document.getElementById("timeline").style.display = "block";
-      console.warn('toggle_...',calling_function,' just set #timeline to ', document.getElementById('timeline').style.display);
 	    document.getElementById('issues').style.display = "block";
-      console.warn('toggle_...',calling_function,' just set #issues to ', document.getElementById('issues').style.display);
+
     }
   } // end toggle_search_home_title_components // end AJE 2016-09-20, resume Travant original
 
