@@ -51,26 +51,20 @@ function clone(src) {
 }
 
 function showWaiting(){
-
-	 
 	if( !document.getElementById ) return;
-	
+
 	//$('div *').prop('disabled', true);
 	$('div *').addClass("disableCls");
 
-	
 	document.getElementById('waiting').style.display = 'block';
 }
 
 function hideWaiting(){
-	   
 	if( !document.getElementById ) return;
-	
-	
+
 	//$('div *').prop('disabled', false);
-	
 	$('div *').removeClass("disableCls");
-	
+
 	document.getElementById('waiting').style.display = 'none';
 }
 
@@ -81,4 +75,3 @@ function validateDate(testdate) {
     return result;
 }
 
-	
