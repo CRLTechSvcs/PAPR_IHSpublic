@@ -50,7 +50,7 @@ public class pdf {
 			this.numberOfPreservation = numberOfPreservation;
 			this.totalIssue = totalIssue;
 		}
-		
+
 		void setTitle (String title){
 			this.title =title;
 		}
@@ -58,7 +58,7 @@ public class pdf {
 		void setTitleid (int titleid){
 			this.titleid = titleid;
 		}
-		
+
 		public void onStartPage(PdfWriter writer, Document document) {
 
 			pagenumber++;
@@ -93,7 +93,8 @@ public class pdf {
 
 				if (pagenumber == 1) {
 					Image image1 = Image
-							.getInstance("public/images/papr_logo.gif");
+							//.getInstance("public/images/papr_logo.gif"); // AJE 2016-09-30 old value
+							.getInstance("public/images/papr_ihs_logo.gif"); // AJE 2016-09-30 new
 
 					document.add(image1);
 
@@ -245,7 +246,7 @@ public class pdf {
 					table.addCell(cell);
 
 					document.add(table);
-					
+
 
 				}
 
@@ -292,7 +293,7 @@ public class pdf {
 				table.addCell(cell);
 
 				document.add(table);
-				
+
 				if(titleid > 1) {
 					table = new PdfPTable(1);
 					table.setWidthPercentage(100);
@@ -302,22 +303,22 @@ public class pdf {
 					cell = new PdfPCell(new Phrase(""));
 					cell.setColspan(1);
 					cell.setBorder(Rectangle.NO_BORDER);
-					
+
 					table.addCell(cell);
-					
-					
+
+
 					cell = new PdfPCell(new Phrase("       Title--------" + "   (continued…)") );
 					cell.setColspan(1);
-						
+
 					table.addCell(cell);
-					
-						
+
+
 					cell = new PdfPCell(new Phrase(""));
 					cell.setColspan(1);
-					cell.setBorder(Rectangle.NO_BORDER);		
+					cell.setBorder(Rectangle.NO_BORDER);
 					table.addCell(cell);
 					document.add(table);
-					
+
 				}
 
 			} catch (DocumentException | IOException e) {
@@ -365,7 +366,7 @@ public class pdf {
 		document.open();
 
 		for (int j = 0; j < 5; j++) {
-			
+
 			event.setTitle("Title -----");
 			PdfPTable table = new PdfPTable(1);
 			table.setWidthPercentage(100);
@@ -373,41 +374,41 @@ public class pdf {
 			table.getDefaultCell().setBorder(4);
 
 			PdfPCell cell = new PdfPCell(new Phrase(""));
-			
-			
+
+
 			cell.setColspan(1);
 			cell.setBorder(Rectangle.NO_BORDER);
-			
+
 			table.addCell(cell);
-		
-			
+
+
 			cell = new PdfPCell(new Phrase("       Title--------",
 					FontFactory.getFont(FontFactory.HELVETICA, 12,
 							Font.BOLD)));
 			cell.setColspan(1);
 			table.addCell(cell);
-			
-				
+
+
 			cell = new PdfPCell(new Phrase(""));
 			cell.setColspan(1);
-			cell.setBorder(Rectangle.NO_BORDER);		
+			cell.setBorder(Rectangle.NO_BORDER);
 			table.addCell(cell);
 			document.add(table);
 
-			
-			
+
+
 			boolean shaded = true;
 
-			
+
 			for (int i = 0; i < 10; i++) {
 
 				event.setTitleid(i);
-				
+
 				table = new PdfPTable(5);
 				table.setWidths(new float[] { 1.2f, 2, 3, 4, 5 });
 				table.setWidthPercentage(100);
 
-				
+
 				cell = new PdfPCell(new Phrase(i+"",
 						FontFactory.getFont(FontFactory.HELVETICA, 10,
 								Font.NORMAL)));
