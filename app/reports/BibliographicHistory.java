@@ -122,9 +122,11 @@ public class BibliographicHistory {
 					table = new PdfPTable(1);
 					table.setWidthPercentage(100);
 
-					cell = new PdfPCell(new Phrase("For: "  + title,
-							FontFactory.getFont(FontFactory.HELVETICA, 15,
-									Font.NORMAL)));
+					//cell = new PdfPCell(new Phrase("For " + org, // AJE 2016-09-30 Travant original
+					cell = new PdfPCell(new Phrase(report + " for " + title,
+							// FontFactory.getFont(FontFactory.HELVETICA, 15, Font.NORMAL))); // AJE 2016-09-30 Travant original
+							FontFactory.getFont(FontFactory.HELVETICA, 18, Font.BOLD))); // AJE 2016-09-30 embiggen and embolden
+
 					cell.setBorder(Rectangle.NO_BORDER);
 					table.addCell(cell);
 
