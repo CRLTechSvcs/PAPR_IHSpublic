@@ -124,23 +124,32 @@ public class IssuesHeldReport {
     this puts the Title-Volume-Issue-Date-Location headers on every page INCLUDING the first,
     which is new and was the original request by Amy for how it should look */
         if (pagenumber == 1) { // AJE 2016-01-13 tried removing IF braces, so do this on every page : FAILED: headers show up on no pages at all, revert to original
-					Image image1 = Image.getInstance("public/images/papr_logo.gif");
+					//Image image1 = Image.getInstance("public/images/papr_logo.gif"); // old AJE 2016-09-30
+					Image image1 = Image.getInstance("public/images/papr_ihs_logo.gif");
 					document.add(image1);
 
+          /* AJE 2016-09-30 FontFactory.HELVETICA, 30, can reduce to 20 and is nicer,
+              but this output is redundant: see next below
 					ColumnText.showTextAligned(
 							writer.getDirectContent(),
 							Element.ALIGN_LEFT,
+							AJE 2016-09-30 testing : preserve the old
 							new Phrase(report,
 							  FontFactory.getFont( FontFactory.HELVETICA, 30, Font.NORMAL)),
 							  rect.getRight() - 480, rect.getHeight() - 70, 0f); // AJE 2016-01-21 original values here
+							*/
+							// end AJE 2016-09-30
+
 
 
 					table = new PdfPTable(1);
 					table.setWidthPercentage(100);
 
-					cell = new PdfPCell(new Phrase("For " + org, // AJE 2016-01-20 can't find any output from this:
+					//cell = new PdfPCell(new Phrase("For " + org, // AJE 2016-09-30 original
+					cell = new PdfPCell(new Phrase(report + " for " + org,
 							//FontFactory.getFont(FontFactory.HELVETICA, 25, Font.NORMAL))); // AJE 2016-01-21 original values here
-							FontFactory.getFont(FontFactory.HELVETICA, 14, Font.NORMAL))); // AJE 2016-01-21 no way do we need a size 25 font ever
+							//FontFactory.getFont(FontFactory.HELVETICA, 14, Font.NORMAL))); // AJE 2016-01-21 no way do we need a size 25 font ever
+							FontFactory.getFont(FontFactory.HELVETICA, 18, Font.BOLD))); // AJE 2016-09-30 embiggen and embolden
 					cell.setBorder(Rectangle.NO_BORDER);
 					table.addCell(cell);
 
@@ -221,7 +230,7 @@ public class IssuesHeldReport {
 			String fileName = rand.nextInt(10000) + "_IssuesHeldReport.pdf"; // AJE 2016-08-23
 
 			destFileString = dataDir + File.separator + fileName;
-			
+
 			Logger.info("IssueHeldReport.java, createPdf() will create the file at: " +destFileString);
 
 
