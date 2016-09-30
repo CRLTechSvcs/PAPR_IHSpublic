@@ -43,7 +43,7 @@ public class Reporting extends Controller {
 	public static String IssuesHeld ="IssuesHeld";
 	public static String JournalFamily ="JournalFamily";
 	public static String BibliographicHistory ="BibliographicHistory";
-	
+
 	static DateTimeFormatter dtf = DateTimeFormat
 			.forPattern("MMM dd, yyyy HH:mm aa");
 
@@ -51,52 +51,52 @@ public class Reporting extends Controller {
 	public static Result reporting_previous_reports(){
 		return ok(reporting_previous_reports.render());
 	}
-	
+
 	public static Result reporting_new_report(){
 		return ok(reporting_new_report.render());
 	}
-	
+
 	public static Result getReportingView() {
 
 		NewReportView newReportView = new NewReportView();
 
 		return ok(toJson(newReportView));
 	}
-	
+
 	public static Result getReportingJobs(){
-		
+
 		PageingJson pageingJson = new PageingJson();
-		
+
 		ReportJobView reportJobView;
-		
+
 		List<IhsReportingJob> ihsReportingJobs = IhsReportingJob.find
 				.where().orderBy("reportingJobId desc").setMaxRows(MAX_ROW)
 				.findList();
-		
-		
+
+
 		for(IhsReportingJob ihsReportingJob : ihsReportingJobs){
-		
-			reportJobView = new ReportJobView(dtf.print(ihsReportingJob.dateInitiated),ihsReportingJob.report,ihsReportingJob.parameters, 
-					ihsReportingJob.fileformat, ihsReportingJob.ihsUser.ihsMember.name, ihsReportingJob.ihsUser.getName(), 
+
+			reportJobView = new ReportJobView(dtf.print(ihsReportingJob.dateInitiated),ihsReportingJob.report,ihsReportingJob.parameters,
+					ihsReportingJob.fileformat, ihsReportingJob.ihsUser.ihsMember.name, ihsReportingJob.ihsUser.getName(),
 					ihsReportingJob.singestionJobStatus.name, ihsReportingJob.link);
 			pageingJson.items.add(reportJobView);
 		}
-		
+
 		return ok(toJson(pageingJson));
-		
+
 	}
-	
+
 	@BodyParser.Of(BodyParser.Json.class)
 	public static Result submitReport() {
-		
+
 		NewReportView newReportView;
-		
+
 		try {
-			
+
 			String jsonString = Controller.request().body().asJson().toString();
 
 			ObjectMapper mapper = new ObjectMapper();
-			
+
 			newReportView = mapper.readValue(jsonString, NewReportView.class);
 
 			String user = session().get(Login.User);
@@ -104,31 +104,31 @@ public class Reporting extends Controller {
 			AppUser appUser = Helper.getAppUserFromCache(user);
 
 			IhsUser ihsUser = IhsUser.find.byId(appUser.userId);
-			
-			IhsMember ishMember = IhsMember.find.byId(newReportView.memberId);
-			
+
+			IhsMember ihsMember = IhsMember.find.byId(newReportView.memberId);
+
 			IhsTitle ihsTitle = IhsTitle.find.byId(newReportView.titleId);
-			
+
 			String parameters = "";
-			
+
 			if(IssuesHeld.equals(newReportView.report)){
-				parameters = "Member Id: " + ishMember.name;
+				parameters = "Member Id: " + ihsMember.name;
 			}else{
-				parameters = "Title: " + ihsTitle.title + "<br> ISSN: " + ihsTitle.printISSN; 
-		
+				parameters = "Title: " + ihsTitle.title + "<br> ISSN: " + ihsTitle.printISSN;
+
 			}
-			
+
 			SingestionJobStatus singestionJobStatus = (SingestionJobStatus) SingestionJobStatus.find
 					.where().eq("name", SingestionJobStatus.Queued)
 					.findUnique();
 
-			
+
 			IhsReportingJob ihsReportingJob = new IhsReportingJob(
 					new DateTime(), newReportView.report, ihsUser, jsonString, singestionJobStatus,
 					"PDF", parameters);
 
 			ihsReportingJob.save();
-			
+
 			ActorSelection myActor = AppActorSystem.getInstance().getActorSystem()
 					.actorSelection("user/ReportingActor");
 
