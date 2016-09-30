@@ -54,7 +54,7 @@ public class IssuesHeldReport {
 		int pagenumber;
 		String title ="";
 		int titleid = 0;
-		String report = "";
+		String report = ""; // AJE 2016-09-30 DEVNOTE: change Travant's excessively generic variable
 		String date = "";
 		String org = "";
 
@@ -84,7 +84,7 @@ public class IssuesHeldReport {
 					writer.getDirectContent(),
 					Element.ALIGN_CENTER, // AJE 2016-01-25 this is original
 					// Element.ALIGN_RIGHT, // 2016-01-25 AJE worse for cutting off the edge?
-					new Phrase(report, FontFactory.getFont( // AJE test ; this line is original
+          new Phrase(report, FontFactory.getFont( // AJE test ; this line is original
 					//new Phrase("Report Name AJE", FontFactory.getFont( // AJE: this line does affect the output
 							FontFactory.HELVETICA, 10, Font.NORMAL)),
 							//rect.getLeft() + 88, rect.getHeight() - 20, 0f); // AJE 2016-01-21 original values here
@@ -146,7 +146,8 @@ public class IssuesHeldReport {
 					table.setWidthPercentage(100);
 
 					//cell = new PdfPCell(new Phrase("For " + org, // AJE 2016-09-30 Travant original
-					cell = new PdfPCell(new Phrase(report + " for " + org,
+					cell = new PdfPCell(new Phrase("Issues Held Report for " +
+					    System.getProperty("line.separator") + org,
 							//FontFactory.getFont(FontFactory.HELVETICA, 25, Font.NORMAL))); // AJE 2016-01-21 original values here
 							//FontFactory.getFont(FontFactory.HELVETICA, 14, Font.NORMAL))); // AJE 2016-01-21 no way do we need a size 25 font ever
 							FontFactory.getFont(FontFactory.HELVETICA, 18, Font.BOLD))); // AJE 2016-09-30 embiggen and embolden
@@ -215,7 +216,11 @@ public class IssuesHeldReport {
 					rect.getRight() - 20, 10, 0f);
 
 		}
-	}
+	} // end class HeaderFooter
+
+
+
+
 
 	public String createPdf(NewReportView newReportView,
 			DateTime dateInitiated, List<IhsTitle> ihsTitles)
@@ -242,12 +247,13 @@ public class IssuesHeldReport {
 			String report = "Issues Held Report";  // AJE 2016-01-20 was 'Issue Held Report'
 			String date = dtfShort.print(dateInitiated);
 
-			IhsMember ishMember = IhsMember.find.byId(newReportView.memberId);
-      //report = report + " : " + ishMember.name; // AJE 2016-01-20 new : WORKS but start of text is pushed off left margin
-      //report = report + System.lineSeparator() + ishMember.name; // AJE 2016-01-21 : see comment 'make room for IhsMember.Name'
-      report = report + " : " + ishMember.name; // AJE 2016-01-21 : see comment 'make room for IhsMember.Name'
+			IhsMember ihsMember = IhsMember.find.byId(newReportView.memberId);
+      //report = report + " : " + ihsMember.name; // AJE 2016-01-20 new : WORKS but start of text is pushed off left margin
+      //report = report + System.lineSeparator() + ihsMember.name; // AJE 2016-01-21 : see comment 'make room for IhsMember.Name'
+      report = report + " : " + ihsMember.name; // AJE 2016-01-21 : see comment 'make room for IhsMember.Name'
 
-			HeaderFooter event = new HeaderFooter(report, date, ishMember.name);
+			//HeaderFooter event = new HeaderFooter(report, date, ihsMember.name); // AJE 2016-09-30 use new variable
+			HeaderFooter event = new HeaderFooter(report, date, ihsMember.name);
 
 			writer.setPageEvent(event);
 
@@ -258,7 +264,7 @@ public class IssuesHeldReport {
 				String issn = Helper.formatIssn(ihsTitle.printISSN) ;
 
 				//String title =  ihsTitle.title + " | " + issn; // AJE 2016-01-13 -- want first and all subsequent pages to show a header
-				//String title =  ihsTitle.title + " | " + issn + " | held by: " +ishMember.name; // AJE 2016-01-20 : make it more awesome
+				//String title =  ihsTitle.title + " | " + issn + " | held by: " +ihsMember.name; // AJE 2016-01-20 : make it more awesome
 				// above is awesome but if we put the title + issn into Title column and org_name into Location column, no need for this header at all
 				String title = "";
 				if(ihsTitle.title.endsWith(".")){ // AJE 2016-01-21 this if block added to remove trailing periods from titles
@@ -408,7 +414,7 @@ end AJE 2016-01-20 10:46
 
 						//cell = new PdfPCell(new Phrase("", // AJE 2016-01-13: this line Travant original
 						// AJE 2016-01-20 DEVNOTE: empty string used above shows there is no Location data or field yet
-						cell = new PdfPCell(new Phrase(ishMember.name, // AJE 2016-01-20 17:58 per Amy: show holding organization in this column
+						cell = new PdfPCell(new Phrase(ihsMember.name, // AJE 2016-01-20 17:58 per Amy: show holding organization in this column
 								//FontFactory.getFont(FontFactory.HELVETICA, 10, Font.NORMAL))); // AJE 2016-01-21 original values here
 								FontFactory.getFont(FontFactory.HELVETICA, 8, Font.NORMAL)));	// new AJE 2016-01-21 : this is always same in this report, so smaller font to fit and de-emphasize
             cell.setHorizontalAlignment(Element.ALIGN_LEFT);	// new AJE 2016-01-20
