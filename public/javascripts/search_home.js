@@ -579,6 +579,8 @@
     document.getElementById("timeline").innerHTML=html;
   }
 
+
+
 	function populateVolumeDetail(response, ioArgs) {
 		var numberOfIssue=0;
 		var volumeLevelFlag = '0';
@@ -588,6 +590,14 @@
     holdings = {};
 
     for (var index = 0, len = response.length; index < len; ++index) {
+
+      // AJE 2016-09-30 for Amy enhancement list 2016-09-27, #7
+      if (index == 0){
+        //console.warn('Amy enhancement list 2016-09-27, #7: show tools_for_title_issues');
+        $('#tools_for_title_issues').css('display', 'block');
+      }
+      // end AJE 2016-09-30
+
 	    var table1 =  document.getElementById('table1');
       var row = table1.insertRow(index);
 
@@ -817,102 +827,13 @@
     });
 	}
 
-/*
-  AJE 2016-09-21 moved populateSearchList to ihs_search.js, where it can live with searchJournalByTitle, etc.
-*/
-
-
-
-// AJE 2016-09-21 Travant misspelled function name ; appears to be unused: see ihs_search.js : function searchJournalByTitle
-/**************************************************
-	function seachJournalByTitle(search) {
-		var results = document.getElementById('results');
-
-		var issn = document.getElementById('issnid');
-		issn.value="";
-		var oclc = document.getElementById('oclcid');
-		oclc.value="";
-
-		var value = search.value.replace('\\', ' ').replace('\/', ' ').replace('  ', ' ');
-
-		var value1 = search.value.replace(' ', '');
-    console.info('search_home.js, value1 = ', value1 )
-
-    if (value.length < 2 ) {
-      console.info('search_home.js, IF: clear results.innerHTML')
-      results.innerHTML = ' ';
-    } else {
-      console.info('search_home.js, ELSE: do sth')
-      if (value1.length % 3  == 0 || search.value.charAt(search.value.length-1) == ' ') {
-        dojo.xhrGet({
-          handleAs: 'json',
-          url: "/search/seachJournalByTitle/" + value,
-          preventCache: true,
-          error: function(e) { alert("Error: " + e.message); },
-          load: populateSearchList
-        });
-      }
-    }
-	} // end seachJournalByTitle
-**************************************************/
-
-// AJE 2016-09-21 Travant misspelled function name ; appears to be unused: see ihs_search.js : function searchJournalByISSN
-/**************************************************
-	function seachJournalByISSN(search) {
-	  var results = document.getElementById('results');
-
-		var oclc = document.getElementById('oclcid');
-		oclc.value="";
-
-	  var title = document.getElementById('titleid');
-	  title.value="";
-
-    var st = search.value.replace('-', '');
-
-    if (st.length < 2) {
-      results.innerHTML= ' ';
-    } else {
-      if (st.length == 8) {
-        dojo.xhrGet({
-        handleAs: 'json',
-        url: "/search/seachJournalByISSN/" + st,
-        preventCache: true,
-        error: function(e) { alert("Error: " + e.message); },
-        load: populateSearchList
-        });
-      }
-    }
-	}
-**************************************************/
-
-// AJE 2016-09-21 Travant misspelled function name ; appears to be unused: see ihs_search.js : function searchJournalByOCLC
-/**************************************************
-	function seachJournalByOCLC(search) {
-    var results = document.getElementById('results');
-
-    var title = document.getElementById('titleid');
-    title.value="";
-
-    var issn = document.getElementById('issnid');
-    issn.value="";
-
-    var st = search.value;
-
-    if (st.length < 2) {
-    results.innerHTML= ' ';
-    } else {
-      if (st.length > 4) {
-        dojo.xhrGet({
-          handleAs: 'json',
-          url: "/search/seachJournalByOCLC/" + st,
-          preventCache: true,
-          error: function(e) { alert("Error: " + e.message); },
-          load: populateSearchList
-        });
-      }
-    }
-  }
-**************************************************/
+// AJE 2016-09-21 moved populateSearchList to ihs_search.js, where it can live with searchJournalByTitle, etc.
+// AJE 2016-09-21 Travant misspelled function name seachJournalByTitle; appears to be unused: see ihs_search.js : function searchJournalByOCLC
+// AJE 2016-09-30 removed seachJournalByTitle
+// AJE 2016-09-21 Travant misspelled function name seachJournalByISSN; appears to be unused: see ihs_search.js : function searchJournalByOCLC
+// AJE 2016-09-30 removed seachJournalByISSN
+// AJE 2016-09-21 Travant misspelled function name seachJournalByOCLC; appears to be unused: see ihs_search.js : function searchJournalByOCLC
+// AJE 2016-09-30 removed seachJournalByOCLC
 
 	function collapseAllVolumes() {
 		var volDivs = dojo.query(".dijitTitlePane");
