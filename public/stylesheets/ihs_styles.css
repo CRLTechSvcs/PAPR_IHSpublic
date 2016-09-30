@@ -450,6 +450,14 @@ div.timeline-missing {
 	width:200px;
 	text-align:right;
 }
+#tools_for_title_issues { /* AJE 2016-09-16, removed and reinstated 2016-09-30 */
+  display:none; /* search_home.js, function populateVolumeDetail will show it when the time is right [Amy enhancement list 2016-09-27, #7] */
+  clear: both;
+  float:left;
+  text-align: left;
+  height: auto;
+  margin: 15px;
+}
 
 div.held .dijitTitlePaneTitle {
 	background:#8080FF;
@@ -554,18 +562,6 @@ img.edit-pub-range {
 	float:left;
 	text-align: left;
 }
-#tools_for_title_issues { /* AJE 2016-09-14 new div for holding 'Tools' on search_home: see app/views/search_home.scala.html */
-  /* display:none; is changed in ihs_search.js : function toggle_search_home_title_components
-  AJE 2016-09-30 now lives inside #issues and takes on the display of the parent
-  */
-	clear: both;
-	/* width:275px; */
-	height: auto;
-	float:left;
-	text-align: left;
-	margin: 15px;
-}
-
 #content-col2 {
 	width: 270px;
 	height: auto;
