@@ -37,7 +37,7 @@ public class DeaccessionReport {
 	private static DateTimeFormatter dateFormat = DateTimeFormat
 			.forPattern("MMM-YYYY");
 	static Random rand = new Random();
-	
+
 	class HeaderFooter extends PdfPageEventHelper {
 		int pagenumber = 0;
 		String jobname = "";
@@ -65,7 +65,7 @@ public class DeaccessionReport {
 			this.numberOfPreservation = numberOfPreservation;
 			this.totalIssue = totalIssue;
 		}
-		
+
 		void setTitle (String title){
 			this.title =title;
 		}
@@ -73,7 +73,7 @@ public class DeaccessionReport {
 		void setTitleid (int titleid){
 			this.titleid = titleid;
 		}
-		
+
 		public void onStartPage(PdfWriter writer, Document document) {
 
 			pagenumber++;
@@ -108,7 +108,8 @@ public class DeaccessionReport {
 
 				if (pagenumber == 1) {
 					Image image1 = Image
-							.getInstance("public/images/papr_logo.gif");
+							//.getInstance("public/images/papr_logo.gif");  // AJE 2016-09-30 old value
+							.getInstance("public/images/papr_ihs_logo.gif");  // AJE 2016-09-30 new
 
 					document.add(image1);
 
@@ -260,7 +261,7 @@ public class DeaccessionReport {
 					table.addCell(cell);
 
 					document.add(table);
-					
+
 
 				}
 
@@ -307,7 +308,7 @@ public class DeaccessionReport {
 				table.addCell(cell);
 
 				document.add(table);
-				
+
 				if(titleid > 1) {
 					table = new PdfPTable(1);
 					table.setWidthPercentage(100);
@@ -317,22 +318,22 @@ public class DeaccessionReport {
 					cell = new PdfPCell(new Phrase(""));
 					cell.setColspan(1);
 					cell.setBorder(Rectangle.NO_BORDER);
-					
+
 					table.addCell(cell);
-					
-					
+
+
 					cell = new PdfPCell(new Phrase("       " + title + "   (continued…)",
 							FontFactory.getFont(FontFactory.HELVETICA, 12,
 									Font.BOLD)));
-					
+
 					cell.setColspan(1);
-						
+
 					table.addCell(cell);
-					
-						
+
+
 					cell = new PdfPCell(new Phrase(""));
 					cell.setColspan(1);
-					cell.setBorder(Rectangle.NO_BORDER);		
+					cell.setBorder(Rectangle.NO_BORDER);
 					table.addCell(cell);
 					document.add(table);
 				}
@@ -357,7 +358,7 @@ public class DeaccessionReport {
 							.getLeft() + 350, 10, 0f);
 
 			ColumnText.showTextAligned(
-					writer.getDirectContent(),	
+					writer.getDirectContent(),
 					Element.ALIGN_CENTER,
 					new Phrase(String.format("%d", pagenumber), FontFactory
 							.getFont(FontFactory.HELVETICA, 10, Font.BOLD)),
@@ -365,39 +366,39 @@ public class DeaccessionReport {
 
 		}
 	}
-	
+
 	public String createPdf( DeaccesionReportView view) throws FileNotFoundException, DocumentException {
-	
-		
+
+
 		String dataDir = Play.application().configuration()
 				.getString("application.deaccesion.process.data.Dir");
 
 		String fileName = rand.nextInt(10000) + "-" + "-deaccession.pdf";
 
 		String destFileString = dataDir + File.separator + fileName;
-		
+
 		Document document = new Document(PageSize.A4.rotate());
 
 		PdfWriter writer = PdfWriter.getInstance(document,
 				new FileOutputStream(destFileString));
 
 		String standard = view.standard.equals("Ithica")? "Ithaka What to Withdraw": "CRL preservation criteria";
-		
+
 		HeaderFooter event = new HeaderFooter(view.jobName, view.initDate,
 					 view.orgName,view.userName, standard,
 					 view.NumberOfDeaccession, view.NumberOfDonation,view.numberOfPreservation, view.total);
 
 		writer.setPageEvent(event);
 
-		
+
 		document.open();
-	
-		for (DeaccessionTitleView adeaccessionTitleView : view.deaccessionTitleView){	
-			
+
+		for (DeaccessionTitleView adeaccessionTitleView : view.deaccessionTitleView){
+
 			String issn = adeaccessionTitleView.issn ;
-			
+
 			String title =  adeaccessionTitleView.title + " | " + issn;
-			
+
 			event.setTitle("      "+ title);
 			PdfPTable table = new PdfPTable(1);
 			table.setWidthPercentage(100);
@@ -405,55 +406,55 @@ public class DeaccessionReport {
 			table.getDefaultCell().setBorder(4);
 
 			PdfPCell cell = new PdfPCell(new Phrase(""));
-			
-			
+
+
 			cell.setColspan(1);
 			cell.setBorder(Rectangle.NO_BORDER);
-			
+
 			table.addCell(cell);
-		
-			
+
+
 			cell = new PdfPCell(new Phrase("      "+ title,
 					FontFactory.getFont(FontFactory.HELVETICA, 12,
 							Font.BOLD)));
 			cell.setColspan(1);
 			table.addCell(cell);
-			
-				
+
+
 			cell = new PdfPCell(new Phrase(""));
 			cell.setColspan(1);
-			cell.setBorder(Rectangle.NO_BORDER);		
+			cell.setBorder(Rectangle.NO_BORDER);
 			table.addCell(cell);
 			document.add(table);
 
-			
-			
+
+
 			boolean shaded = true;
 
 			int j = 1;
-			
+
 			for(DeaccessionIssueView adeaccessionIssueView :adeaccessionTitleView.deaccessionIssueView){
-				
+
 				event.setTitleid(j);
-				
+
 				table = new PdfPTable(5);
 				table.setWidths(new float[] { 1.2f, 2, 3, 4, 5 });
 				table.setWidthPercentage(100);
 
-				
+
 				cell = new PdfPCell(new Phrase(j+"",
 						FontFactory.getFont(FontFactory.HELVETICA, 10,
 								Font.NORMAL)));
 				cell.setBorder(Rectangle.NO_BORDER);
-				
+
 				j++;
-				
+
 				if (shaded)
 					cell.setGrayFill(0.9f);
 				table.addCell(cell);
-				
+
 				String planned  = null;
-				
+
 				if("p".equals(adeaccessionIssueView.action)){
 					planned = "Preserve";
 				}else if ("d".equals(adeaccessionIssueView.action)){
@@ -493,7 +494,7 @@ public class DeaccessionReport {
 				if (shaded)
 					cell.setGrayFill(0.9f);
 				table.addCell(cell);
-				
+
 
 				for(String adonnee : adeaccessionTitleView.donnee){
 					cell = new PdfPCell(new Phrase("Recommended Donee: "+ adonnee,
@@ -506,17 +507,17 @@ public class DeaccessionReport {
 					cell.setColspan(5);
 					table.addCell(cell);
 				}
-				
+
 				document.add(table);
-				
+
 				shaded = shaded ? false : true;
-				
+
 			}
 
 		}
-		
+
 		document.close();
-		
+
 		return destFileString;
 	}
 
