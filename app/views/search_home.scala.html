@@ -148,10 +148,9 @@
      		<br>
 
      		<div id="issues">
-
           <!--
             AJE 2016-09-16 moved tools from content-right
-            AJE 2016-09-30 Amy enhancement list 2016-09-27, #7: only display collapse/expand issues buttons when there are issues
+            AJE 2016-09-30 Amy enhancement list 2016-09-27, #7: only display collapse/expand issues buttons when there are issues: moved tools_for_title_issues into #issues div; also see see search_home.js > populateVolumeDetail
           -->
   				<div id="tools_for_title_issues">
         	 	<!-- AJE 2016-09-28 per Amy, remove 'Tools' header from button group
@@ -162,7 +161,6 @@
         	 	  if we're reinstating it, easiest to set it to display:none here
         	 	-->
   					<button id="want-status" style="display:none;" value="0" onClick="setJournalWantStatus()">Title Status Not Wanted</button>
-
   					<button id="collapse-all-volumes" onClick="collapseAllVolumes();" >Collapse Volumes</button>
   					<button id="expand-all-volumes"  onClick="expandAllVolumes();">Expand Volumes</button>
   				</div>
@@ -170,6 +168,7 @@
   				<!-- AJE 2016-09-16 end -->
 
 					<div id="childissues">
+					  <h2>this is childissues</h2>
 						<table id="table1">
 						</table>
 					</div>
