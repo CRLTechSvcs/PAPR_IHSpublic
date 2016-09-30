@@ -555,7 +555,9 @@ img.edit-pub-range {
 	text-align: left;
 }
 #tools_for_title_issues { /* AJE 2016-09-14 new div for holding 'Tools' on search_home: see app/views/search_home.scala.html */
-  display:none; /* is changed in ihs_search.js : function toggle_search_home_title_components */
+  /* display:none; is changed in ihs_search.js : function toggle_search_home_title_components
+  AJE 2016-09-30 now lives inside #issues and takes on the display of the parent
+  */
 	clear: both;
 	/* width:275px; */
 	height: auto;
