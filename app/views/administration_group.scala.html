@@ -24,36 +24,37 @@
                 </ul>
             </div>
 
-            <h2>Add a Group</h2>
+            <h2>Add a Program</h2>
+            <!--AJE 2016-10-03 'Group' now called 'Program' to match PAPR interface-->
             <br />
            <!-- AJE 2016-09-26 add div tag to move the form widgets off the left edge; add line breaks, other minor changes-->
            <div id="groupAddFormHolder" class="admin_form_alignment">
 
-           	Group Name:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+           	Program Name:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
            	  <input id="addName" class="ingestion-form" type="text" onkeyup="addGroupName(this);"/><br /><br />
-           	Group Description:&nbsp;
+           	Program Description:&nbsp;
            	  <input id="addDesc" class="ingestion-form" type="text" onkeyup="addGroupDesc(this);"/><br /><br />
-           	<input type="submit" value="Add Group" onclick="addGroup()"><br /><br />
+           	<input type="submit" value="Add Program" onclick="addGroup()"><br /><br />
            	<div id=status></div>
            	<br /><br />
           </div><!--AJE 2016-09-26 end #groupAddFormHolder-->
            	<hr style="width:95%;" />
 
-			<h2>Search a Group</h2><br />
+			<h2>Search a Program</h2><br />
 			     <!-- AJE 2016-09-26 add div tag to move the form widgets off the left edge; other minor changes-->
            <div id="groupSearchFormHolder" class="admin_form_alignment">
 
 
-           	Group Name:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+           	Program Name:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
            	<input id ="groupSearch" class="ingestion-form" type="text" onkeyup="searchGroupName(this);" />
            	<br /><br />
-           	<input type="submit" value="Search Groups" onclick="searchGroup()" />
+           	<input type="submit" value="Search Programs" onclick="searchGroup()" /><!--AJE 2016-10-03 'Group' now called 'Program' to match PAPR interface-->
            	<br /><br />
           </div><!--AJE 2016-09-26 end #groupSearchFormHolder-->
 
            	<hr style="width:95%;" />
 
-           	<h2>Edit a Group</h2>
+           	<h2>Edit a Program</h2>
            	<br />
            	<div id=search style="width: 600px; height: 300px; overflow-y: scroll;"></div>
            	<br /><br />
