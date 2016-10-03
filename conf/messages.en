@@ -39,7 +39,8 @@ menu.reporting.new.report=New Report
 
 
 menu.administration=Administration
-menu.admin.group=Manage Group
+# menu.admin.group=Manage Group # 2016-10-03 AJE changed per Amy; next is new terminology Group > Program
+menu.admin.group=Manage Program
 menu.admin.member=Manage Member
 menu.admin.user=Manage User
 
