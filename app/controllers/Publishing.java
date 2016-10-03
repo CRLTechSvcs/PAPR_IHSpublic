@@ -1,3 +1,7 @@
+/*
+  AJE 2016-09-30 'Publishing' has been relabeled 'Export Data' in the public interface, but all code still uses the old term
+*/
+
 package controllers;
 
 import java.util.List;
@@ -122,7 +126,7 @@ public class Publishing extends Controller {
 		for (IhsPublishingJob ihsPublishingJob : ihsPublishingJobs) {
 
 			String foramType ="";
-			
+
 			if(ihsPublishingJob.fileformat == 1){
 				foramType = MARK;
 			}else if (ihsPublishingJob.fileformat == 2){
@@ -132,12 +136,12 @@ public class Publishing extends Controller {
 			}else if(ihsPublishingJob.fileformat == 4){
 				foramType = IHS_CSV;
 			}
-			
-			 
+
+
 			String startDate = ihsPublishingJob.startDate != null ? shortdtf.print( ihsPublishingJob.startDate) + " to ": "Begining to";
 			String endDate = ihsPublishingJob.endDate != null ? shortdtf.print( ihsPublishingJob.endDate): " End";
-			
-			
+
+
 			PublishingJobView publishingJobView = new PublishingJobView(
 					dtf.print(ihsPublishingJob.dateInitiated),
 					ihsPublishingJob.jobName,
@@ -147,10 +151,10 @@ public class Publishing extends Controller {
 					startDate + endDate,
 					ihsPublishingJob.singestionJobStatus.name,
 					ihsPublishingJob.link
-					
+
 			);
 			pageingJson.items.add(publishingJobView);
-			
+
 		}
 
 		return ok(toJson(pageingJson));
@@ -175,7 +179,7 @@ public class Publishing extends Controller {
 		for (IhsPublishingJob ihsPublishingJob : ihsPublishingJobs) {
 
 			String foramType ="";
-			
+
 			if(ihsPublishingJob.fileformat == 1){
 				foramType = MARK;
 			}else if (ihsPublishingJob.fileformat == 2){
@@ -185,12 +189,12 @@ public class Publishing extends Controller {
 			}else if(ihsPublishingJob.fileformat == 4){
 				foramType = IHS_CSV;
 			}
-			
-			 
+
+
 			String startDate = ihsPublishingJob.startDate != null ? shortdtf.print( ihsPublishingJob.startDate) + " to ": "Begining to";
 			String endDate = ihsPublishingJob.endDate != null ? shortdtf.print( ihsPublishingJob.endDate): " End";
-			
-			
+
+
 			PublishingJobView publishingJobView = new PublishingJobView(
 					dtf.print(ihsPublishingJob.dateInitiated),
 					ihsPublishingJob.jobName,
@@ -200,10 +204,10 @@ public class Publishing extends Controller {
 					startDate + endDate,
 					ihsPublishingJob.singestionJobStatus.name,
 					ihsPublishingJob.link
-					
+
 			);
 			pageingJson.items.add(publishingJobView);
-			
+
 		}
 
 		return ok(toJson(pageingJson));
@@ -228,7 +232,7 @@ public class Publishing extends Controller {
 		for (IhsPublishingJob ihsPublishingJob : ihsPublishingJobs) {
 
 			String foramType ="";
-			
+
 			if(ihsPublishingJob.fileformat == 1){
 				foramType = MARK;
 			}else if (ihsPublishingJob.fileformat == 2){
@@ -238,12 +242,12 @@ public class Publishing extends Controller {
 			}else if(ihsPublishingJob.fileformat == 4){
 				foramType = IHS_CSV;
 			}
-			
-			 
+
+
 			String startDate = ihsPublishingJob.startDate != null ? shortdtf.print( ihsPublishingJob.startDate) + " to ": "Begining to";
 			String endDate = ihsPublishingJob.endDate != null ? shortdtf.print( ihsPublishingJob.endDate): " End";
-			
-			
+
+
 			PublishingJobView publishingJobView = new PublishingJobView(
 					dtf.print(ihsPublishingJob.dateInitiated),
 					ihsPublishingJob.jobName,
@@ -255,7 +259,7 @@ public class Publishing extends Controller {
 					ihsPublishingJob.link
 			);
 			pageingJson.items.add(publishingJobView);
-			
+
 		}
 
 		return ok(toJson(pageingJson));
