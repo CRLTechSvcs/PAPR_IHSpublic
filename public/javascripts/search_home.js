@@ -18,20 +18,6 @@
 		// AJE 2016-06-03: mine was stepped on so reinstated
     document.getElementById("title-col1").innerHTML = '<br>' + response.title;
 
-		/*
-		// AJE: saving Travant version 2016-06-03
-    document.getElementById("content-col1").innerHTML = '<ul class="no-decoration"> ' +
-        '<li><strong>Publisher:</strong> ' + response.publisher +
-        '</li> <li><strong>Print ISSN:</strong> ' + response.printISSN +
-        '</li> <li><strong>Electronic ISSN:</strong>  ' + response.eISSN +
-        '</li> <li><strong>OCLC Number:</strong>  ' + response.oclcNumber +
-        '</li> <li><strong>Publication Range:</strong> ' + response.publicationRange +
-        '</li> <li><strong>Publication Language:</strong> ' + response.language +
-        '</li> <li><strong>Publication Country:</strong> ' + response.country +
-        '</li> <li><strong>Volume Level:</strong> ' + response.volumeLevelFlag +
-        '</li> </ul> ';
-		*/
-
     var publisherLI = '<li><strong>Publisher:</strong> ' + response.publisher + '</li>';
 		var printISSN_LI = '<li><strong>Print ISSN:</strong> ' + response.printISSN + '</li>';
 		var eISSN_LI = '<li><strong>Electronic ISSN:</strong>  ' + response.eISSN + '</li>';
@@ -40,7 +26,6 @@
     var language_LI = '<li><strong>Publication Language:</strong> ' + response.language + '</li>';
     var country_LI = '<li><strong>Publication Country:</strong> ' + response.country + '</li>';
 		var volume_flag_LI = '<li><strong>Volume Level:</strong> ' + response.volumeLevelFlag + '</li>';
-		/* AJE 2016-06-13 : mislabeled Volume Level in my previous fix */
 
     document.getElementById("content-col1").innerHTML = '<ul class="no-decoration">' + publisherLI + printISSN_LI + eISSN_LI + OCLC_LI + pub_range_LI + language_LI + country_LI + volume_flag_LI + '<ul>';
 
@@ -514,7 +499,8 @@
       		// .attr("fill", "rgb(255,255,255)") // AJE 2016-07-20 added : will produce white text + can be turned on if anyone chooses
       		.text(function(d) { return d.data.status + '(' + d.data.number + ')' ; });
 
-    }
+      // AJE 2016-10-03 force display of piechart, because in populateVolumeDetail we have hidden it
+  }
 
   function moveCursor(volIndex){
     var volDivs = dojo.query(".dijitTitlePane");
@@ -577,6 +563,10 @@
       html +=	'<div id="timeline-right">' + response[response.length-1].volumeYear + '|</div><br>';
     }
     document.getElementById("timeline").innerHTML=html;
+
+    // AJE 2016-10-03 force display of timebar, because in populateVolumeDetail we have hidden it
+    $('#timeline').css('display', 'block'); // AJE 2016-09-30 for Amy enhancement list 2016-09-27, #7
+
   }
 
 
@@ -585,18 +575,17 @@
 		var numberOfIssue=0;
 		var volumeLevelFlag = '0';
 
+      // AJE 2016-10-03 assume there are no issues, so no widgets
+    $('#content-col2').css('display', 'none'); // #content-col2 is where the pie chart lives
+    $('#timeline').css('display', 'none');
+    $('#tools_for_title_issues').css('display', 'none');
+    // end AJE 2016-09-30 for Amy enhancement list 2016-09-27, #7
+
     document.getElementById("summary").style.display = 'block';
 
     holdings = {};
 
     for (var index = 0, len = response.length; index < len; ++index) {
-
-      // AJE 2016-09-30 for Amy enhancement list 2016-09-27, #7
-      if (index == 0){
-        //console.warn('Amy enhancement list 2016-09-27, #7: show tools_for_title_issues');
-        $('#tools_for_title_issues').css('display', 'block');
-      }
-      // end AJE 2016-09-30
 
 	    var table1 =  document.getElementById('table1');
       var row = table1.insertRow(index);
@@ -700,11 +689,19 @@
 
 	    	hideWaiting();
       } // end for index1
-	    } // end for just plain index
+	  } // end for just plain index
+
+//console.info('AJE 2016-09-15/10-03 : response: ', response, '.');
 
 	    if(response.length > 0) {
 	      document.getElementById("content-col2").innerHTML = ' ';
-			  drawPie(response);
+			  //drawPie(response); // AJE 2016-10-03 see comment above: I think this is in the wrong place
+			  /* AJE 2016-10-03
+	      drawTimeBar(response, numberOfIssue);
+        // AJE 2016-09-30 for Amy enhancement list 2016-09-27, #7
+        console.warn('Amy enhancement list 2016-09-27, #7: show tools_for_title_issues if numberOfIssue > 0 [now: ', numberOfIssue, ']');
+        $('#tools_for_title_issues').css('display', 'block');
+			  // 2016-10-03 resume Travant original */
 		  } else {
 			  document.getElementById("content-col2").innerHTML ='<img src="/assets/images/empty.gif" height="42" width="42" />' ;
 		  }
@@ -713,11 +710,32 @@
 	    if( volumeLevelFlag == 0){ drawTimeBar(response, numberOfIssue); }
 
 	    // but don't we always want to see the timebar? if there are issues?
+	    // 2016-10-03 moved this above
 
+	    console.info('AJE 2016-09-15/10-03 : near end populateVolumeDetail: if numberOfIssue > 0 [now: ', numberOfIssue, '] then call drawTimeBar');
+	    if( numberOfIssue > 0){
+	      drawTimeBar(response, numberOfIssue);
+	    }
+	    or
+	    console.info('AJE 2016-09-15/10-03 : near end populateVolumeDetail: if numberOfIssue > 0 [now: ', numberOfIssue, '] then call drawTimeBar');
+	    if( numberOfIssue > 0){
+	      drawTimeBar(response, numberOfIssue);
+        // AJE 2016-09-30 for Amy enhancement list 2016-09-27, #7
+        console.warn('Amy enhancement list 2016-09-27, #7: show tools_for_title_issues if numberOfIssue > 0 [now: ', numberOfIssue, ']');
+        $('#tools_for_title_issues').css('display', 'block');
+	    }
 	    */
-	    console.info('AJE 2016-09-15 : end of populateVolumeDetail: if numberOfIssue > 0 [now: ', numberOfIssue, '] then call drawTimeBar');
-	    if( numberOfIssue > 0){ drawTimeBar(response, numberOfIssue); }
-	    // AJE 2016-09-15 resume Travant original
+
+      /*
+         AJE 2016-10-03 The timeline shows up for titles with no issues, where it has no business being.
+          Moved out here with a check on the length of *issueView* instead of *response* or *numberOfIssue*
+      */
+      if (issueView && issueView.length > 0){
+        drawPie(response);
+	      drawTimeBar(response, numberOfIssue);
+        $('#tools_for_title_issues').css('display', 'block'); // AJE 2016-09-30 for Amy enhancement list 2016-09-27, #7
+      } // 2016-10-03 resume Travant original
+
 
 		drawGlobaledit();
 
