@@ -11,14 +11,14 @@ import javax.persistence.Table;
 import org.joda.time.DateTime;
 
 import play.db.ebean.Model;
-
+import play.Logger; /* AJE 2016-09-30 */
 
 @Entity
 @Table(name = "ihspublishingJob")
 public class IhsPublishingJob  extends Model{
 
 	private static final long serialVersionUID = 1L;
-	
+
 	@Id
 	@Column(name = "publishingJobId")
 	public int publishingJobId;
@@ -38,22 +38,22 @@ public class IhsPublishingJob  extends Model{
 
 	@Column(name = "endDate")
 	public DateTime endDate;
-	
+
 	@Column(name = "jsonString")
 	public String jsonString;
-	
+
 	@ManyToOne(fetch=FetchType.LAZY)
     @JoinColumn(name="jobStatusId")
     public SingestionJobStatus singestionJobStatus;
 
 	@Column(name = "link")
 	public String link;
-	
+
 	@Column(name = "fileformat")
 	public int fileformat;
-	
+
 	public IhsPublishingJob(DateTime dateInitiated,  String jobName,
-			IhsUser ihsUser, DateTime startDate, DateTime endDate,  String jsonString, 
+			IhsUser ihsUser, DateTime startDate, DateTime endDate,  String jsonString,
 			SingestionJobStatus singestionJobStatus, int fileformat) {
 
 		this.jobName = jobName;
@@ -66,13 +66,14 @@ public class IhsPublishingJob  extends Model{
 	}
 
 	public void setSingestionJobStatus(SingestionJobStatus singestionJobStatus){
-		this.singestionJobStatus = singestionJobStatus;	
+		this.singestionJobStatus = singestionJobStatus;
 	}
-	
+
 	public void setLink(String link){
+	  Logger.info("IhsPublishingJob.java, public void setLink(has link = " +link+ ")");
 		this.link= link;
 	}
-	
+
 	public static Finder<Integer, IhsPublishingJob> find = new Finder<Integer, IhsPublishingJob>(
 			Integer.class, IhsPublishingJob.class);
 }
