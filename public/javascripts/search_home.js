@@ -499,7 +499,9 @@
       		// .attr("fill", "rgb(255,255,255)") // AJE 2016-07-20 added : will produce white text + can be turned on if anyone chooses
       		.text(function(d) { return d.data.status + '(' + d.data.number + ')' ; });
 
-      // AJE 2016-10-03 force display of piechart, because in populateVolumeDetail we have hidden it
+      //console.info("AJE 2016-10-07 end drawPie; force display of piechart, because in populateVolumeDetail we have hidden it");
+      $('#content-col2').css('display', 'block'); // AJE 2016-09-30 for Amy enhancement list 2016-09-27, #7
+
   }
 
   function moveCursor(volIndex){
@@ -731,6 +733,7 @@
           Moved out here with a check on the length of *issueView* instead of *response* or *numberOfIssue*
       */
       if (issueView && issueView.length > 0){
+        console.warn("AJE 2016-10-03 issueView.length=", issueView.length, " ; call drawPie and drawTimeBar because in populateVolumeDetail we have hidden it");
         drawPie(response);
 	      drawTimeBar(response, numberOfIssue);
         $('#tools_for_title_issues').css('display', 'block'); // AJE 2016-09-30 for Amy enhancement list 2016-09-27, #7
