@@ -524,7 +524,8 @@
 
 
   function drawTimeBar(response, numberOfIssue){
-    var totalsize =800;
+    /* var totalsize =800; # AJE 2016-10-13 changed */
+    var totalsize =867;
     var issuessize = totalsize/numberOfIssue;
     var divindex=0;
     var numberofissue=0;
