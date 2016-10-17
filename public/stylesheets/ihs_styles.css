@@ -230,7 +230,8 @@ div.exception-list {
 
 #timeline {
 	height:50px;
-	width:800px;
+	/* width:800px; # AJE 2016-10-13 changed */
+	width:867px;
 	margin: 20px auto;
 	cursor: pointer;
 	clear: both; /* # AJE 2016-09-14 15:29:19 */
@@ -257,7 +258,8 @@ div.timeline-missing {
 
 #issues {
 	overflow:auto;
-	width:800px;
+	/* width:800px; # AJE 2016-10-13 changed */
+	width:867px;
 	margin: 10px auto;
 	height:549px;
 }
@@ -436,7 +438,8 @@ div.timeline-missing {
 
 #timeline-left {
 	float:left;
-	width:200px;
+	/* width:200px; # AJE 2016-10-13 changed */
+	width:234px;
 }
 
 #timeline-center {
@@ -447,7 +450,8 @@ div.timeline-missing {
 
 #timeline-right {
 	float:left;
-	width:200px;
+	/* width:200px; # AJE 2016-10-13 changed */
+	width:233px;
 	text-align:right;
 }
 #tools_for_title_issues { /* AJE 2016-09-16, removed and reinstated 2016-09-30 */
