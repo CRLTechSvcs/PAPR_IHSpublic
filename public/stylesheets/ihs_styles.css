@@ -230,13 +230,35 @@ div.exception-list {
 
 #timeline {
 	height:50px;
-	/* width:800px; # AJE 2016-10-13 changed */
-	width:867px;
-	margin: 20px auto;
+	/* width:800px; Travant original */
+	width:867px; /* AJE 2016-10-13 changed :
+	  width of timeline shd be == sum of width of: timeline-left, timeline-center, timeline-right
+	  - but paradoxically they are 800 and it looks best; can't get the rest to line up
+	  */
+	/* margin: 20px auto; Travant original */
+	margin:10px;
 	cursor: pointer;
 	clear: both; /* # AJE 2016-09-14 15:29:19 */
 }
 
+#timeline-left {
+	float:left;
+	/* width:200px; Travant original */
+	width:200px;
+}
+
+#timeline-center {
+	float:left;
+	width:400px;
+	text-align:center;
+}
+
+#timeline-right {
+	float:left;
+	/* width:200px; Travant original */
+	width:200px;
+	text-align:right;
+}
 div.timeline {
 	height:30px;
 	float:left;
@@ -244,17 +266,9 @@ div.timeline {
 
 
 
-div.timeline-held {
-	background-color:#8080FF;
-}
-
-div.timeline-wanted {
-	background-color:#FF8080;
-}
-
-div.timeline-missing {
-	background-color:#FFFF80;
-}
+div.timeline-held { background-color:#8080FF; }
+div.timeline-wanted { background-color:#FF8080; }
+div.timeline-missing { background-color:#FFFF80; }
 
 #issues {
 	overflow:auto;
@@ -263,7 +277,9 @@ div.timeline-missing {
 	margin: 10px auto;
 	height:549px;
 }
-
+#table1{ /* AJE 2016-10-18 new style definition; match width of issues? */
+  width:100%;
+}
 div.timeline:hover .coupontooltip { /* NEW */
     display: block;
 }
@@ -436,24 +452,6 @@ div.timeline-missing {
 	background-color:#FFFF80;
 }
 
-#timeline-left {
-	float:left;
-	/* width:200px; # AJE 2016-10-13 changed */
-	width:234px;
-}
-
-#timeline-center {
-	float:left;
-	width:400px;
-	text-align:center;
-}
-
-#timeline-right {
-	float:left;
-	/* width:200px; # AJE 2016-10-13 changed */
-	width:233px;
-	text-align:right;
-}
 #tools_for_title_issues { /* AJE 2016-09-16, removed and reinstated 2016-09-30 */
   display:none; /* search_home.js, function populateVolumeDetail will show it when the time is right [Amy enhancement list 2016-09-27, #7] */
   clear: both;
@@ -580,7 +578,8 @@ img.edit-pub-range {
 }
 
 #title-col1 {
-	width: 415px;
+	/* width: 415px; Travant original */
+	width:100%; /* AJE 2016-10-18 new */
 	height: auto;
 	float:left;
 	text-align: left;
