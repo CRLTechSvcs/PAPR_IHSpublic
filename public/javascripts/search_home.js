@@ -26,12 +26,21 @@
     var language_LI = '<li><strong>Publication Language:</strong> ' + response.language + '</li>';
     var country_LI = '<li><strong>Publication Country:</strong> ' + response.country + '</li>';
 		var volume_flag_LI = '<li><strong>Volume Level:</strong> ' + response.volumeLevelFlag + '</li>';
+		var volume_flag_LI = '<li><strong>Volume Level:</strong> ' + response.volumeLevelFlag + '</li>';
+		var titlehistory_link_CRL = '<li><a id="titlehistory_link_CRL" href="#" target="_blank">OCLC&#39;s History Visualization for this Journal</a></li>';
 
-    document.getElementById("content-col1").innerHTML = '<ul class="no-decoration">' + publisherLI + printISSN_LI + eISSN_LI + OCLC_LI + pub_range_LI + language_LI + country_LI + volume_flag_LI + '<ul>';
+    document.getElementById("content-col1").innerHTML = '<ul class="no-decoration">' + publisherLI + printISSN_LI + eISSN_LI + OCLC_LI + pub_range_LI + language_LI + country_LI + volume_flag_LI + titlehistory_link_CRL + '<ul>';
 
-		// AJE new: make the link value right
-		$("#titlehistory_link_CRL").attr("href", "http://worldcat.org/xissn/titlehistory?issn=" + response.printISSN);
-		//console.warn("search_home.js has set titlehistory_link_CRL.attr.href = ", $("#titlehistory_link_CRL").attr("href") );
+    if(response.printISSN){ // AJE 2016-10-18 only show titlehistory_link_CRL when there is an ISSN
+  		// AJE new: make the link value right
+	  	$("#titlehistory_link_CRL").attr("href", "http://worldcat.org/xissn/titlehistory?issn=" + response.printISSN);
+		  //console.warn("search_home.js has set titlehistory_link_CRL.attr.href = ", $("#titlehistory_link_CRL").attr("href") );
+    } else if (response.eISSN){
+      $("#titlehistory_link_CRL").attr("href", "http://worldcat.org/xissn/titlehistory?issn=" + response.eISSN);
+    } else {
+      $("#titlehistory_link_CRL").css("display", "none");
+    }
+
 
     call1 = false; // AJE no idea here ; is original
 	}
@@ -182,7 +191,7 @@
       tmpvalidationLevels.name=" ";
       holdingView.validationLevels.unshift(tmpvalidationLevels);
 
-      var validation = '<select  onchange="updateValidation(\'0\',this);">';
+      var validation = '<select onchange="updateValidation(\'0\',this);">';
       for (var index =0;  index < holdingView.validationLevels.length; index++) {
         validation += '<option value="' + holdingView.validationLevels[index].id + '">';
         validation += holdingView.validationLevels[index].name + '</option>';
@@ -213,7 +222,7 @@
       }
 
       var st = image1+'<br><strong>Commitment line : </strong> ' + commitment;
-        st += '<strong><br><br>Condition:</strong><br>Overall: ' + overallst + '<br>';
+        st += '<br><br><strong>Condition:</strong><br>Overall: ' + overallst + '<br>';
         st += 'Validation Level:' + validation + '<br>';
         st += 'Verified in IHS:' + ihsVerified + '<br>';
         st += 'Other Issues:' + tmpOtherissue;
@@ -416,6 +425,7 @@
     var image1Id = holdingView.holdingId + "image1";
     var image2Id = holdingView.holdingId + "image2";
     var notesId = holdingView.holdingId + "notes";
+    //console.log('buildHoldingHTML: image1Id=', image1Id, ', image2Id=', image2Id, ', notesId=', notesId);
 
     var col12 = holdingView.holdingId + 'col12';
     var col13 = holdingView.holdingId + 'col13';
@@ -467,7 +477,7 @@
     		.sort(null)
     		.value(function(d) { return d.number; });
 
-		var svg = d3.select("#content-col2").append("svg")
+		var svg = d3.select("#content-col2").append("svg") // Travant 2016-10-18
     	.attr("width", width)
     	.attr("height", height)
   		.append("g")
@@ -524,11 +534,12 @@
 
 
   function drawTimeBar(response, numberOfIssue){
-    /* var totalsize =800; # AJE 2016-10-13 changed */
-    var totalsize =867;
+    var totalsize =800; // Travant original
+    /* var totalsize =867;  # AJE 2016-10-13 changed */
     var issuessize = totalsize/numberOfIssue;
     var divindex=0;
     var numberofissue=0;
+    var issue_increase = 24.75; // Travant original value: 24.75;  // AJE 2016-10-13 new var, see for loop below
 
     var html = '<br>';
 
@@ -555,9 +566,13 @@
             + 'Issue. ' + issueView[index1].issueNumber  + '<br>'
             + issueView[index1].issueMonth + ' </span> </div>';
         }
-        numberofissue+=24.75;
+        // numberofissue+=24.75; // Travant original
+        numberofissue += issue_increase; // AJE 2016-10-18
+        console.log('drawTimeBar: numberofissue = ', numberofissue);
       }
-      divindex+=24.75+numberofissue;
+      //divindex+=24.75+numberofissue; // Travant original
+      divindex += issue_increase + numberofissue; // AJE 2016-10-18
+      console.log('drawTimeBar: divindex = ', divindex); // AJE 2016-10-18
     }
 
     if(response.length > 0) {
@@ -579,7 +594,7 @@
 		var volumeLevelFlag = '0';
 
       // AJE 2016-10-03 assume there are no issues, so no widgets
-    $('#content-col2').css('display', 'none'); // #content-col2 is where the pie chart lives
+    $('#content-col2').css('display', 'none'); // #content-col2 is where the pie chart lives AJE 2016-10-18
     $('#timeline').css('display', 'none');
     $('#tools_for_title_issues').css('display', 'none');
     // end AJE 2016-09-30 for Amy enhancement list 2016-09-27, #7
@@ -599,6 +614,7 @@
 
       cb.type = 'checkbox';
       cb.id = 'cbvol:'+index;
+      cb.style.float = "left"; // AJE 2016-10-18 new
     	cb.onclick = function() {
     		var res = this.id.split(":");
     	 	$mvar = $('.clscbvol.'+ res[1]);
@@ -615,7 +631,10 @@
 	    var element = document.createElement('div');
 			var voldiv = 'vol' + response[index].volumeNumber;
 			element.id = voldiv;
-			element.style.float = "right";
+			//element.style.float = "right"; // Travant original
+			element.style.float = "left"; // AJE 2016-10-18 new
+			//element.style.width = "100%"; // AJE 2016-10-18 new: causes volume div to end up under checkbox, so does 99%
+			element.style.width = '97%'; // AJE 2016-10-18 new
 			row.appendChild(element);
 
       var title = response[index].volumeYear + " Vol. " + response[index].volumeNumber;
@@ -626,7 +645,8 @@
       var tp = new dijit.TitlePane({
         title: title,
         content: issueid,
-        style: "width: 750px;",
+        /* style: "width: 750px;", # Travant original */
+        style: "width: 100%;", /* AJE 2016-10-18 changed */
         open: true
       });
 
@@ -697,7 +717,7 @@
 //console.info('AJE 2016-09-15/10-03 : response: ', response, '.');
 
 	    if(response.length > 0) {
-	      document.getElementById("content-col2").innerHTML = ' ';
+	      document.getElementById("content-col2").innerHTML = ' '; // AJE 2016-10-18
 			  //drawPie(response); // AJE 2016-10-03 see comment above: I think this is in the wrong place
 			  /* AJE 2016-10-03
 	      drawTimeBar(response, numberOfIssue);
@@ -706,7 +726,7 @@
         $('#tools_for_title_issues').css('display', 'block');
 			  // 2016-10-03 resume Travant original */
 		  } else {
-			  document.getElementById("content-col2").innerHTML ='<img src="/assets/images/empty.gif" height="42" width="42" />' ;
+			  document.getElementById("content-col2").innerHTML ='<img src="/assets/images/empty.gif" height="42" width="42" />' ;// AJE 2016-10-18
 		  }
 
 	    /* AJE 2016-09-15 : Travant original, all on 1 line
