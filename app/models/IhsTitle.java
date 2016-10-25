@@ -24,6 +24,12 @@ import json.TitleView;
 import com.avaje.ebean.Ebean;
 import com.avaje.ebean.SqlRow;
 
+// AJE 2016-10-19
+import play.db.ebean.Model;
+import play.Logger;
+// AJE 2016-10-19
+
+
 /**
  * Created by reza on 9/11/2014.
  */
@@ -34,6 +40,7 @@ import com.avaje.ebean.SqlRow;
 @Table(name = "ihstitle")
 public class IhsTitle extends Model {
 
+
   /* AJE 2016-09-15 documentation about MATCH AGAINST, which I have never run into before:
     http://www.indepthinfo.com/sql-functions/match-against-function.php
     "MATCH()...AGAINST() syntax is used to search in FULLTEXT indexes [...]
@@ -42,16 +49,45 @@ public class IhsTitle extends Model {
     IN BOOLEAN MODE allows specific items to be excluded from a search [with slight different syntax [...]
     Results of this natural language query are listed in order of relevance"
     more at link */
-	static String titleSearchSql = "SELECT titleId, title,  MATCH (title) AGAINST (' param ' IN BOOLEAN MODE) as score "
-			+ "FROM ihstitle "
-			+ "WHERE MATCH (title) AGAINST (' param ' IN BOOLEAN MODE) " // preserve Travant original code:
-//+ "WHERE title LIKE \"%' param '%\" " // AJE new TEST
-			/* AJE 2016-09-15 we want the titles to be alphabetical ; preserve Travant original code:
-			+ "ORDER BY score DESC "
-			+ "limit  20;" // end Travant original */
-			+ "ORDER BY title ASC, score DESC " // AJE 2016-09-15 : reversing these ORDER BY parts creates chaos
-			+ "LIMIT  50;"; // if not included, results will often be too long for sidebar; some searches can be too long for the entire page
-			//once results moved into center white space portion of screen, try removing LIMIT again
+/*
+	static String titleSearchSql = "SELECT titleId, title, "
+	  + "MATCH (title) AGAINST ('param' IN BOOLEAN MODE) as relevance "
+		+ "FROM ihstitle " //+ "WHERE MATCH (title) AGAINST (' param ' IN BOOLEAN MODE) " // preserve Travant original code:
+		+ "WHERE MATCH (title) AGAINST ('param' IN BOOLEAN MODE) " // AJE 2016-10-25 above: remove extra spaces
+    //+ "WHERE MATCH (title) AGAINST ('param' IN BOOLEAN MODE) > 10 " // AJE 2016-10-25 ARBITRARY SCORE THAT MUST BE MET
+	  + "ORDER BY relevance DESC " // Travant original : we want the titles to be alphabetical
+		//+ "ORDER BY title ASC, relevance DESC " // AJE 2016-09-15 : reversing these ORDER BY parts creates chaos
+		// + "ORDER BY title ASC " // AJE 2016-10-19; works but not well
+		+ "LIMIT 50;"; // was LIMIT 20 ; if not included, results will often be too long for sidebar; some searches can be too long for the entire page
+*/
+	static String titleSearchSql = "SELECT T.titleId, T.title, "
+	  + "MATCH (T.title) AGAINST ('param' IN BOOLEAN MODE) as relevance, "
+	  + "P.name AS publisher "
+		+ "FROM ihstitle T "
+		+ "JOIN ihspublisher P ON T.publisherID = P.publisherID "
+		+ "WHERE MATCH (title) AGAINST ('param' IN BOOLEAN MODE) "
+		// CAN SET THE MATCH VALUE THRESHOLD: > 10, etc., but what value is good will vary by search string
+	  + "ORDER BY relevance DESC "
+		+ "LIMIT 50;"; // was LIMIT 20 ; if not included, results will often be too long for sidebar; some searches can be too long for the entire page
+		//once results moved into center white space portion of screen, try removing LIMIT again
+
+
+
+  /******************************************
+  AJE 2016-10-24
+  app/controllers/SearchJournals.java : searchJournalByTitle uses titleSearchSql
+  app/controllers/SearchJournals.java : browseJournalByTitle uses titleBrowseSql
+  */
+	static String titleBrowseSql = "SELECT titleId, title, "
+    + "MATCH (title) AGAINST ('param' IN BOOLEAN MODE) as relevance, "
+    + "P.name AS publisher "
+		+ "FROM ihstitle T "
+		+ "JOIN ihspublisher P ON T.publisherID = P.publisherID "
+    + "WHERE title LIKE 'param%' " // AJE new TEST
+		+ "ORDER BY title ASC "
+		+ "LIMIT  50;";
+  // end AJE 2016-10-24
+
 
 	/**
 	 *
@@ -169,29 +205,57 @@ public class IhsTitle extends Model {
 
 	public void setTitle(String title){
 
-		this.title= title;
+		this.title = title;
 
 	}
 	public static List <TitleView> getTitle(String search){
-
-		 List <TitleView> titleViews= new ArrayList<TitleView>();
-
-		 String tmpSql = titleSearchSql.replaceAll("param", search);
-
-		List<SqlRow> sqlRows = Ebean.createSqlQuery(tmpSql)
-				.findList();
-
-		for(SqlRow sqlRow : sqlRows){
-
-			titleViews.add(new TitleView( sqlRow.getInteger("titleId"), sqlRow.getString("title")));
-		}
-
-		return titleViews;
-
+    //Logger.info("app/models/IhsTitle.java : getTitle(search=|" +search+"|).");
+    List <TitleView> titleViews = new ArrayList<TitleView>();
+    String tmpSql = titleSearchSql.replaceAll("param", search);
+    //Logger.info("app/models/IhsTitle.java : getTitle will use SQL: " +tmpSql);
+    List<SqlRow> sqlRows = Ebean.createSqlQuery(tmpSql)
+      .findList();
+    for(SqlRow sqlRow : sqlRows){
+      //titleViews.add(new TitleView( sqlRow.getInteger("titleId"), sqlRow.getString("title"))); // Travant original
+      //Logger.info(sqlRow.getInteger("titleId").toString()+ " ; "+ sqlRow.getString("title"));
+      titleViews.add(
+        new TitleView(
+          sqlRow.getInteger("titleId"),
+          sqlRow.getString("title"),
+          sqlRow.getString("publisher")
+      ));
+      //Logger.info(sqlRow.getInteger("titleId").toString()+ " ; "+ sqlRow.getString("title") + " / " + sqlRow.getString("publisher") );
+    }
+    return titleViews;
 	}
 
-	public static List <TitleView> getByISSN(String search){
 
+  /************************************************************
+  AJE 2016-10-24 getTitleBrowse is new function, public/javascripts/ihs_search.js will call ?
+  - note this forms tmpSql from titleBrowseSql
+  */
+	public static List <TitleView> getTitleBrowse(String search){
+   // Logger.info("app/models/IhsTitle.java : getTitleBrowse(search=|" +search+"|).");
+    List <TitleView> titleViews = new ArrayList<TitleView>();
+    String tmpSql = titleBrowseSql.replaceAll("param", search);
+    //Logger.info("app/models/IhsTitle.java : getTitleBrowse will use SQL: " +tmpSql);
+    List<SqlRow> sqlRows = Ebean.createSqlQuery(tmpSql)
+      .findList();
+    for(SqlRow sqlRow : sqlRows){
+      //titleViews.add(new TitleView( sqlRow.getInteger("titleId"), sqlRow.getString("title")));
+      titleViews.add(
+        new TitleView(
+          sqlRow.getInteger("titleId"),
+          sqlRow.getString("title"),
+          sqlRow.getString("publisher")
+      ));
+      //Logger.info(sqlRow.getInteger("titleId").toString()+ " ; "+ sqlRow.getString("title") + " / " + sqlRow.getString("publisher") );
+    }
+    return titleViews;
+	} // end AJE 2016-10-24 getTitleBrowse
+
+
+	public static List <TitleView> getByISSN(String search){
 
 		 List <TitleView> titleViews= new ArrayList<TitleView>();
 
@@ -203,13 +267,11 @@ public class IhsTitle extends Model {
 		if(ihsTitle != null)
 			titleViews.add(new TitleView( ihsTitle.titleID, ihsTitle.title));
 
-
 		return titleViews;
 
 	}
 
 	public static List <TitleView> getByOCLC(String search){
-
 
 		 List <TitleView> titleViews= new ArrayList<TitleView>();
 
@@ -220,7 +282,6 @@ public class IhsTitle extends Model {
 
 		if(ihsTitle != null)
 			titleViews.add(new TitleView( ihsTitle.titleID, ihsTitle.title));
-
 
 		return titleViews;
 
@@ -238,7 +299,6 @@ public class IhsTitle extends Model {
 			titleView.title = ihsTitle.title;
 			titleView.publisher= ihsTitle.ihsPublisher.name.length() > 26 ? ihsTitle.ihsPublisher.name.substring(0,25): ihsTitle.ihsPublisher.name;
 
-
 			titleView.printISSN = Helper.formatIssn(ihsTitle.printISSN);
 
 			if( ihsTitle.eISSN != null){
@@ -248,8 +308,6 @@ public class IhsTitle extends Model {
 			if( ihsTitle.oclcNumber != null){
 				titleView.oclcNumber = ihsTitle.oclcNumber;
 			}
-
-
 
 			titleView.publicationRange = Helper.getPublicationRange(ihsTitle.ihsPublicationRange);
 
