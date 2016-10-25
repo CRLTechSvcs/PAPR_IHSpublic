@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class TitleView {
-	public int titleVesrionId = 0;
+	public int titleVersionId = 0;
 	public int titleId = 0;
 	public String title = "";
 	public String alphaTitle="";
@@ -29,12 +29,23 @@ public class TitleView {
 		this.title = title;
 	}
 
-	public TitleView(int titleVesrionId, int titleId, String title, String alphaTitle, String publisher,
+  /*************************************************************
+  AJE 2016-10-25 add constructor for TitleView that includes setting the publisher: see IhsTitle.java : getTitle() + getTitleBrowse()
+  */
+	public TitleView(int titleId, String title, String publisher) {
+		this.titleId = titleId;
+		this.title = title;
+		this.publisher = publisher;
+	}
+
+
+
+	public TitleView(int titleVersionId, int titleId, String title, String alphaTitle, String publisher,
 			String printISSN, String eISSN, String oclcNumber, String lccn,
 			String publicationRange,
 			List<PublicationRangeView> publicationRangeViews,
 			String language, String country) {
-		this.titleVesrionId =  titleVesrionId;
+		this.titleVersionId =  titleVersionId;
 		this.titleId = titleId;
 		this.title = title;
 		this.alphaTitle = alphaTitle;
