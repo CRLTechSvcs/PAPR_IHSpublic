@@ -73,10 +73,12 @@
 						@if(title.equals("search_home")){
 						<div id="menu-contents">
 							<p id="search-criteria">
-								@Messages("search.journal.title"): <input class="search" onkeyup="searchJournalByTitle(this);" type="text" id="titleid" /><br />
-								@Messages("search.journal.issn"): <input class="search" onkeyup="searchJournalByISSN(this);" type="text" id="issnid" /><br />
-								@Messages("search.journal.oclc"): <input class="search" onkeyup="searchJournalByOCLC(this);" type="text" id="oclcid" /><br />
-
+							  <!--AJE added search boxes next 2016-10-24 -->
+							  @Messages("search.journal.title_browse"):&nbsp;<input class="search" onkeyup="browseJournalByTitle(this);" type="text" id="titleidSQLlike" /><br />
+							  <!--Travant original search boxes next 2016-10-24 except using new messages.en for first one -->
+								@Messages("search.journal.title_keyword"):&nbsp;&nbsp;<input class="search" onkeyup="searchJournalByTitle(this);" type="text" id="titleid" /><br />
+								@Messages("search.journal.issn"):&nbsp;&nbsp;&nbsp;&nbsp;<input class="search" onkeyup="searchJournalByISSN(this);" type="text" id="issnid" /><br />
+								@Messages("search.journal.oclc"):&nbsp;&nbsp;&nbsp;<input class="search" onkeyup="searchJournalByOCLC(this);" type="text" id="oclcid" /><br />
 								<div>
 								<div style="float: left	;">@Messages("search.journal.member") </div>:
 								<div id="member" style="float: right;"> </div>
