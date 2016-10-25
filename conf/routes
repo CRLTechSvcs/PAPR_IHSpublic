@@ -17,6 +17,8 @@ GET     /logout						controllers.Login.doLogout()
 ## Search ##
 GET /search_home					   controllers.SearchJournals.search_home()
 GET /search/searchJournalByTitle/:searchValue       controllers.SearchJournals.searchJournalByTitle(searchValue: String)
+# AJE 2016-10-24 added next
+GET /search/browseJournalByTitle/:searchValue       controllers.SearchJournals.browseJournalByTitle(searchValue: String)
 GET /search/searchJournalByISSN/:searchValue        controllers.SearchJournals.searchJournalByISSN(searchValue: String)
 GET /search/searchJournalByOCLC/:searchValue        controllers.SearchJournals.searchJournalByOCLC(searchValue: String)
 
