@@ -78,8 +78,7 @@ public class SearchJournals extends Controller {
     //Logger.info("app.controllers.SearchJournals.java browseJournalByTitle("+searchValue+"), modifiedSearchValue = "+modifiedSearchValue+".");
 
 		List<TitleView> titleViews = IhsTitle.getTitleBrowse(modifiedSearchValue); // AJE 2016-10-24
-    Logger.info("...browseJournalByTitle("+searchValue+"), titleViews.size() = "+titleViews.size()+".");
-    Logger.info("...browseJournalByTitle("+searchValue+"), titleViews[0].publisher = "+titleViews.get(0).publisher+".");
+    //Logger.info("...browseJournalByTitle("+searchValue+"), titleViews.size() = "+titleViews.size()+", titleViews[0].publisher = "+titleViews.get(0).publisher+".");
 
 		PageingJson pageingJson = new PageingJson();
 		pageingJson.items = titleViews;
