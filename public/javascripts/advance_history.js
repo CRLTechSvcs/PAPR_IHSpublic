@@ -1,7 +1,7 @@
 var currentTitle = {};
 	var currentTitleChanged = {} ;
 	var title="title";
-	var prevTitleId, prevTitleVesrionId;
+	var prevTitleId, prevTitleVersionId;
 	var strLen=25;
 	var globalTitleId=0;
 
@@ -33,7 +33,7 @@ var currentTitle = {};
 
 		}
 
-		document.getElementById('serrch').style.display = 'none';
+		document.getElementById('search').style.display = 'none';
 
 		document.getElementById('currentTitle').style.display = 'block';
 
@@ -49,7 +49,7 @@ var currentTitle = {};
 
 		dojo.xhrGet({
 	        handleAs: 'json',
-	        url: "/advancedEditing/restorePreviousTitle/" + prevTitleId + "/" + prevTitleVesrionId,
+	        url: "/advancedEditing/restorePreviousTitle/" + prevTitleId + "/" + prevTitleVersionId,
 	        preventCache: true,
 	        load: function(data) {
 
@@ -77,10 +77,10 @@ var currentTitle = {};
 	}
 
 
-	function restorePreviousTitle(titleId, titleVesrionId){
+	function restorePreviousTitle(titleId, titleVersionId){
 
 		prevTitleId = titleId;
-		prevTitleVesrionId = titleVesrionId;
+		prevTitleVersionId = titleVersionId;
 
 		$(function() {
     			 $( "#dialog-pre-confirm" ).dialog({title:'Confirm Save of Changes to Previous Version', width: 500,  height: 100, modal: true});
@@ -106,7 +106,7 @@ var currentTitle = {};
 							'<span id="previus-title" title="' + previousTitle.title +'">'+ tmptitle + '</span>'+
 						    '</div>'+
 							'<div class="history-title2" id="edit-button">'+
-								'<a href="javascript:restorePreviousTitle('+ previousTitle.titleId +','+ previousTitle.titleVesrionId +');" title="Edit the Current Version"><img src="/assets/images/restore.gif" /></a>'+
+								'<a href="javascript:restorePreviousTitle('+ previousTitle.titleId +','+ previousTitle.titleVersionId +');" title="Edit the Current Version"><img src="/assets/images/restore.gif" /></a>'+
 							'</div>'+
 
 						'<div class="history-col1">'+
