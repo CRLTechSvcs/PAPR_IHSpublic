@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class TitleVersionView {
-	public int titleVesrionId = 0;
+	public int titleVersionId = 0;
 	public int titleId = 0;
 	public String title = "";
 	public String alphaTitle = "";
@@ -34,7 +34,7 @@ public class TitleVersionView {
 		this.title = title;
 	}
 
-	public TitleVersionView(int titleVesrionId, int titleId, String title,
+	public TitleVersionView(int titleVersionId, int titleId, String title,
 			String alphaTitle, int publisher, String publisherName,
 			String printISSN, String eISSN, String oclcNumber, String lccn,
 			String note,
@@ -44,7 +44,7 @@ public class TitleVersionView {
 			String changeMember, String imagePageRatio,
 			String language,
 			String country) {
-		this.titleVesrionId = titleVesrionId;
+		this.titleVersionId = titleVersionId;
 		this.titleId = titleId;
 		this.title = title;
 		this.alphaTitle = alphaTitle;
