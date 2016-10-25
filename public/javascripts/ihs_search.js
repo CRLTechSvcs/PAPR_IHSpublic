@@ -93,10 +93,13 @@
       var li = document.createElement('li');
       var a = document.createElement('a');
 
-      a.innerHTML = response.items[i].title;
-      console.log('response.items[',i,'].title: "', response.items[i].title);// AJE 2016-09-20
+      console.log(i +') response.items[',i,'].title: "', response.items[i].title, ' *.publisher: "', response.items[i].publisher, ' ; response.items[i] = ', response.items[i]);// AJE 2016-09-20
+      var display_title = response.items[i].title + " / " + response.items[i].publisher;  // AJE 2016-10-25
+      //a.innerHTML = response.items[i].title; // Travant original
+      a.innerHTML = display_title; // AJE 2016-10-25
       a.setAttribute('href', 'javascript:getJournalDetail(' + response.items[i].titleId + ');');
-      a.setAttribute('title', response.items[i].title);
+      //a.setAttribute('title', response.items[i].title); // Travant original
+      a.setAttribute('title', display_title); // AJE 2016-10-25
       li.appendChild(a);
       ul.appendChild(li);
     }
@@ -110,12 +113,14 @@
 	}// end populateSearchList, moved by AJE from search_home.js 2016-09-21
 
 
-
+  /*
+    AJE 2016-10-24 searchJournalByTitle uses app/controllers/SearchJournals.java > searchJournalByTitle
+  */
 	function searchJournalByTitle(search) {
 
     // AJE testing 2016-09-21
     //console.info('searchJournalByTitle(',search,')'); // <input type="text" id="titleid" onkeyup="searchJournalByTitle(this);" class="search">
-    console.info('searchJournalByTitle(',search.value,')');
+    console.info('yes, this one: searchJournalByTitle(',search.value,')');
 
 		var results = document.getElementById('results');
 		var issn = document.getElementById('issnid');
@@ -139,6 +144,7 @@
 	            dojo.xhrGet({
 	                handleAs: 'json',
 	                url: "/search/searchJournalByTitle/" + value,
+	                  //  app/controllers/SearchJournals.java
 	                preventCache: true,
 	                error: function(e) {
 	                    alert("Error: " + e.message);
@@ -147,7 +153,47 @@
 	            });
 	        } // end questionable IF
 	    }
-	}
+	} // end Travant's searchJournalByTitle
+
+	/*****************************************************
+	AJE 2016-10-24 : browseJournalByTitle is a copy of searchJournalByTitle; uses app/controllers/SearchJournals.java > browseJournalByTitle
+	*/
+	function browseJournalByTitle(search) {
+
+    // AJE testing 2016-09-21
+    //console.info('searchJournalByTitle(',search,')'); // <input type="text" id="titleid" onkeyup="searchJournalByTitle(this);" class="search">
+    console.info('browseJournalByTitle(',search.value,')');
+
+		var results = document.getElementById('results');
+		var issn = document.getElementById('issnid');
+		issn.value="";
+
+		var value = search.value.replace('\\', ' ').replace('\/', ' ').replace('  ', ' ');
+
+		var value1 = search.value.replace(' ', '');
+
+	    if (value.length < 2 ) {
+	        //results.innerHTML = ' '; // Travant
+	        console.log('browseJournalByTitle, value.length < 2 [no results found for '+value+' yet]'); // AJE 2016-09-21
+	    } else {
+	        if (value1.length % 3  == 0 || search.value.charAt(search.value.length-1) == ' ') {
+	            dojo.xhrGet({
+	                handleAs: 'json',
+	                url: "/search/browseJournalByTitle/" + value,
+	                  //  app/controllers/SearchJournals.java
+	                preventCache: true,
+	                error: function(e) {
+	                    alert("browseJournalByTitle has Error: " + e.message);
+	                },
+	                load: populateSearchList
+	            });
+	        } // end questionable IF
+	    }
+	} // end AJE 2016-10-24 browseJournalByTitle
+
+
+
+
 
 	function searchJournalByISSN(search) {
 
@@ -156,25 +202,23 @@
 	  var title = document.getElementById('titleid');
 	  title.value="";
 
+    var st = search.value.replace('-', '');
 
-	    var st = search.value.replace('-', '');
-
-
-	    if (st.length < 2) {
-	        results.innerHTML= ' ';
-	    } else {
-	        if (st.length == 8) {
-	            dojo.xhrGet({
-	                handleAs: 'json',
-	                url: "/search/searchJournalByISSN/" + st,
-	                preventCache: true,
-	                error: function(e) {
-	                    alert("Error: " + e.message);
-	                },
-	                load: populateSearchList
-	            });
-	        }
-	    }
+    if (st.length < 2) {
+        results.innerHTML= ' ';
+    } else {
+        if (st.length == 8) {
+            dojo.xhrGet({
+                handleAs: 'json',
+                url: "/search/searchJournalByISSN/" + st,
+                preventCache: true,
+                error: function(e) {
+                    alert("Error: " + e.message);
+                },
+                load: populateSearchList
+            });
+        }
+    }
 	}
 
 	function searchJournalByOCLC(search) {
