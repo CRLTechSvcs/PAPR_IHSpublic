@@ -49,6 +49,9 @@ menu.admin.user=Manage User
 # AJE added this next one 2016-09-26
 search.journal.home=Search Journals
 search.journal.title=Title
+# AJE 2016-10-24 added next 2; new SQL LIKE option as well as original SQL MATCH AGAINST app/models/IhsTitle.java)
+search.journal.title_keyword=Keywd
+search.journal.title_browse=Browse
 search.journal.issn=ISSN
 search.journal.oclc=OCLC
 search.journal.subject=Subject
