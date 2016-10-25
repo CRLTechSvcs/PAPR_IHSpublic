@@ -55,18 +55,39 @@ public class SearchJournals extends Controller {
 	}
 
 	public static Result searchJournalByTitle(String searchValue) {
+		//String modifiedSearchValue = searchValue.trim().replaceAll(" ", "* "); // Travant original 2016-10-25
+		// we don't want to expand on these searches any more than we do with browseJournalByTitle below
+		String modifiedSearchValue = searchValue.trim();
+    //Logger.info("app.controllers.SearchJournals.java searchJournalByTitle("+searchValue+"), modifiedSearchValue = "+modifiedSearchValue+".");
 
-		String modifiedSearchValue = searchValue.trim().replaceAll(" ", "* ");
-
-		List<TitleView> titleViews = IhsTitle.getTitle(modifiedSearchValue
-				+ "*");
+		//List<TitleView> titleViews = IhsTitle.getTitle(modifiedSearchValue + "*"); // Travant original
+		List<TitleView> titleViews = IhsTitle.getTitle(modifiedSearchValue); // AJE 2016-10-25
+    //Logger.info("...searchJournalByTitle("+searchValue+"), titleViews.size() = "+titleViews.size()+".");
 
 		PageingJson pageingJson = new PageingJson();
-
 		pageingJson.items = titleViews;
 
 		return ok(toJson(pageingJson));
 	}
+
+/*****************************************************************
+  AJE 2016-10-24 new function to use SQL LIKE instead of MATCH AGAINST; modeled after searchJournalByTitle
+*/
+	public static Result browseJournalByTitle(String searchValue) {
+		String modifiedSearchValue = searchValue.trim();  // AJE 2016-10-24
+    //Logger.info("app.controllers.SearchJournals.java browseJournalByTitle("+searchValue+"), modifiedSearchValue = "+modifiedSearchValue+".");
+
+		List<TitleView> titleViews = IhsTitle.getTitleBrowse(modifiedSearchValue); // AJE 2016-10-24
+    Logger.info("...browseJournalByTitle("+searchValue+"), titleViews.size() = "+titleViews.size()+".");
+    Logger.info("...browseJournalByTitle("+searchValue+"), titleViews[0].publisher = "+titleViews.get(0).publisher+".");
+
+		PageingJson pageingJson = new PageingJson();
+		pageingJson.items = titleViews;
+
+		return ok(toJson(pageingJson));
+	} /* end AJE 2016-10-24
+*****************************************************************/
+
 
 	public static Result searchJournalByISSN(String searchValue) {
 
