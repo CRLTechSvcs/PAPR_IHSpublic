@@ -71,12 +71,11 @@ public class IhsTitle extends Model {
 		+ "LIMIT 50;"; // was LIMIT 20 ; if not included, results will often be too long for sidebar; some searches can be too long for the entire page
 		//once results moved into center white space portion of screen, try removing LIMIT again
 
-
-
   /******************************************
   AJE 2016-10-24
   app/controllers/SearchJournals.java : searchJournalByTitle uses titleSearchSql
   app/controllers/SearchJournals.java : browseJournalByTitle uses titleBrowseSql
+  app/controllers/SearchJournals.java : containsJournalByTitle uses titleContainsSql
   */
 	static String titleBrowseSql = "SELECT titleId, title, "
     + "MATCH (title) AGAINST ('param' IN BOOLEAN MODE) as relevance, "
@@ -86,8 +85,15 @@ public class IhsTitle extends Model {
     + "WHERE title LIKE 'param%' " // AJE new TEST
 		+ "ORDER BY title ASC "
 		+ "LIMIT  50;";
-  // end AJE 2016-10-24
-
+	static String titleContainsSql = "SELECT titleId, title, "
+    + "MATCH (title) AGAINST ('param' IN BOOLEAN MODE) as relevance, "
+    + "P.name AS publisher "
+		+ "FROM ihstitle T "
+		+ "JOIN ihspublisher P ON T.publisherID = P.publisherID "
+    + "WHERE title LIKE '%param%' " // AJE new TEST
+		+ "ORDER BY title ASC "
+		+ "LIMIT  50;";
+  // end AJE 2016-10-24/27
 
 	/**
 	 *
@@ -253,6 +259,35 @@ public class IhsTitle extends Model {
     }
     return titleViews;
 	} // end AJE 2016-10-24 getTitleBrowse
+
+
+  /************************************************************
+  AJE 2016-10-27 getTitleContains is new function, public/javascripts/ihs_search.js will call ?
+  - note this forms tmpSql from titleContainsSql
+  */
+	public static List <TitleView> getTitleContains(String search){
+    Logger.info("app/models/IhsTitle.java : getTitleContains(search=|" +search+"|).");
+    List <TitleView> titleViews = new ArrayList<TitleView>();
+    String tmpSql = titleContainsSql.replaceAll("param", search);
+    Logger.info("app/models/IhsTitle.java : getTitleContains will use SQL: " +tmpSql);
+    List<SqlRow> sqlRows = Ebean.createSqlQuery(tmpSql)
+      .findList();
+    for(SqlRow sqlRow : sqlRows){
+      //titleViews.add(new TitleView( sqlRow.getInteger("titleId"), sqlRow.getString("title")));
+      titleViews.add(
+        new TitleView(
+          sqlRow.getInteger("titleId"),
+          sqlRow.getString("title"),
+          sqlRow.getString("publisher")
+      ));
+      //Logger.info(sqlRow.getInteger("titleId").toString()+ " ; "+ sqlRow.getString("title") + " / " + sqlRow.getString("publisher") );
+    }
+    return titleViews;
+	} // end AJE 2016-10-27 getTitleContains
+
+
+
+
 
 
 	public static List <TitleView> getByISSN(String search){
