@@ -73,16 +73,28 @@
 						@if(title.equals("search_home")){
 						<div id="menu-contents">
 							<p id="search-criteria">
+							  <form id="search_boxes_form"><!--AJE 2016-10-26 wrap them in a form tag so can call reset() on the form and erase previous searches-->
 							  <!--AJE added search boxes next 2016-10-24 -->
-							  @Messages("search.journal.title_browse"):&nbsp;<input class="search" onkeyup="browseJournalByTitle(this);" type="text" id="titleidSQLlike" /><br />
+							  @Messages("search.journal.title_browse"):&nbsp;<input class="search" type="text" id="browse_titleid" />
+							  <!--<input class="search" onkeyup="browseJournalByTitle(this);" type="text" id="browse_titleid" />--><br />
+							  @Messages("search.journal.title_contains"):&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input class="search" type="text" id="contains_titleid" /><br/>
 							  <!--Travant original search boxes next 2016-10-24 except using new messages.en for first one -->
-								@Messages("search.journal.title_keyword"):&nbsp;&nbsp;<input class="search" onkeyup="searchJournalByTitle(this);" type="text" id="titleid" /><br />
-								@Messages("search.journal.issn"):&nbsp;&nbsp;&nbsp;&nbsp;<input class="search" onkeyup="searchJournalByISSN(this);" type="text" id="issnid" /><br />
-								@Messages("search.journal.oclc"):&nbsp;&nbsp;&nbsp;<input class="search" onkeyup="searchJournalByOCLC(this);" type="text" id="oclcid" /><br />
+								@Messages("search.journal.title_keyword"):&nbsp;&nbsp;<input class="search" type="text" id="titleid" />
+								<!--<input class="search" onkeyup="searchJournalByTitle(this);" type="text" id="titleid" />--><br />
+								@Messages("search.journal.issn"):&nbsp;&nbsp;&nbsp;&nbsp;<input class="search" type="text" id="issnid" />
+								<!--<input class="search" onkeyup="searchJournalByISSN(this);" type="text" id="issnid" />--><br />
+								@Messages("search.journal.oclc"):&nbsp;&nbsp;&nbsp;<input class="search" type="text" id="oclcid" />
+								<!--<input class="search" onkeyup="searchJournalByOCLC(this);" type="text" id="oclcid" />--><br />
+								</form>
 								<div>
 								<div style="float: left	;">@Messages("search.journal.member") </div>:
 								<div id="member" style="float: right;"> </div>
 								<br /><br />
+								<!--AJE 2016-10-26 Amy enhancement list #5 ; see also ihs_search.js-->
+								<div id="clear_search">
+                <button id="button_clear_search" value="0" onClick="toggle_search_home_title_components('clear_search');">Clear search</button>
+								</div>
+                <!--end Amy enhancement list #5-->
 								</div>
 								<!-- AJE 2016-09-14 per Amy, hide the search boxes for 'Number of Issues: Min: Max
 								@Messages("search.journal.number.of.issues"):
