@@ -191,17 +191,33 @@ input.search-small {
 	text-align:left;
 }
 
+#clear_search { /* AJE 2016-10-26 new for Amy enhancement list #5 */
+  /* */
+}
+#show_search_results{ /* AJE 2016-10-26 new for Amy enhancement list #5 */
+ margin-left:10px;
+}
 
 #results {
 	/* visibility: hidden; # AJE 2016-09-16 changed this Travant original */
-
 	height: 458px; /* AJE 2016-09-15 this line is Travant original */
 	/* AJE 2016-09-15 -- allow list of found titles to expand */
 	display:flex;overflow:auto;
-
 }
 #search_results_header{ /* AJE 2016-09-16 new placement in content-center (was content-left, the sidebar) means hide it most of time */
   display:none;
+  /* AJE 2016-10-26 make it look like .menu-header */
+	border: 2px solid black;
+	padding: 10px 0px 10px 16px;
+	/* margin: -4px -3px 2px -3px; */
+	background-color: #bab8a8;
+	color:black;
+}
+.content_header{ /* AJE 2016-10-27 new same as search_results_header  */
+	border: 2px solid black;
+	padding: 10px 0px 10px 16px;
+	background-color: #bab8a8;
+	color:black;
 }
 
 #results ul {
@@ -559,19 +575,22 @@ img.edit-pub-range {
 
 #content-col1 {
 	clear: both;
-	width:275px;
+	/*width:275px; Travant original */
+	width:570px; /* AJE 2016-10-27 */
 	height: auto;
 	float:left;
 	text-align: left;
 }
 #content-col2 {
-	width: 270px;
+	/* width: 270px; Travant original */
+	width:5px; /* AJE 2016-10-27 */
 	height: auto;
 	float: left;
 	text-align: left;
 }
 #content-col3 {
-	width: 300px;
+	/* width: 300px; Travant original */
+	width:270px; /* AJE 2016-10-27 */
 	height: auto;
 	float: left;
 	text-align: left;
