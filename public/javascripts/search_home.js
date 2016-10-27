@@ -29,7 +29,14 @@
 		var volume_flag_LI = '<li><strong>Volume Level:</strong> ' + response.volumeLevelFlag + '</li>';
 		var titlehistory_link_CRL = '<li><a id="titlehistory_link_CRL" href="#" target="_blank">OCLC&#39;s History Visualization for this Journal</a></li>';
 
+    // new button to go back to the search results: AJE 2016-10-27
+    var search_results_div = '<div id="show_search_results">';
+        search_results_div += '<button id="button_show_search_results" value="0" ';
+        search_results_div += 'onClick="toggle_search_home_title_components(\'populateSearchList\');">Show search results</button>';
+        search_results_div += '</div>';
+
     document.getElementById("content-col1").innerHTML = '<ul class="no-decoration">' + publisherLI + printISSN_LI + eISSN_LI + OCLC_LI + pub_range_LI + language_LI + country_LI + volume_flag_LI + titlehistory_link_CRL + '<ul>';
+    document.getElementById("content-col1").innerHTML += search_results_div;
 
     if(response.printISSN){ // AJE 2016-10-18 only show titlehistory_link_CRL when there is an ISSN
   		// AJE new: make the link value right
@@ -477,7 +484,8 @@
     		.sort(null)
     		.value(function(d) { return d.number; });
 
-		var svg = d3.select("#content-col2").append("svg") // Travant 2016-10-18
+		//var svg = d3.select("#content-col2").append("svg") // Travant 2016-10-18
+		var svg = d3.select("#content-col3").append("svg") // AJE 2016-10-27
     	.attr("width", width)
     	.attr("height", height)
   		.append("g")
@@ -510,7 +518,8 @@
       		.text(function(d) { return d.data.status + '(' + d.data.number + ')' ; });
 
       //console.info("AJE 2016-10-07 end drawPie; force display of piechart, because in populateVolumeDetail we have hidden it");
-      $('#content-col2').css('display', 'block'); // AJE 2016-09-30 for Amy enhancement list 2016-09-27, #7
+      //$('#content-col2').css('display', 'block'); // AJE 2016-09-30 for Amy enhancement list 2016-09-27, #7
+      $('#content-col3').css('display', 'block'); // AJE 2016-10-27
 
   }
 
@@ -568,11 +577,11 @@
         }
         // numberofissue+=24.75; // Travant original
         numberofissue += issue_increase; // AJE 2016-10-18
-        console.log('drawTimeBar: numberofissue = ', numberofissue);
+        //console.log('drawTimeBar: numberofissue = ', numberofissue);
       }
       //divindex+=24.75+numberofissue; // Travant original
       divindex += issue_increase + numberofissue; // AJE 2016-10-18
-      console.log('drawTimeBar: divindex = ', divindex); // AJE 2016-10-18
+      //console.log('drawTimeBar: divindex = ', divindex); // AJE 2016-10-18
     }
 
     if(response.length > 0) {
@@ -594,7 +603,8 @@
 		var volumeLevelFlag = '0';
 
       // AJE 2016-10-03 assume there are no issues, so no widgets
-    $('#content-col2').css('display', 'none'); // #content-col2 is where the pie chart lives AJE 2016-10-18
+    //$('#content-col2').css('display', 'none'); // #content-col2 was where pie chart lived AJE 2016-10-18 until 27th
+    $('#content-col3').css('display', 'none'); // #content-col3 is where the pie chart lives AJE 2016-10-27
     $('#timeline').css('display', 'none');
     $('#tools_for_title_issues').css('display', 'none');
     // end AJE 2016-09-30 for Amy enhancement list 2016-09-27, #7
@@ -717,7 +727,8 @@
 //console.info('AJE 2016-09-15/10-03 : response: ', response, '.');
 
 	    if(response.length > 0) {
-	      document.getElementById("content-col2").innerHTML = ' '; // AJE 2016-10-18
+	      //document.getElementById("content-col2").innerHTML = ' '; // AJE 2016-10-18
+	      document.getElementById("content-col3").innerHTML = ' '; // AJE 2016-10-27
 			  //drawPie(response); // AJE 2016-10-03 see comment above: I think this is in the wrong place
 			  /* AJE 2016-10-03
 	      drawTimeBar(response, numberOfIssue);
@@ -726,7 +737,8 @@
         $('#tools_for_title_issues').css('display', 'block');
 			  // 2016-10-03 resume Travant original */
 		  } else {
-			  document.getElementById("content-col2").innerHTML ='<img src="/assets/images/empty.gif" height="42" width="42" />' ;// AJE 2016-10-18
+			  //document.getElementById("content-col2").innerHTML ='<img src="/assets/images/empty.gif" height="42" width="42" />' ;// AJE 2016-10-18
+			  document.getElementById("content-col3").innerHTML ='<img src="/assets/images/empty.gif" height="42" width="42" />' ;// AJE 2016-10-27
 		  }
 
 	    /* AJE 2016-09-15 : Travant original, all on 1 line
