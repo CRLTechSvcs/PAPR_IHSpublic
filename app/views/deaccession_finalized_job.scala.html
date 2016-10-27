@@ -110,8 +110,19 @@
               </ul>
             </div>
 
-           <h1>@Messages("deaccession.summary.deaccession.criteria.in.progress")</h1><br />
-           <br />
+           <h2 class="content_header">@Messages("deaccession.summary.deaccession.criteria.in.progress")</h2>
+            <!--AJE 2016-10-27 per Amy, moving tools widgets from content-right to content-center -->
+        	 	<h2>@Messages("tools")</h2>
+            <!-- AJE wrapped in new div, added line breaks -->
+            <div style="margin-left:10px;">
+      		 		@restrict( scala.collection.immutable.List( as( "admin" ) ) ){
+      					<button id="button_1" onClick = "getJobs('getAllDeaccessionJobs');">@Messages("ingestion.home.show.All.Members.Jobs")</button>
+      				}
+      				<button id="button_2" onClick = "getJobs('getAMemberDeaccessionJobs');">@Messages("ingestion.home.show.only.my.member.jobs")</button>
+      				<button id="button_3" onClick = "getJobs('getAUserDeaccessionJobs');">@Messages("ingestion.home.show.only.my.jobs")</button>
+      			</div>
+            <!-- end AJE 2016-10-27 -->
+
            <div id="deaccession-summary-div" style="margin-left:16px;height:782px;">
            </div>
         </div>
@@ -119,12 +130,14 @@
 
         <div id="content-right">
         	 <div id="inner-content-right">
-        	 	<h2>@Messages("tools")</h2>
-		 		@restrict( scala.collection.immutable.List( as( "admin" ) ) ){
-					<button id="button_1" onClick = "getJobs('getAllDeaccessionJobs');">@Messages("ingestion.home.show.All.Members.Jobs")</button>
-				}
-				<button id="button_2" onClick = "getJobs('getAMemberDeaccessionJobs');">@Messages("ingestion.home.show.only.my.member.jobs")</button>
-				<button id="button_3" onClick = "getJobs('getAUserDeaccessionJobs');">@Messages("ingestion.home.show.only.my.jobs")</button>
+            <!-- AJE 2016-10-27 per Amy, moving these widgets to content-center
+            <h2>@Messages("tools")</h2>
+    		 		@restrict( scala.collection.immutable.List( as( "admin" ) ) ){
+    					<button id="button_1" onClick = "getJobs('getAllDeaccessionJobs');">@Messages("ingestion.home.show.All.Members.Jobs")</button>
+    				}
+    				<button id="button_2" onClick = "getJobs('getAMemberDeaccessionJobs');">@Messages("ingestion.home.show.only.my.member.jobs")</button>
+    				<button id="button_3" onClick = "getJobs('getAUserDeaccessionJobs');">@Messages("ingestion.home.show.only.my.jobs")</button>
+    				-->
         	 </div>
         </div>
 
