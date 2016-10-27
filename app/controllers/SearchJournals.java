@@ -72,13 +72,14 @@ public class SearchJournals extends Controller {
 
 /*****************************************************************
   AJE 2016-10-24 new function to use SQL LIKE instead of MATCH AGAINST; modeled after searchJournalByTitle
+  - string must be at start of title
 */
 	public static Result browseJournalByTitle(String searchValue) {
 		String modifiedSearchValue = searchValue.trim();  // AJE 2016-10-24
     //Logger.info("app.controllers.SearchJournals.java browseJournalByTitle("+searchValue+"), modifiedSearchValue = "+modifiedSearchValue+".");
 
 		List<TitleView> titleViews = IhsTitle.getTitleBrowse(modifiedSearchValue); // AJE 2016-10-24
-    //Logger.info("...browseJournalByTitle("+searchValue+"), titleViews.size() = "+titleViews.size()+", titleViews[0].publisher = "+titleViews.get(0).publisher+".");
+    Logger.info("...browseJournalByTitle("+searchValue+"), titleViews.size() = "+titleViews.size()+", titleViews[0].publisher = "+titleViews.get(0).publisher+".");
 
 		PageingJson pageingJson = new PageingJson();
 		pageingJson.items = titleViews;
@@ -86,7 +87,23 @@ public class SearchJournals extends Controller {
 		return ok(toJson(pageingJson));
 	} /* end AJE 2016-10-24
 *****************************************************************/
+/*****************************************************************
+  AJE 2016-10-27 new function to use SQL LIKE instead of MATCH AGAINST; modeled after browseJournalByTitle
+  - string can be anywhere in title
+*/
+	public static Result containsJournalByTitle(String searchValue) {
+		String modifiedSearchValue = searchValue.trim();  // AJE 2016-10-27
+    Logger.info("app.controllers.SearchJournals.java containsJournalByTitle("+searchValue+"), modifiedSearchValue = "+modifiedSearchValue+".");
 
+		List<TitleView> titleViews = IhsTitle.getTitleContains(modifiedSearchValue); // AJE 2016-10-27
+    Logger.info("...containsJournalByTitle("+searchValue+"), titleViews.size() = "+titleViews.size()+", titleViews[0].publisher = "+titleViews.get(0).publisher+".");
+
+		PageingJson pageingJson = new PageingJson();
+		pageingJson.items = titleViews;
+
+		return ok(toJson(pageingJson));
+	} /* end AJE 2016-10-27
+*****************************************************************/
 
 	public static Result searchJournalByISSN(String searchValue) {
 
