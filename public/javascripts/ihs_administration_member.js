@@ -230,8 +230,8 @@ function populateSearchList(response, ioArgs){
 
 	var str = '<ul>';
 
-	for (var j = 0; j < response.length; j++) {
-		str += '<li> <a href="#" onclick="showdetail('  + j + ');">' + response[j].name+'     (Group Name: ' +  response[j].groupName+')</a></li>';
+	for (var j = 0; j < response.length; j++) { // AJE 2016-11-01 changed Travant labeling 'Group Name' etc. to 'Progam Name' etc.
+		str += '<li> <a href="#" onclick="showdetail('  + j + ');">' + response[j].name+'     (Program Name: ' +  response[j].groupName+')</a></li>';
     }
 
 	str += '</ul>';
@@ -303,14 +303,13 @@ function showdetail(j){
 
 	var str =
 		'&nbsp;Member Name:&nbsp;<input id ="editMemberName" class="ingestion-form" type="text" value="'+ searchResponse[j].name  +'" /><br /><br />'+
-	'&nbsp;Member Desc:&nbsp;<input id ="editMemberDesc" class="ingestion-form" type="text" value="'+ searchResponse[j].description  +'"/><br><br />'+
-	'&nbsp;Adress 1:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input id ="editAddress1" class="ingestion-form" type="text" value="'+ searchResponse[j].address1  +'"/><br /><br />'+
-	'&nbsp;Adress 2:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input id ="editAddress2" class="ingestion-form" type="text" value="'+ searchResponse[j].address2  +'"/><br /><br />'+
+	'&nbsp;Member Desc:&nbsp;&nbsp;<input id ="editMemberDesc" class="ingestion-form" type="text" value="'+ searchResponse[j].description  +'"/><br><br />'+
+	'&nbsp;Address 1:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input id ="editAddress1" class="ingestion-form" type="text" value="'+ searchResponse[j].address1  +'"/><br /><br />'+
+	'&nbsp;Address 2:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input id ="editAddress2" class="ingestion-form" type="text" value="'+ searchResponse[j].address2  +'"/><br /><br />'+
 	'&nbsp;City:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input id ="editCity" class="ingestion-form" type="text" value="'+ searchResponse[j].city  +'"/><br /><br />'+
 	'&nbsp;State Or Province:&nbsp;' + stateDropDown +'<br /><br />'+
 	'&nbsp;Postal Code:&nbsp;&nbsp;<input id ="editPostal" class="ingestion-form" type="text" value="'+ searchResponse[j].postalCode  +'"/><br /><br />'+
-	'&nbsp;Country:&nbsp;&nbsp;&nbsp;' + countryDropDown +'<br /><br/><br />'+
-
+	'&nbsp;Country:&nbsp;&nbsp;&nbsp;' + countryDropDown +
 	'&nbsp; &nbsp;&nbsp; <input type="submit" value="Save Members" onclick="editMember(' + j +')"><br />';
 
    	$("#detail").html(str);
