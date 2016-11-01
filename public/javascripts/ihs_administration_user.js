@@ -180,8 +180,8 @@ function showdetail(j){
 	var str =
 		'&nbsp;First Name:&nbsp;<input id ="editFirstName" class="ingestion-form" type="text" value="'+ searchResponse[j].firstName  +'" /><br /><br />'+
 		'&nbsp;Last Name:&nbsp;<input id ="editLastName" class="ingestion-form" type="text" value="'+ searchResponse[j].lastName  +'"/><br><br />'+
-		'&nbsp;UserName:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input iNd ="editUserName" class="ingestion-form" type="text" value="'+ searchResponse[j].userName  +'" readonly/><br /><br />'+
-		'&nbsp;Password:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input id ="editPassword" class="ingestion-form" type="text" value="'+ searchResponse[j].password  +'"/><br /><br />';
+		'&nbsp;User Name:&nbsp;&nbsp;&nbsp;<input id ="editUserName" class="ingestion-form" type="text" value="'+ searchResponse[j].userName  +'" readonly/><br /><br />'+
+		'&nbsp;Password:&nbsp;&nbsp;&nbsp;<input id ="editPassword" class="ingestion-form" type="text" value="'+ searchResponse[j].password  +'"/><br /><br />';
 
 	if(searchResponse[j].role == 'user'){
 		str += '<div style="width:150px;float:left;"><input type="radio" name="editgroup" value="user" checked>User</div>'+
@@ -190,7 +190,7 @@ function showdetail(j){
 		str +='<div style="width:150px;float:left;"><input type="radio" name="editgroup" value="user" >User</div>'+
 			'<div style="width:200px;float:left;"><input type="radio" name="editgroup" value="admin" checked> Admin</div> <br><br>';
 	}
-	str += '&nbsp; &nbsp;&nbsp; <input type="submit" value="Save User" onclick="saveUser(' + j +')"><br />';
+	str += '<input type="submit" value="Save User" onclick="saveUser(' + j +')"><br />';
 
    	$("#detail").html(str);
    	$("#detail").show();
