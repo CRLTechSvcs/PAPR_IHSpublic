@@ -1160,6 +1160,11 @@ img {border:none;}
 	margin-left:16px;
 }
 
+/* AJE 2016-11-01 added this for Administration > Manage Program */
+#detail {
+	margin-left: 10px;
+}
+
 /* #search_results_dropdown {width:150px;height:22px;margin-top:16px;margin-left:16px;}
 I can't find where this is used; not sure that it is but I don't want to delete it until I'm certain. */
 
