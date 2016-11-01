@@ -142,8 +142,8 @@ function showdetail(i){
 
   // AJE 2016-11-01 changed Travant labeling 'Group Name' etc. to 'Progam Name' etc.
 	var str = '&nbsp;Program Name:&nbsp;<input class="ingestion-form" id="editgroupName" type="text" value="'+ searchResponse[i].groupName  +'" /><br /><br />'
-   	str += '&nbsp;Program Description:&nbsp;<input class="ingestion-form"  id="editgroupDesc" type="text" value="'+ searchResponse[i].groupDesc  +'" /><br /><br />'
-   	str += '&nbsp; &nbsp;&nbsp; <input type="submit" value="Submit Group Change" onclick="submiteGroupChange('+  i  +')"><br /><br />'
+   	str += '&nbsp;Program Desc:&nbsp;&nbsp;<input class="ingestion-form"  id="editgroupDesc" type="text" value="'+ searchResponse[i].groupDesc  +'" /><br /><br />'
+   	str += '<input type="submit" value="Submit Group Change" onclick="submiteGroupChange('+  i  +')"><br /><br />'
 
    	$("#detail").html(str);
 	$("#detail").show();
