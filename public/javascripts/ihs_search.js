@@ -318,65 +318,67 @@ function searchJournalByOCLC(search) {
 AJE 2016-10-27 moved this section here from main.scala.html, because advanced_editing_history.scala.html (and others?) need it too
   AJE 2016-10-26 -- capture key events for search boxes, only trigger search when space/enter key found
 */
-$("#browse_titleid").keydown(function(e){ // http://stackoverflow.com/questions/3462995/jquery-keydown-keypress-keyup-enterkey-detection#3463044
-    var code = e.which || e.keyCode; // recommended to use e.which, it's normalized across browsers; similar to event.keycode
-    //if(code==13)e.preventDefault(); // 13 is the enter key; 32 is space
-    // 2016-10-27 separate if clauses to check on some weirdness
-    if(code==13){
-      console.info('TBR keydown function got key 13: "enter"; pass entire form object, with doc.get.');
-      browseJournalByTitle(document.getElementById('browse_titleid'));
-    }
-    if(code==32){
-      console.info('TBR keydown function got key 32: "space"; pass entire form object, with doc.get.');
-      browseJournalByTitle(document.getElementById('browse_titleid'));
-    } else {
-      console.log('TBR keydown function found ELSE; no search yet');
-    }
-});
-$("#contains_titleid").keydown(function(e){
-    var code = e.which || e.keyCode;
-    if(code==13){
-      console.info('TCT keydown function got key 13: "enter"; pass entire form object, with doc.get.');
-      containsJournalByTitle(document.getElementById('contains_titleid'));
-    }
-    if(code==32){
-      console.info('TCT keydown function got key 32: "space"; pass entire form object, with doc.get.');
-      containsJournalByTitle(document.getElementById('contains_titleid'));
-    }
-});
-$("#titleid").keyup(function(e){
-    var code = e.which || e.keyCode;
-    if(code==13){
-      console.info('KWD keyup function got key 13: "enter"; pass entire form object, with doc.get.');
-      searchJournalByTitle(document.getElementById('titleid'));
-    }
-    if(code==32){
-      console.info('KWD keyup function got key 32: "space"; pass entire form object, with doc.get.');
-      searchJournalByTitle(document.getElementById('titleid'));
-    }
-});
-$("#issnid").keyup(function(e){
-    var code = e.which || e.keyCode;
-    if(code==13){
-      console.info('ISSN keyup function got key 13: "enter"; pass entire form object, with doc.get.');
-      searchJournalByISSN(document.getElementById('issnid'));
-    }
-    if(code==32){
-      console.info('ISSN keyup function got key 32: "space"; pass entire form object, with doc.get.');
-      searchJournalByISSN(document.getElementById('issnid'));
-    }
-});
-$("#oclcid").keyup(function(e){
-    var code = e.which || e.keyCode;
-    if(code==13){
-      console.info('OCLC keyup function got key 13: "enter"; pass entire form object, with doc.get.');
-      searchJournalByOCLC(document.getElementById('oclcid'));
-    }
-    if(code==32){
-      console.info('OCLC keyup function got key 32: "space"; pass entire form object, with doc.get.');
-      searchJournalByOCLC(document.getElementById('oclcid'));
-    }
-});
+$(document).ready(function() {
+  $("#browse_titleid").keydown(function(e){ // http://stackoverflow.com/questions/3462995/jquery-keydown-keypress-keyup-enterkey-detection#3463044
+      var code = e.which || e.keyCode; // recommended to use e.which, it's normalized across browsers; similar to event.keycode
+      //if(code==13)e.preventDefault(); // 13 is the enter key; 32 is space
+      // 2016-10-27 separate if clauses to check on some weirdness
+      if(code==13){
+        console.info('TBR keydown function got key 13: "enter"; pass entire form object, with doc.get.');
+        browseJournalByTitle(document.getElementById('browse_titleid'));
+      }
+      if(code==32){
+        console.info('TBR keydown function got key 32: "space"; pass entire form object, with doc.get.');
+        browseJournalByTitle(document.getElementById('browse_titleid'));
+      } else {
+        console.log('TBR keydown function found ELSE; no search yet');
+      }
+  });
+  $("#contains_titleid").keydown(function(e){
+      var code = e.which || e.keyCode;
+      if(code==13){
+        console.info('TCT keydown function got key 13: "enter"; pass entire form object, with doc.get.');
+        containsJournalByTitle(document.getElementById('contains_titleid'));
+      }
+      if(code==32){
+        console.info('TCT keydown function got key 32: "space"; pass entire form object, with doc.get.');
+        containsJournalByTitle(document.getElementById('contains_titleid'));
+      }
+  });
+  $("#titleid").keyup(function(e){
+      var code = e.which || e.keyCode;
+      if(code==13){
+        console.info('KWD keyup function got key 13: "enter"; pass entire form object, with doc.get.');
+        searchJournalByTitle(document.getElementById('titleid'));
+      }
+      if(code==32){
+        console.info('KWD keyup function got key 32: "space"; pass entire form object, with doc.get.');
+        searchJournalByTitle(document.getElementById('titleid'));
+      }
+  });
+  $("#issnid").keyup(function(e){
+      var code = e.which || e.keyCode;
+      if(code==13){
+        console.info('ISSN keyup function got key 13: "enter"; pass entire form object, with doc.get.');
+        searchJournalByISSN(document.getElementById('issnid'));
+      }
+      if(code==32){
+        console.info('ISSN keyup function got key 32: "space"; pass entire form object, with doc.get.');
+        searchJournalByISSN(document.getElementById('issnid'));
+      }
+  });
+  $("#oclcid").keyup(function(e){
+      var code = e.which || e.keyCode;
+      if(code==13){
+        console.info('OCLC keyup function got key 13: "enter"; pass entire form object, with doc.get.');
+        searchJournalByOCLC(document.getElementById('oclcid'));
+      }
+      if(code==32){
+        console.info('OCLC keyup function got key 32: "space"; pass entire form object, with doc.get.');
+        searchJournalByOCLC(document.getElementById('oclcid'));
+      }
+  });
+}); // close doc.ready
 
 
 
