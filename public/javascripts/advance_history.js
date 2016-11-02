@@ -615,9 +615,29 @@ var currentTitle = {};
 
 
 	function populateSearchList(response, ioArgs) {
+
+  	  console.info('advance_history: populateSearchList(response=', response, ' ; ioArgs=', ioArgs); // AJE 2016-09-16 testing
+      hideWaiting(); // AJE 2016-11-01
+
 	    var results = document.getElementById('results');
 
-	    results.style.visibility = "visible";
+
+      // AJE 2016-11-01 to give proper 'no results found' message
+      console.warn('advance history: populateSearchList: ioArgs.url = "', ioArgs.url, '"; ioArgs.url.indexOf(browseJournalByTitle) == ', ioArgs.url.indexOf('browseJournalByTitle'));
+      var search_box = '';
+      if(ioArgs.url.indexOf('browseJournalByTitle') != -1 ){
+        search_box = document.getElementById('browse_titleid');
+      } else if(ioArgs.url.indexOf('containsJournalByTitle') != -1 ){
+        search_box = document.getElementById('contains_titleid');
+      } else if(ioArgs.url.indexOf('searchJournalByTitle') != -1 ){
+        search_box = document.getElementById('titleid');
+      } else if(ioArgs.url.indexOf('searchJournalByISSN') != -1 ){
+        search_box = document.getElementById('issnid');
+      } else if(ioArgs.url.indexOf('searchJournalByOCLC') != -1 ){
+        search_box = document.getElementById('oclcid');
+      }
+      var search_value = search_box.value;
+      // end AJE 2016-11-01
 
 	    var ul = document.getElementById('search-list');
 
@@ -628,18 +648,32 @@ var currentTitle = {};
 	    ul = document.createElement('ul');
 	    ul.setAttribute('id', 'search-list');
 
-	    for (i = 0; i < response.items.length; i++) {
-	        var li = document.createElement('li');
-	        var a = document.createElement('a');
+      /* AJE 2016-11-01 handle searches where no results were found */
+      //if (response.items.length < 1){
+      if ( (response.items.length < 1) ||
+           (response.items.length == 1 && response.items[0].titleId == 0)) {
+        var li = document.createElement('li');
+        li.innerHTML = "<h2>No results were found for '"+search_value+"'</h2>";
+        ul.appendChild(li);
+      } else {
+  	    for (i = 0; i < response.items.length; i++) {
+  	        var li = document.createElement('li');
+  	        var a = document.createElement('a');
 
-	        a.innerHTML = response.items[i].title;
-	        a.setAttribute('href', 'javascript:getJournalDetail(' + response.items[i].titleId + ');');
-	        a.setAttribute('title', response.items[i].title);
-	        li.appendChild(a);
-	        ul.appendChild(li);
-	    }
+            var display_title = response.items[i].title + " / " + response.items[i].publisher;  // AJE 2016-11-01
+            a.innerHTML = display_title; // AJE 2016-11-01
+  	        a.setAttribute('href', 'javascript:getJournalDetail(' + response.items[i].titleId + ');');
+  	        a.setAttribute('title', response.items[i].title);
+  	        li.appendChild(a);
+  	        ul.appendChild(li);
+        } // end for
+      } // end else
+
 	    results.appendChild(ul);
 
+      results.style.display = "block"; // ... this; now do some more toggling, call new AJE function, in ihs_search.js
+      toggle_search_home_title_components('populateSearchList');
+      // AJE : resume Travant original
 
 	}
 
