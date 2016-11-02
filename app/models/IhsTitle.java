@@ -219,19 +219,32 @@ public class IhsTitle extends Model {
     List <TitleView> titleViews = new ArrayList<TitleView>();
     String tmpSql = titleSearchSql.replaceAll("param", search);
     //Logger.info("app/models/IhsTitle.java : getTitle will use SQL: " +tmpSql);
+
+
     List<SqlRow> sqlRows = Ebean.createSqlQuery(tmpSql)
       .findList();
-    for(SqlRow sqlRow : sqlRows){
-      //titleViews.add(new TitleView( sqlRow.getInteger("titleId"), sqlRow.getString("title"))); // Travant original
-      //Logger.info(sqlRow.getInteger("titleId").toString()+ " ; "+ sqlRow.getString("title"));
+
+    if (sqlRows.size() > 0){
+      for(SqlRow sqlRow : sqlRows){
+        //titleViews.add(new TitleView( sqlRow.getInteger("titleId"), sqlRow.getString("title"))); // Travant original
+        //Logger.info(sqlRow.getInteger("titleId").toString()+ " ; "+ sqlRow.getString("title"));
+        titleViews.add(
+          new TitleView(
+            sqlRow.getInteger("titleId"),
+            sqlRow.getString("title"),
+            sqlRow.getString("publisher")
+        ));
+        //Logger.info(sqlRow.getInteger("titleId").toString()+ " ; "+ sqlRow.getString("title") + " / " + sqlRow.getString("publisher") );
+      }
+    } else {
       titleViews.add(
-        new TitleView(
-          sqlRow.getInteger("titleId"),
-          sqlRow.getString("title"),
-          sqlRow.getString("publisher")
-      ));
-      //Logger.info(sqlRow.getInteger("titleId").toString()+ " ; "+ sqlRow.getString("title") + " / " + sqlRow.getString("publisher") );
+          new TitleView(
+            0, // sqlRow.getInteger("titleId"),
+            "No results for '" +search+ "'.", //sqlRow.getString("title"),
+            " " // sqlRow.getString("publisher")
+        ));
     }
+
     return titleViews;
 	}
 
@@ -245,18 +258,32 @@ public class IhsTitle extends Model {
     List <TitleView> titleViews = new ArrayList<TitleView>();
     String tmpSql = titleBrowseSql.replaceAll("param", search);
     //Logger.info("app/models/IhsTitle.java : getTitleBrowse will use SQL: " +tmpSql);
+
     List<SqlRow> sqlRows = Ebean.createSqlQuery(tmpSql)
       .findList();
-    for(SqlRow sqlRow : sqlRows){
-      //titleViews.add(new TitleView( sqlRow.getInteger("titleId"), sqlRow.getString("title")));
+
+Logger.info("app/models/IhsTitle.java : getTitleBrowse has results sqlRows.size() = " +sqlRows.size());
+
+    if (sqlRows.size() > 0){
+      for(SqlRow sqlRow : sqlRows){
+        //titleViews.add(new TitleView( sqlRow.getInteger("titleId"), sqlRow.getString("title")));
+        titleViews.add(
+          new TitleView(
+            sqlRow.getInteger("titleId"),
+            sqlRow.getString("title"),
+            sqlRow.getString("publisher")
+        ));
+        //Logger.info(sqlRow.getInteger("titleId").toString()+ " ; "+ sqlRow.getString("title") + " / " + sqlRow.getString("publisher") );
+      }
+    } else {
       titleViews.add(
-        new TitleView(
-          sqlRow.getInteger("titleId"),
-          sqlRow.getString("title"),
-          sqlRow.getString("publisher")
-      ));
-      //Logger.info(sqlRow.getInteger("titleId").toString()+ " ; "+ sqlRow.getString("title") + " / " + sqlRow.getString("publisher") );
+          new TitleView(
+            0, // sqlRow.getInteger("titleId"),
+            "No results for '" +search+ "'.", //sqlRow.getString("title"),
+            " " // sqlRow.getString("publisher")
+        ));
     }
+
     return titleViews;
 	} // end AJE 2016-10-24 getTitleBrowse
 
@@ -270,23 +297,32 @@ public class IhsTitle extends Model {
     List <TitleView> titleViews = new ArrayList<TitleView>();
     String tmpSql = titleContainsSql.replaceAll("param", search);
     Logger.info("app/models/IhsTitle.java : getTitleContains will use SQL: " +tmpSql);
+
     List<SqlRow> sqlRows = Ebean.createSqlQuery(tmpSql)
       .findList();
-    for(SqlRow sqlRow : sqlRows){
-      //titleViews.add(new TitleView( sqlRow.getInteger("titleId"), sqlRow.getString("title")));
+
+    if (sqlRows.size() > 0){
+      for(SqlRow sqlRow : sqlRows){
+        //titleViews.add(new TitleView( sqlRow.getInteger("titleId"), sqlRow.getString("title")));
+        titleViews.add(
+          new TitleView(
+            sqlRow.getInteger("titleId"),
+            sqlRow.getString("title"),
+            sqlRow.getString("publisher")
+        ));
+        //Logger.info(sqlRow.getInteger("titleId").toString()+ " ; "+ sqlRow.getString("title") + " / " + sqlRow.getString("publisher") );
+      }
+    } else {
       titleViews.add(
-        new TitleView(
-          sqlRow.getInteger("titleId"),
-          sqlRow.getString("title"),
-          sqlRow.getString("publisher")
-      ));
-      //Logger.info(sqlRow.getInteger("titleId").toString()+ " ; "+ sqlRow.getString("title") + " / " + sqlRow.getString("publisher") );
+          new TitleView(
+            0, // sqlRow.getInteger("titleId"),
+            "No results for '" +search+ "'.", //sqlRow.getString("title"),
+            " " // sqlRow.getString("publisher")
+        ));
     }
+
     return titleViews;
 	} // end AJE 2016-10-27 getTitleContains
-
-
-
 
 
 
