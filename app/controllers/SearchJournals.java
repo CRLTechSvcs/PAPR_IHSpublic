@@ -76,7 +76,7 @@ public class SearchJournals extends Controller {
 */
 	public static Result browseJournalByTitle(String searchValue) {
 		String modifiedSearchValue = searchValue.trim();  // AJE 2016-10-24
-    //Logger.info("app.controllers.SearchJournals.java browseJournalByTitle("+searchValue+"), modifiedSearchValue = "+modifiedSearchValue+".");
+    Logger.info("app.controllers.SearchJournals.java browseJournalByTitle("+searchValue+"), modifiedSearchValue = "+modifiedSearchValue+".");
 
 		List<TitleView> titleViews = IhsTitle.getTitleBrowse(modifiedSearchValue); // AJE 2016-10-24
     Logger.info("...browseJournalByTitle("+searchValue+"), titleViews.size() = "+titleViews.size()+", titleViews[0].publisher = "+titleViews.get(0).publisher+".");
