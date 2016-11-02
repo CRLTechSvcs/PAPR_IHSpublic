@@ -116,39 +116,56 @@ function clearUnusedSearchFields(calling_function){
   // AJE 2016-09-21 populateSearchList used to live in search_home.js
 	function populateSearchList(response, ioArgs) {
 
-	  //console.info('populateSearchList(response=', response, ' ; ioArgs=', ioArgs); // AJE 2016-09-16 testing
+	  console.info('populateSearchList(response=', response, ' ; ioArgs=', ioArgs); // AJE 2016-09-16 testing
     hideWaiting(); // AJE 2016-10-27
 
     var results = document.getElementById('results');
+
+    // AJE 2016-11-01 to give proper 'no results found' message
+    console.warn('ihs_search: populateSearchList: ioArgs.url = "', ioArgs.url, '"; ioArgs.url.indexOf(browseJournalByTitle) == ', ioArgs.url.indexOf('browseJournalByTitle'));
+    var search_box = '';
+    if(ioArgs.url.indexOf('browseJournalByTitle') != -1 ){
+      search_box = document.getElementById('browse_titleid');
+    } else if(ioArgs.url.indexOf('containsJournalByTitle') != -1 ){
+      search_box = document.getElementById('contains_titleid');
+    } else if(ioArgs.url.indexOf('searchJournalByTitle') != -1 ){
+      search_box = document.getElementById('titleid');
+    } else if(ioArgs.url.indexOf('searchJournalByISSN') != -1 ){
+      search_box = document.getElementById('issnid');
+    } else if(ioArgs.url.indexOf('searchJournalByOCLC') != -1 ){
+      search_box = document.getElementById('oclcid');
+    }
+    var search_value = search_box.value;
+    // end AJE 2016-11-01
 
     var ul = document.getElementById('search-list');
     if (ul != null) { results.removeChild(ul); }
     ul = document.createElement('ul');
     ul.setAttribute('id', 'search-list');
 
-    for (i = 0; i < response.items.length; i++) {
-      var li = document.createElement('li');
-      var a = document.createElement('a');
-
-      //console.log(i +') response.items[',i,'].title: "', response.items[i].title, ' *.publisher: "', response.items[i].publisher, ' ; response.items[i] = ', response.items[i]);// AJE 2016-09-20
-      var display_title = response.items[i].title + " / " + response.items[i].publisher;  // AJE 2016-10-25
-      //a.innerHTML = response.items[i].title; // Travant original
-      a.innerHTML = display_title; // AJE 2016-10-25
-      a.setAttribute('href', 'javascript:getJournalDetail(' + response.items[i].titleId + ');');
-      //a.setAttribute('title', response.items[i].title); // Travant original
-      a.setAttribute('title', display_title); // AJE 2016-10-25
-      li.appendChild(a);
-      ul.appendChild(li);
-    }
-
     /* AJE 2016-10-26 handle searches where no results were found */
-    if (response.items.length < 1){
+    //if (response.items.length < 1){
+    if ( (response.items.length < 1) ||
+         (response.items.length == 1 && response.items[0].titleId == 0)) {
       var li = document.createElement('li');
-      var search_box = document.getElementById('browse_titleid');
-      var search_value = search_box.value;
       li.innerHTML = "<h2>No results were found for '"+search_value+"'</h2>";
       ul.appendChild(li);
-    }
+    } else {
+      for (i = 0; i < response.items.length; i++) {
+        var li = document.createElement('li');
+        var a = document.createElement('a');
+
+        //console.log(i +') response.items[',i,'].title: "', response.items[i].title, ' *.publisher: "', response.items[i].publisher, ' ; response.items[i] = ', response.items[i]);// AJE 2016-09-20
+        var display_title = response.items[i].title + " / " + response.items[i].publisher;  // AJE 2016-10-25
+        //a.innerHTML = response.items[i].title; // Travant original
+        a.innerHTML = display_title; // AJE 2016-10-25
+        a.setAttribute('href', 'javascript:getJournalDetail(' + response.items[i].titleId + ');');
+        //a.setAttribute('title', response.items[i].title); // Travant original
+        a.setAttribute('title', display_title); // AJE 2016-10-25
+        li.appendChild(a);
+        ul.appendChild(li);
+      } // end for
+    } // end else
 
     results.appendChild(ul);
 
@@ -324,57 +341,55 @@ $(document).ready(function() {
       //if(code==13)e.preventDefault(); // 13 is the enter key; 32 is space
       // 2016-10-27 separate if clauses to check on some weirdness
       if(code==13){
-        console.info('TBR keydown function got key 13: "enter"; pass entire form object, with doc.get.');
+        //console.info('TBR keydown function got key 13: "enter"; pass entire form object, with doc.get.');
         browseJournalByTitle(document.getElementById('browse_titleid'));
       }
       if(code==32){
-        console.info('TBR keydown function got key 32: "space"; pass entire form object, with doc.get.');
+        //console.info('TBR keydown function got key 32: "space"; pass entire form object, with doc.get.');
         browseJournalByTitle(document.getElementById('browse_titleid'));
-      } else {
-        console.log('TBR keydown function found ELSE; no search yet');
       }
   });
   $("#contains_titleid").keydown(function(e){
       var code = e.which || e.keyCode;
       if(code==13){
-        console.info('TCT keydown function got key 13: "enter"; pass entire form object, with doc.get.');
+        //console.info('TCT keydown function got key 13: "enter"; pass entire form object, with doc.get.');
         containsJournalByTitle(document.getElementById('contains_titleid'));
       }
       if(code==32){
-        console.info('TCT keydown function got key 32: "space"; pass entire form object, with doc.get.');
+        //console.info('TCT keydown function got key 32: "space"; pass entire form object, with doc.get.');
         containsJournalByTitle(document.getElementById('contains_titleid'));
       }
   });
   $("#titleid").keyup(function(e){
       var code = e.which || e.keyCode;
       if(code==13){
-        console.info('KWD keyup function got key 13: "enter"; pass entire form object, with doc.get.');
+        //console.info('KWD keyup function got key 13: "enter"; pass entire form object, with doc.get.');
         searchJournalByTitle(document.getElementById('titleid'));
       }
       if(code==32){
-        console.info('KWD keyup function got key 32: "space"; pass entire form object, with doc.get.');
+        //console.info('KWD keyup function got key 32: "space"; pass entire form object, with doc.get.');
         searchJournalByTitle(document.getElementById('titleid'));
       }
   });
   $("#issnid").keyup(function(e){
       var code = e.which || e.keyCode;
       if(code==13){
-        console.info('ISSN keyup function got key 13: "enter"; pass entire form object, with doc.get.');
+        //console.info('ISSN keyup function got key 13: "enter"; pass entire form object, with doc.get.');
         searchJournalByISSN(document.getElementById('issnid'));
       }
       if(code==32){
-        console.info('ISSN keyup function got key 32: "space"; pass entire form object, with doc.get.');
+       //console.info('ISSN keyup function got key 32: "space"; pass entire form object, with doc.get.');
         searchJournalByISSN(document.getElementById('issnid'));
       }
   });
   $("#oclcid").keyup(function(e){
       var code = e.which || e.keyCode;
       if(code==13){
-        console.info('OCLC keyup function got key 13: "enter"; pass entire form object, with doc.get.');
+        //console.info('OCLC keyup function got key 13: "enter"; pass entire form object, with doc.get.');
         searchJournalByOCLC(document.getElementById('oclcid'));
       }
       if(code==32){
-        console.info('OCLC keyup function got key 32: "space"; pass entire form object, with doc.get.');
+        //console.info('OCLC keyup function got key 32: "space"; pass entire form object, with doc.get.');
         searchJournalByOCLC(document.getElementById('oclcid'));
       }
   });
