@@ -778,10 +778,14 @@
 
 	function getJournalDetail(id) {
 
+      console.info('search_home.js, getJournalDetail(', id, ')');
+
 	    // AJE 2016-09-15 if search results are in main whitespace area (as per Amy req.) then they need to be hidden first of all
 	    // document.getElementById("results").style.visibility = "hidden"; // still takes up space
 	    toggle_search_home_title_components('getJournalDetail'); // in ihs_search.js
 	    // end AJE 2016-09-15
+
+      console.info('call1 = ', call1, ' ; call2 = ', call2);
 
 	    if (call1 || call2) { return; }
 	    call1 = true;
@@ -822,6 +826,7 @@
 
 	    // document.getElementById("summary").innerHTML=' ';
 
+      console.info('dojo.xhrGet "/search/getJournalDetail/', id, '"."');
 	    dojo.xhrGet({
         handleAs: 'json',
         url: "/search/getJournalDetail/" + id,
@@ -830,6 +835,7 @@
         load: populateJournalDetail
 	    });
 
+      console.info('dojo.xhrGet "/search/getJournalVolumeDetail/', id, '/',memberid,"."');
       dojo.xhrGet({
         handleAs: 'json',
         url: "/search/getJournalVolumeDetail/" + id + "/" + memberid,
