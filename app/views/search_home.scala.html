@@ -61,6 +61,8 @@
 
 	function getJournalDetail(titleid){
 
+	    console.info('search_home.scala.html, getJournalDetail(', titleid, ')');
+
 		 dojo.xhrGet({
 	        handleAs: 'json',
 	        url: "/advancedEditing/GetTitles/" + titleid,
