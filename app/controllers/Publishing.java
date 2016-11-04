@@ -79,10 +79,22 @@ public class Publishing extends Controller {
 
 			IhsUser ihsUser = IhsUser.find.byId(appUser.userId);
 
+      Logger.info("Publishing.java: (1) postPublishingView(); publishingView.startDate=" +publishingView.startDate+ "; publishingView.endDate=" +publishingView.endDate);
+      /*
+        AJE 2016-11-02 up to this point, startDate + endDate are valid,
+          same values from <input> fields
+        But Logger message "(2)" after these next DateTime declarations shows that these 2 lines
+          reset the MONTH to always '01' (but YEAR and DAY are ok)
+
 			DateTime startDate = "".equals(publishingView.startDate) ? null
-					: shortdtf.parseDateTime(publishingView.startDate);
+					: shortdtf.parseDateTime(publishingView.startDate); // Travant original
 			DateTime endDate = "".equals(publishingView.endDate) ? null
-					: shortdtf.parseDateTime(publishingView.endDate);
+					: shortdtf.parseDateTime(publishingView.endDate); // Travant original
+      */
+      DateTime startDate = new DateTime(publishingView.startDate); // AJE 2016-11-02
+      DateTime endDate   = new DateTime(publishingView.endDate); // AJE 2016-11-02
+
+      Logger.info("Publishing.java: (2) postPublishingView(); has startDate=" +startDate+ "; endDate=" +endDate);
 
 			SingestionJobStatus singestionJobStatus = (SingestionJobStatus) SingestionJobStatus.find
 					.where().eq("name", SingestionJobStatus.Queued)
