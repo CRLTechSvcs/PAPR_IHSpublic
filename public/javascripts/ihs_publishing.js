@@ -7,7 +7,6 @@ require(["dijit/TitlePane","dojo/dom","dojo/domReady!"], function(dom) {
         url: "/publishing/getPublishingView",
         preventCache: true,
         load: function(data) {
-
         	publishingView = data;
         },
         error: function(e) {
@@ -27,6 +26,7 @@ function submitPub(){
 	var fileFormat = $('#fileFormat').val();
 	var startDate =  $('#startDate').val();
 	var endDate =  $('#endDate').val();
+	alert('submitPub begins with startDate=' +startDate+ '\nendDate='+endDate);
 
 	var errorMessage = '';
 
@@ -34,18 +34,15 @@ function submitPub(){
 		errorMessage += 'Enter a  valid Job Name \n' ;
 	}
 
-
 	if(startDate != ''){
-		if(  !validateDate(startDate) ){
+		if( !validateDate(startDate) ){ // function validateDate: see ihs_common.js
 			errorMessage += 'Enter a  valid Start Date \n' ;
-
 		}
 	}
 
 	if( endDate != ''){
 		if( !validateDate(endDate) ){
 			errorMessage += 'Enter a  valid End Date \n' ;
-
 		}
 	}
 
@@ -54,12 +51,12 @@ function submitPub(){
 		return;
 	}
 
-
 	publishingView.jobName = jobName;
 	publishingView.fileFormat = fileFormat;
 	publishingView.startDate = startDate;
 	publishingView.endDate = endDate;
 console.warn('startDate = ', startDate, '; endDate = ', endDate);
+alert('startDate = ' +startDate+ '\n endDate = ' +endDate+ '\npublishingView.startDate = ' +publishingView.startDate+ '\npublishingView.endDate = ', publishingView.endDate);
 
 	showWaiting();
 
