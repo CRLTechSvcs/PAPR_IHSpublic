@@ -70,8 +70,6 @@ public class IhsVolume extends Model {
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "ihsVolume")
 	public List<IhsIssue> ihsissues = new ArrayList<IhsIssue>();
 
-
-
 	public IhsVolume(IhsTitle ihsTitle, String volumeNumber,
 			DateTime startDate, DateTime endDate) {
 		this.ihsTitle = ihsTitle;
@@ -137,21 +135,21 @@ public class IhsVolume extends Model {
 			}
 
 			int counter = 0;
-			
+
 			for (IhsIssue ihsissue : ihsVolume.ihsissues) {
-
-				boolean heldFlag =false;
-
+				boolean heldFlag = false;
 				int condtion = 0;
-				
+
 				if( "1".equals(volumeView.volumeLevelFlag) & counter > 0  )
 					break;
-				
 
 				IssueView issueView = new IssueView();
 
 				issueView.issueId = ihsissue.issueID;
 				issueView.issueNumber = ihsissue.issueNumber;
+				// AJE 2016-11-04 added next 2 properties
+				issueView.name = ihsissue.name;
+				issueView.description = ihsissue.description;
 
 				for (IhsHolding ihsHolding : ihsissue.ihsHoldings) {
 
@@ -253,8 +251,7 @@ public class IhsVolume extends Model {
 								holdingConditionsView.checked = 1;
 							}
 
-							holdingView.holdingConditionsView
-									.add(holdingConditionsView);
+							holdingView.holdingConditionsView.add(holdingConditionsView);
 						}
 
 						if (ihsHolding.sconditionTypeOverall.conditionTypeOverallID > condtion) {
@@ -272,36 +269,58 @@ public class IhsVolume extends Model {
 
 
 				if(heldFlag){
-					issueView.issueStatus = "Held";
 					held++;
-				}else {
+					issueView.issueStatus = "Held";
+				} else {
 					missing++;
 					issueView.issueStatus = "Missing";
 				}
 
 				issueView.issueCount = ihsissue.ihsHoldings.size();
-
+        System.out.println("IhsVolume.java, getTitleById, is (ihsissue.spublicationDate !=  null) ? " +(ihsissue.spublicationDate !=  null)+".");
 				if(ihsissue.spublicationDate !=  null){
-					issueView.issueMonth = ihsissue.spublicationDate.publicationDateVal;
-					//issueView.issueMonth += ihsissue.publicationDate !=null ? "-" + ihsissue.publicationDate.getYear() : "";
-				}else {
-					issueView.issueMonth = ihsissue.publicationDate !=null ? dateFormat.print(ihsissue.publicationDate) : "";
+				  System.out.println("IhsVolume.java, getTitleById IF block, ihsissue.spublicationDate NOT  null.");
+					issueView.issueMonth = ihsissue.spublicationDate.publicationDateVal; // Travant original
+					//issueView.issueMonth += ihsissue.publicationDate != null ? "-" + ihsissue.publicationDate.getYear() : "";
 				}
+				else if(issueView.name != null){ // AJE added else if block 2016-11-04
+				  System.out.println("IhsVolume.java, getTitleById ELSE IF NAME block, ihsissue.name=" +issueView.name+".");
+					issueView.issueMonth = issueView.name +" ";
+					issueView.issueMonth +=  ihsissue.publicationDate != null ? dateFormat.print(ihsissue.publicationDate) : "[no issue date found]";
+				}
+				else if(issueView.description != null){ // AJE added else if block 2016-11-04
+				  System.out.println("IhsVolume.java, getTitleById ELSE IF DESC block, ihsissue.description=" +issueView.description+".");
+					issueView.issueMonth = issueView.description +" ";
+					issueView.issueMonth +=  ihsissue.publicationDate != null ? dateFormat.print(ihsissue.publicationDate) : "[no issue date found]";
+				}
+				else {
+				  System.out.println("IhsVolume.java, getTitleById ELSE block, ihsissue.spublicationDate IS  null.");
+          issueView.issueMonth += ihsissue.name != null ? ihsissue.name : "";
+          issueView.issueMonth += ihsissue.description != null ? ihsissue.description : "";
+          issueView.issueMonth += ihsissue.name != null ? ihsissue.name : dateFormat.print(ihsissue.publicationDate);
+// AJE : it uses dateFormat.print(ihsissue.publicationDate) when ihsissue.name is null
+				}
+
+        // AJE no Logger available
+        if(ihsissue.spublicationDate !=  null){
+          System.out.println("IhsVolume.java, getTitleById: Travant uses: ihsissue.spublicationDate.publicationDateVal = " +ihsissue.spublicationDate.publicationDateVal+ ".");
+        }
+        System.out.println("IhsVolume.java, getTitleById: ihsissue.publicationDate = " +ihsissue.publicationDate+ ".");
+        System.out.println("IhsVolume.java, getTitleById: dateFormat.print(ihsissue.publicationDate) = " +dateFormat.print(ihsissue.publicationDate)+ ".");
+        System.out.println("IhsVolume.java, getTitleById, issueView.issueMonth = '" +issueView.issueMonth+ "'.");
+
 				volumeView.issueView.add(issueView);
 				counter++;
-			}
+			} // end for ihsVolume.ihsissues
 			volumeViews.add(volumeView);
-			
 		}
 
 		if( volumeViews.size() > 0){
-
 			volumeViews.get(0).chart = new ArrayList<Chart>();
 			volumeViews.get(0).chart.add(new Chart("Held", held));
 			volumeViews.get(0).chart.add(new Chart("Missing", missing));
-
 		}
 
 		return volumeViews;
-	}
+	} // end getTitleById
 }
