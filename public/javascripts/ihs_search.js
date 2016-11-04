@@ -116,13 +116,13 @@ function clearUnusedSearchFields(calling_function){
   // AJE 2016-09-21 populateSearchList used to live in search_home.js
 	function populateSearchList(response, ioArgs) {
 
-	  console.info('populateSearchList(response=', response, ' ; ioArgs=', ioArgs); // AJE 2016-09-16 testing
+	  //console.info('ihs_search.js, populateSearchList(response=', response, ' ; ioArgs=', ioArgs); // AJE 2016-09-16 testing
     hideWaiting(); // AJE 2016-10-27
 
     var results = document.getElementById('results');
 
     // AJE 2016-11-01 to give proper 'no results found' message
-    console.warn('ihs_search: populateSearchList: ioArgs.url = "', ioArgs.url, '"; ioArgs.url.indexOf(browseJournalByTitle) == ', ioArgs.url.indexOf('browseJournalByTitle'));
+    //console.warn('ihs_search: populateSearchList: ioArgs.url = "', ioArgs.url, '"; ioArgs.url.indexOf(browseJournalByTitle) == ', ioArgs.url.indexOf('browseJournalByTitle'));
     var search_box = '';
     if(ioArgs.url.indexOf('browseJournalByTitle') != -1 ){
       search_box = document.getElementById('browse_titleid');
