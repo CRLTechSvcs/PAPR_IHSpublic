@@ -616,14 +616,14 @@ var currentTitle = {};
 
 	function populateSearchList(response, ioArgs) {
 
-  	  console.info('advance_history: populateSearchList(response=', response, ' ; ioArgs=', ioArgs); // AJE 2016-09-16 testing
+  	  //console.info('advance_history.js: populateSearchList(response=', response, ' ; ioArgs=', ioArgs); // AJE 2016-09-16 testing
       hideWaiting(); // AJE 2016-11-01
 
 	    var results = document.getElementById('results');
 
 
       // AJE 2016-11-01 to give proper 'no results found' message
-      console.warn('advance history: populateSearchList: ioArgs.url = "', ioArgs.url, '"; ioArgs.url.indexOf(browseJournalByTitle) == ', ioArgs.url.indexOf('browseJournalByTitle'));
+      //console.warn('advance history: populateSearchList: ioArgs.url = "', ioArgs.url, '"; ioArgs.url.indexOf(browseJournalByTitle) == ', ioArgs.url.indexOf('browseJournalByTitle'));
       var search_box = '';
       if(ioArgs.url.indexOf('browseJournalByTitle') != -1 ){
         search_box = document.getElementById('browse_titleid');
