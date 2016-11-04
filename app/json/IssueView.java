@@ -13,8 +13,13 @@ public class IssueView {
 	public String issueCondition = "";
 	public List<HoldingView> holdingViews = new ArrayList<HoldingView>() ;
 
+  // AJE added these properties, used in ihsVolume.java
+  public String name = "";
+  public String description = "";
+  // end AJE 2016-11-04
+
 	public IssueView() {
-		
+
 	}
 
 	public IssueView(int issueId, String issueNumber, String issueMonth, String issueStatus,
