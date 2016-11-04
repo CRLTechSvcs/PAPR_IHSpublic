@@ -277,37 +277,36 @@ public class IhsVolume extends Model {
 				}
 
 				issueView.issueCount = ihsissue.ihsHoldings.size();
-        System.out.println("IhsVolume.java, getTitleById, is (ihsissue.spublicationDate !=  null) ? " +(ihsissue.spublicationDate !=  null)+".");
+
+        //System.out.println("IhsVolume.java, getTitleById, is (ihsissue.spublicationDate !=  null) ? " +(ihsissue.spublicationDate !=  null)+"."); // AJE 2016-11-04
+        issueView.issueMonth = ""; // AJE 2016-11-04
 				if(ihsissue.spublicationDate !=  null){
 				  System.out.println("IhsVolume.java, getTitleById IF block, ihsissue.spublicationDate NOT  null.");
-					issueView.issueMonth = ihsissue.spublicationDate.publicationDateVal; // Travant original
+					issueView.issueMonth += ihsissue.spublicationDate.publicationDateVal; // Travant original
 					//issueView.issueMonth += ihsissue.publicationDate != null ? "-" + ihsissue.publicationDate.getYear() : "";
 				}
-				else if(issueView.name != null){ // AJE added else if block 2016-11-04
-				  System.out.println("IhsVolume.java, getTitleById ELSE IF NAME block, ihsissue.name=" +issueView.name+".");
-					issueView.issueMonth = issueView.name +" ";
-					issueView.issueMonth +=  ihsissue.publicationDate != null ? dateFormat.print(ihsissue.publicationDate) : "[no issue date found]";
-				}
-				else if(issueView.description != null){ // AJE added else if block 2016-11-04
-				  System.out.println("IhsVolume.java, getTitleById ELSE IF DESC block, ihsissue.description=" +issueView.description+".");
-					issueView.issueMonth = issueView.description +" ";
-					issueView.issueMonth +=  ihsissue.publicationDate != null ? dateFormat.print(ihsissue.publicationDate) : "[no issue date found]";
-				}
-				else {
-				  System.out.println("IhsVolume.java, getTitleById ELSE block, ihsissue.spublicationDate IS  null.");
-          issueView.issueMonth += ihsissue.name != null ? ihsissue.name : "";
-          issueView.issueMonth += ihsissue.description != null ? ihsissue.description : "";
-          issueView.issueMonth += ihsissue.name != null ? ihsissue.name : dateFormat.print(ihsissue.publicationDate);
+				// AJE added next 2 if blocks and changed the condition on the last if/else here 2016-11-04
+				if(issueView.name != null){  issueView.issueMonth += " " +issueView.name; }
+				if(issueView.description != null){ issueView.issueMonth += " " +issueView.description; }
+				if (issueView.issueMonth == "" && ihsissue.publicationDate != null){
+          //issueView.issueMonth += ihsissue.name != null ? ihsissue.name : dateFormat.print(ihsissue.publicationDate); // AJE
+					issueView.issueMonth += " " +dateFormat.print(ihsissue.publicationDate);
 // AJE : it uses dateFormat.print(ihsissue.publicationDate) when ihsissue.name is null
-				}
+			  } else if (issueView.issueMonth == "") {
+			    issueView.issueMonth += "[no issue date found]";
+			  }
+
+				// AJE 2016-11-04 use
 
         // AJE no Logger available
+        /*
         if(ihsissue.spublicationDate !=  null){
           System.out.println("IhsVolume.java, getTitleById: Travant uses: ihsissue.spublicationDate.publicationDateVal = " +ihsissue.spublicationDate.publicationDateVal+ ".");
         }
         System.out.println("IhsVolume.java, getTitleById: ihsissue.publicationDate = " +ihsissue.publicationDate+ ".");
         System.out.println("IhsVolume.java, getTitleById: dateFormat.print(ihsissue.publicationDate) = " +dateFormat.print(ihsissue.publicationDate)+ ".");
         System.out.println("IhsVolume.java, getTitleById, issueView.issueMonth = '" +issueView.issueMonth+ "'.");
+        */
 
 				volumeView.issueView.add(issueView);
 				counter++;
