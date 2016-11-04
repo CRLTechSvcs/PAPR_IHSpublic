@@ -599,6 +599,8 @@ var currentTitle = {};
 
 	function getJournalDetail(titleid){
 
+	  console.info('advance_history.js, getJournalDetail(', titleid, ')');
+
 		 dojo.xhrGet({
 	        handleAs: 'json',
 	        url: "/advancedEditing/GetTitles/" + titleid,
