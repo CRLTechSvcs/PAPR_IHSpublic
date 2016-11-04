@@ -157,6 +157,8 @@
 
 	function getJournalDetail(titleid){
 
+    console.info('advance_linking.js, getJournalDetail(', titleid, ')');
+
 	  flipsarch = false;
 
 	  globalTitleId=titleid;
