@@ -162,8 +162,30 @@ function clearUnusedSearchFields(calling_function){
         a.setAttribute('href', 'javascript:getJournalDetail(' + response.items[i].titleId + ');');
         //a.setAttribute('title', response.items[i].title); // Travant original
         a.setAttribute('title', display_title); // AJE 2016-10-25
+
+        a.setAttribute('id', response.items[i].titleId); // AJE 2016-11-04
+
         li.appendChild(a);
         ul.appendChild(li);
+
+// AJE 2016-11-04 : enhancements list # 6: if only 1 title returned, display its detail screen immediately (no clicking on the title)
+console.info("populateSearchList response.items.length == ", response.items.length);
+if(response.items.length == 1){
+  /*
+  $( "a[id='"+response.items[i].titleId+"']" ).click(function() {
+    getJournalDetail(response.items[i].titleId);
+  });
+  $( "a[id='"+response.items[i].titleId+"']" ).click();
+  console.info("enhancements list # 6, response.items.length == ", response.items.length);
+  a.click();
+  */
+  console.info("enhancements list # 6, response.items[",i,"].titleId = ", response.items[i].titleId, ".");
+
+  getJournalDetail(response.items[i].titleId);
+}
+//end AJE 2016-11-04
+
+
       } // end for
     } // end else
 
