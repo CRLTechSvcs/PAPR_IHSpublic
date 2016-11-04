@@ -676,7 +676,7 @@
           issueTitle += '&emsp;|&emsp;' + issueView[index1].issueCount;
           issueTitle += '&emsp;|&emsp;Best Holding Condition: ' + issueView[index1].issueCondition;
         }
-        console.warn('populateVolumeDetail: issueView[index1=',index1,'].issueMonth = ', issueView[index1].issueMonth, ' ; issueStatus: ', issueView[index1].issueStatus,' ; ' );
+        //console.warn('populateVolumeDetail: issueView[index1=',index1,'].issueMonth = ', issueView[index1].issueMonth, ' ; issueStatus: ', issueView[index1].issueStatus,' ; ' );
 
         var clr = "";
 
