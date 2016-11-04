@@ -557,24 +557,16 @@
       numberofissue = 0;
 
       for (var index1 = 0, len1 = issueView.length; index1 < len1; ++index1) {
-        if(issueView[index1].issueStatus == "Held"){
-          html += '<div class="timeline timeline-held" style="width:'+issuessize+'px;" onclick="moveCursor( ' + divindex +');"> '
-            + '<span class="coupontooltip">Vol.' + response[index].volumeNumber +  '<br>'
-            + 'Issue. ' + issueView[index1].issueNumber  + '<br>'
-            + issueView[index1].issueMonth + ' </span> </div>';
-        }
-        if(issueView[index1].issueStatus == "Missing") {
-          html += '<div class="timeline timeline-missing" style="width:'+issuessize+'px;" onclick="moveCursor( ' + divindex +');"> '
-            + '<span class="coupontooltip">Vol.' + response[index].volumeNumber +  '<br>'
-            + 'Issue. ' + issueView[index1].issueNumber  + '<br>'
-            + issueView[index1].issueMonth + ' </span> </div>';
-        }
-        if(issueView[index1].issueStatus == "Wanted") {
-          html += '<div class="timeline timeline-wanted" style="width:'+issuessize+'px;" onclick="moveCursor( ' + divindex +');"> '
-            + '<span class="coupontooltip">Vol.' + response[index].volumeNumber +  '<br>'
-            + 'Issue. ' + issueView[index1].issueNumber  + '<br>'
-            + issueView[index1].issueMonth + ' </span> </div>';
-        }
+        // AJE 2016-11-04 restructured the internal works of this loop
+        if(issueView[index1].issueStatus == "Held"){ html += '<div class="timeline timeline-held" '; }
+        if(issueView[index1].issueStatus == "Missing") { html += '<div class="timeline timeline-missing" '; }
+        if(issueView[index1].issueStatus == "Wanted") { html += '<div class="timeline timeline-wanted" '; }
+        // no matter the issue status: finish the div
+        html += 'style="width:'+issuessize+'px;" onclick="moveCursor( ' + divindex +');"> '
+          + '<span class="coupontooltip">Vol.' + response[index].volumeNumber +  '<br>'
+          + 'Issue. ' + issueView[index1].issueNumber  + '<br>'
+          + issueView[index1].issueMonth + ' </span> </div>';
+
         // numberofissue+=24.75; // Travant original
         numberofissue += issue_increase; // AJE 2016-10-18
         //console.log('drawTimeBar: numberofissue = ', numberofissue);
@@ -675,13 +667,16 @@
 
         var issueTitle =  '';
         if (volumeLevelFlag == '1'){
-        	issueTitle = 'Volume Details' +
-            '&emsp;|&emsp;' + issueView[index1].issueStatus + '&emsp;|&emsp;' + '&emsp;|&emsp;Best Holding Condition: ' + issueView[index1].issueCondition;
+        	issueTitle = 'Volume Details&emsp;|&emsp;' + issueView[index1].issueStatus;
+        	issueTitle += '&emsp;|&emsp;&emsp;|&emsp;Best Holding Condition: ' + issueView[index1].issueCondition;
         } else {
-          issueTitle = 'Issue ' + issueView[index1].issueNumber + '&emsp;|&emsp;' + issueView[index1].issueMonth +
-            '&emsp;|&emsp;' + issueView[index1].issueStatus + '&emsp;|&emsp;' +
-            issueView[index1].issueCount + '&emsp;|&emsp;Best Holding Condition: ' + issueView[index1].issueCondition;
+          issueTitle = 'Issue: ' +issueView[index1].issueNumber;
+          issueTitle += '&emsp;|&emsp;' + issueView[index1].issueMonth;
+          issueTitle += '&emsp;|&emsp;' + issueView[index1].issueStatus;
+          issueTitle += '&emsp;|&emsp;' + issueView[index1].issueCount;
+          issueTitle += '&emsp;|&emsp;Best Holding Condition: ' + issueView[index1].issueCondition;
         }
+        console.warn('populateVolumeDetail: issueView[index1=',index1,'].issueMonth = ', issueView[index1].issueMonth, ' ; issueStatus: ', issueView[index1].issueStatus,' ; ' );
 
         var clr = "";
 
