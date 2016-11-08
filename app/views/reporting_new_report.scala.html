@@ -28,7 +28,7 @@
         		reportingView = data;
         	},
         	error: function(e) {
-            	alert("Error: " + e.message);
+            alert("reporting_new_report.scala.html, getReportingView Error: " + e.message);
         	}
     	});
 
@@ -61,14 +61,14 @@
 				select.startup();
 
 				dojo.xhrGet({
-	       			 handleAs: 'json',
-	       				 url: "/search/getMembers",
-	       				 preventCache: false,
-	        	   		 error: function(e) {
-	            			alert("Error: " + e.message);
-	        		},
-	        		load: populateMember
-	    		});
+          handleAs: 'json',
+          url: "/search/getMembers",
+          preventCache: false,
+          error: function(e) {
+            alert("reporting_new_report.scala.html, getMembers Error: " + e.message);
+          },
+          load: populateMember
+	    	});
 		});
 
 		function populateMember(response, ioArgs){
@@ -223,7 +223,7 @@
         },
         error: function(error) {
         	 hideWaiting();
-            alert("Error:" + error);
+            alert("reporting_new_report.scala.html reporting_previous_reports ? Error:" + error);
         }
     });
 
