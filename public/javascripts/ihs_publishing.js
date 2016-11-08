@@ -10,7 +10,7 @@ require(["dijit/TitlePane","dojo/dom","dojo/domReady!"], function(dom) {
         	publishingView = data;
         },
         error: function(e) {
-            alert("Error: " + e.message);
+            alert("ihs_publishing.js getPublishingView Error: " + e.message);
         }
     });
 
@@ -76,7 +76,7 @@ alert('startDate = ' +startDate+ '\n endDate = ' +endDate+ '\npublishingView.sta
         },
         error: function(error) {
         	 hideWaiting();
-            alert("Error:" + error);
+            alert("ihs_publishing.js, postPublishingView Error:" + error);
         }
     });
 
