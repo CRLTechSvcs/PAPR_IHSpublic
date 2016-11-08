@@ -64,7 +64,7 @@ require(["dijit/TitlePane","dojo/dom","dojo/domReady!"], function(dom) {
 
 	        },
 	        error: function(e) {
-	            alert("Error: " + e.message);
+	            alert("ihs_deaccession.js, getDeaccessionNewView Error: " + e.message);
 	        }
 	    });
 });
@@ -396,7 +396,7 @@ function submitReport(){
         load: drawReport,
         error: function(error) {
         	 hideWaiting();
-            alert("Error:" + error);
+            alert("ihs_deaccession.js, postDeaccessionReport Error:" + error);
         }
     });
 
@@ -452,7 +452,7 @@ function submitjob(){
         	},
         error: function(error) {
         	 hideWaiting();
-            alert("Error:" + error);
+            alert("ihs_deaccession.js, postDeaccessionJob Error:" + error);
         }
     });
 
