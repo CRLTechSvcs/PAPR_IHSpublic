@@ -12,7 +12,7 @@
 	        preventCache: true,
 	        error: function(e) {
 	        	hideWaiting();
-	            alert("Error: " + e.message);
+	            alert("advance_linking.js, addParent Error: " + e.message);
 	        },
 	        load: function (response, ioArgs){
 	        	hideWaiting();
@@ -33,7 +33,7 @@
 	        preventCache: true,
 	        error: function(e) {
 	        	hideWaiting();
-	            alert("Error: " + e.message);
+	            alert("advance_linking.js, addChild Error: " + e.message);
 	        },
 	        load: function (response, ioArgs){
 	        	hideWaiting();
@@ -60,7 +60,7 @@
 	        preventCache: true,
 	        error: function(e) {
 	        	hideWaiting();
-	            alert("Error: " + e.message);
+	            alert("advance_linking.js, removeParent Error: " + e.message);
 	        },
 	        load: function (response, ioArgs){
 	        	hideWaiting();
@@ -86,7 +86,7 @@
 	        preventCache: true,
 	        error: function(e) {
 	        	hideWaiting();
-	            alert("Error: " + e.message);
+	            alert("advance_linking.js, removeChild Error: " + e.message);
 	        },
 	        load: function (response, ioArgs){
 	        	hideWaiting();
@@ -170,7 +170,7 @@
 	        url: "/advancedEditing/getLinkView/" + titleid,
 	        preventCache: true,
 	        error: function(e) {
-	            alert("Error: " + e.message);
+	            alert("advance_linking.js, getLinkView Error: " + e.message);
 	        },
 	        load: drawLinkView
 	    });
