@@ -52,13 +52,15 @@
 	       				 url: "/search/getMembers",
 	       				 preventCache: false,
 	        	   		 error: function(e) {
-	            			alert("Error: " + e.message);
+	            			alert("search_home.scala.html, getMembers Error: " + e.message);
 	        		},
 	        		load: populateMember
 	    		});
 	});
 
 
+  /*
+  // AJE 2016-11-08 function getJournalDetail by Travant in this file appears to be a duplicate, so the entire function has been commented out: make the system use function populateJournalDetail in search_home.js
 	function getJournalDetail(titleid){
 
 	    console.info('search_home.scala.html, getJournalDetail(', titleid, ')');
@@ -68,18 +70,24 @@
 	        url: "/advancedEditing/GetTitles/" + titleid,
 	        preventCache: true,
 	        error: function(e) {
-	            alert("Error: " + e.message);
+	            alert("search_home.scala.html, GetTitles Error: " + e.message);
 	        },
 	        load: populateJournalDetail
 	    });
 
+      console.info('search_home.scala.html, after dojo.xhrGet');
+
 	    globalTitleId = titleid;
 	    showWaiting();
 	}
+	*/
 
+  /*
 	function populateJournalDetail(){
-
+    // AJE 2016-11-08 function populateJournalDetail code delivered empty by Travant, so the entire function has been commented out: make the system use function populateJournalDetail in search_home.js
+    //console.info('search_home.scala.html, empty populateJournalDetail.');
 	}
+	*/
 
 	</script>
 
