@@ -10,7 +10,7 @@ $( window ).load(function() {
 	        url: "/administration/getAllMember",
 	        preventCache: true,
 	        error: function(e) {
-	            alert("Error: " + e.message);
+	            alert("ihs_administration_user.js, getAllMember Error: " + e.message);
 	            hideWaiting();
 	        },
 	        load: populateMemberList
@@ -108,7 +108,7 @@ function addUser(){
 		load: updatAddStatus,
 		error: function(error) {
 			hideWaiting();
-			alert("Error:" + error);
+			alert("ihs_administration_user.js, addAUser Error:" + error);
 		}
 	});
 
@@ -137,7 +137,7 @@ function searchUserName(){
 	        url: "/administration/searchUser/"+name,
 	        preventCache: true,
 	        error: function(e) {
-	            alert("Error: " + e.message);
+	            alert("ihs_administration_user.js, searchUser Error: " + e.message);
 	            hideWaiting();
 	        },
 	        load: populateSearchList
@@ -228,7 +228,7 @@ function saveUser(k){
 		load: updatEditStatus,
 		error: function(error) {
 			hideWaiting();
-			alert("Error:" + error);
+			alert("ihs_administration_user.js, saveAUser Error:" + error);
 		}
 	});
 
