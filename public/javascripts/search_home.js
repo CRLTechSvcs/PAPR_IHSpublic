@@ -15,6 +15,9 @@
 
 
 	function populateJournalDetail(response, ioArgs) {// AJE 2016-01-12 modifed how the innerHTML is composed : can find a copy of original function in this dir
+
+    //console.info('search_home.js, populateJournalDetail(response=', response, ', ioArgs=', ioArgs, ')');
+
 		// AJE 2016-06-03: mine was stepped on so reinstated
     document.getElementById("title-col1").innerHTML = '<br>' + response.title;
 
@@ -47,7 +50,6 @@
     } else {
       $("#titlehistory_link_CRL").css("display", "none");
     }
-
 
     call1 = false; // AJE no idea here ; is original
 	}
@@ -151,7 +153,7 @@
         error: function(error) {
         	hideWaiting();
         	call2=false;
-          alert("Error:" + error);
+          alert("search_home.js, saveGlobalCondition, postHoldingConditions, Error:" + error);
         }
     });
 
@@ -162,6 +164,7 @@
 
   function drawGlobaledit(){
 		 try{
+console.info('drawGlobaledit has holdings[globalHoldingIndex=',globalHoldingIndex,'] = ', holdings[globalHoldingIndex], '.');
       holdings[0] = clone(holdings[globalHoldingIndex]);
       var holdingView = holdings[0];
       holdingView.holdingId = 0;
@@ -330,7 +333,7 @@
       },
       error: function(error) {
         hideWaiting();
-        alert("Error:" + error);
+        alert("search_home.js, saveCondition, postHoldingConditions, Error:" + error);
       }
     });
 
@@ -368,7 +371,7 @@
         // AJE 2016-07-20 11:56:41 : this was always an empty block
       },
       error: function(error) {
-        alert("Error:" + error);
+        alert("search_home.js, saveNote, postHoldingNotes Error:" + error);
       }
     });
 	}
@@ -594,7 +597,7 @@
 		var numberOfIssue=0;
 		var volumeLevelFlag = '0';
 
-      // AJE 2016-10-03 assume there are no issues, so no widgets
+    // AJE 2016-10-03 assume there are no issues, so no widgets
     //$('#content-col2').css('display', 'none'); // #content-col2 was where pie chart lived AJE 2016-10-18 until 27th
     $('#content-col3').css('display', 'none'); // #content-col3 is where the pie chart lives AJE 2016-10-27
     $('#timeline').css('display', 'none');
@@ -676,7 +679,8 @@
           issueTitle += '&emsp;|&emsp;' + issueView[index1].issueCount;
           issueTitle += '&emsp;|&emsp;Best Holding Condition: ' + issueView[index1].issueCondition;
         }
-        //console.warn('populateVolumeDetail: issueView[index1=',index1,'].issueMonth = ', issueView[index1].issueMonth, ' ; issueStatus: ', issueView[index1].issueStatus,' ; ' );
+
+        //console.warn('search_home.js, populateVolumeDetail: issueView[index1=',index1,'].issueMonth = ', issueView[index1].issueMonth, ' ; issueStatus: ', issueView[index1].issueStatus,' ; ' );
 
         var clr = "";
 
@@ -778,14 +782,14 @@
 
 	function getJournalDetail(id) {
 
-      console.info('search_home.js, getJournalDetail(', id, ')');
+      //console.info('search_home.js, getJournalDetail("', id, '")');
 
 	    // AJE 2016-09-15 if search results are in main whitespace area (as per Amy req.) then they need to be hidden first of all
 	    // document.getElementById("results").style.visibility = "hidden"; // still takes up space
 	    toggle_search_home_title_components('getJournalDetail'); // in ihs_search.js
 	    // end AJE 2016-09-15
 
-      console.info('call1 = ', call1, ' ; call2 = ', call2);
+      //console.info('search_home.js, getJournalDetail has call1 = ', call1, ' ; call2 = ', call2);
 
 	    if (call1 || call2) { return; }
 	    call1 = true;
@@ -826,29 +830,30 @@
 
 	    // document.getElementById("summary").innerHTML=' ';
 
-      console.info('dojo.xhrGet "/search/getJournalDetail/', id, '"."');
+      //console.info('search_home.js, dojo.xhrGet "/search/getJournalDetail/', id, '".');
 	    dojo.xhrGet({
         handleAs: 'json',
         url: "/search/getJournalDetail/" + id,
         preventCache: true,
-        error: function(e) { alert("Error: " + e.message); },
+        error: function(e) { alert("search_home.js, getJournalDetail Error: " + e.message); },
         load: populateJournalDetail
 	    });
 
-      console.info('dojo.xhrGet "/search/getJournalVolumeDetail/', id, '/',memberid,"."');
+      //console.info('search_home.js, dojo.xhrGet "/search/getJournalVolumeDetail/', id, '/',memberid, '".');
       dojo.xhrGet({
         handleAs: 'json',
         url: "/search/getJournalVolumeDetail/" + id + "/" + memberid,
         preventCache: true,
-        error: function(e) { alert("Error: " + e.message); },
+        error: function(e) { alert("search_home.js, getJournalVolumeDetail Error: " + e.message); },
         load: populateVolumeDetail
       });
 
+      //console.info('search_home.js, dojo.xhrGet "/search/getJournalWantStatus/', id, '".');
       dojo.xhrGet({
         handleAs: 'json',
         url: "/search/getJournalWantStatus/" + id ,
         preventCache: true,
-        error: function(e) { alert("Error: " + e.message); },
+        error: function(e) { alert("search_home.js, getJournalWantStatus Error: " + e.message); },
         load:  function(response) {
           if(response.status == 0){
             document.getElementById('want-status').innerHTML = " Title Status Wanted ";
@@ -869,7 +874,7 @@
       handleAs: 'json',
       url: "/search/setJournalWantStatus/" + globalTitleId + "/" + status,
       preventCache: true,
-      error: function(e) { alert("Error: " + e.message); },
+      error: function(e) { alert("search_home.js, setJournalWantStatus, Error: " + e.message); },
       load:  function(response) {
         if (response.status == 0){
           document.getElementById('want-status').innerHTML = " Title Status Wanted "; // Travant original
