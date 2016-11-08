@@ -63,14 +63,14 @@
 	  function getJobs (url){
 
 	     dojo.xhrGet({
-	     			handleAs: 'json',
-	     			url: "/publishing/" + url ,
-	     			preventCache: true,
-	     			error: function (e) {
-	         			alert("Error: " + e.message);
-	     			},
-	     			load: populatepublishingJobSummary
-	  	     });
+     			handleAs: 'json',
+     			url: "/publishing/" + url ,
+     			preventCache: true,
+     			error: function (e) {
+            alert("publishing_published_data.scala.html, getJobs, publishing Error: " + e.message);
+     			},
+     			load: populatepublishingJobSummary
+  	     });
 	  	}
 
 		</script>
