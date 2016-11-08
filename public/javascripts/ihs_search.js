@@ -33,7 +33,7 @@
 	       				 url: "/search/getMembers",
 	       				 preventCache: false,
 	        	   		 error: function(e) {
-	            			alert("Error: " + e.message);
+	            			alert("ihs_search.js, getMembers Error: " + e.message);
 	        		},
 	        		load: populateMember
 	    		});
@@ -86,6 +86,9 @@ function clearUnusedSearchFields(calling_function){
 
   // toggle_search_home_title_components : new function AJE 2016-09-20 : show/hide parts of page in title searches, results of searches, display of bib info summary/'tools'/timeline/volumes/issues
   function toggle_search_home_title_components(calling_function){
+
+    console.log('ihs_search.js, toggle_search_home_title_components("',calling_function,'")');
+
     if (calling_function == 'populateSearchList'){
       // hide these
       document.getElementById('summary').style.display = "none"; // AJE new
@@ -101,7 +104,10 @@ function clearUnusedSearchFields(calling_function){
       document.getElementById('search_boxes_form').reset();
       document.getElementById('results').innerHTML = ' ';
     }
-    else if (calling_function == 'getJournalDetail'){
+    else if (calling_function == 'getJournalDetail') {
+    /* else if (calling_function == 'getJournalDetail' ||
+      calling_function == 'populateJournalDetail' ||
+      calling_function == 'populateVolumeDetail') { */
 	    // hide these
 	    document.getElementById('search_results_header').style.display = "none";
 	    document.getElementById('results').style.display = "none"; // list of titles
@@ -113,16 +119,19 @@ function clearUnusedSearchFields(calling_function){
   } // end toggle_search_home_title_components // end AJE 2016-09-20, resume Travant original
 
 
+
+
+
   // AJE 2016-09-21 populateSearchList used to live in search_home.js
 	function populateSearchList(response, ioArgs) {
 
-	  //console.info('ihs_search.js, populateSearchList(response=', response, ' ; ioArgs=', ioArgs); // AJE 2016-09-16 testing
+	  //console.warn('ihs_search.js, enter populateSearchList(response=', response, ' ; ioArgs=', ioArgs); // AJE 2016-09-16 testing
     hideWaiting(); // AJE 2016-10-27
 
     var results = document.getElementById('results');
 
-    // AJE 2016-11-01 to give proper 'no results found' message
-    //console.warn('ihs_search: populateSearchList: ioArgs.url = "', ioArgs.url, '"; ioArgs.url.indexOf(browseJournalByTitle) == ', ioArgs.url.indexOf('browseJournalByTitle'));
+    // AJE 2016-11-01 clear unused search boxes
+    //console.warn('ihs_search.js populateSearchList clears search boxes: ioArgs.url = "', ioArgs.url, '"; ioArgs.url.indexOf(browseJournalByTitle) == ', ioArgs.url.indexOf('browseJournalByTitle'));
     var search_box = '';
     if(ioArgs.url.indexOf('browseJournalByTitle') != -1 ){
       search_box = document.getElementById('browse_titleid');
@@ -144,7 +153,6 @@ function clearUnusedSearchFields(calling_function){
     ul.setAttribute('id', 'search-list');
 
     /* AJE 2016-10-26 handle searches where no results were found */
-    //if (response.items.length < 1){
     if ( (response.items.length < 1) ||
          (response.items.length == 1 && response.items[0].titleId == 0)) {
       var li = document.createElement('li');
@@ -168,24 +176,18 @@ function clearUnusedSearchFields(calling_function){
         li.appendChild(a);
         ul.appendChild(li);
 
-// AJE 2016-11-04 : enhancements list # 6: if only 1 title returned, display its detail screen immediately (no clicking on the title)
-console.info("populateSearchList response.items.length == ", response.items.length);
-if(response.items.length == 1){
-  /*
-  $( "a[id='"+response.items[i].titleId+"']" ).click(function() {
-    getJournalDetail(response.items[i].titleId);
-  });
-  $( "a[id='"+response.items[i].titleId+"']" ).click();
-  console.info("enhancements list # 6, response.items.length == ", response.items.length);
-  a.click();
-  */
-  console.info("enhancements list # 6, response.items[",i,"].titleId = ", response.items[i].titleId, ".");
+        // AJE 2016-11-04 : enhancements list #6: if only 1 title returned, display its detail screen immediately (no clicking on the title)
+        //console.warn("populateSearchList response.items.length == ", response.items.length);
+        if(response.items.length == 1){
+          var thisTitleID = new String(response.items[i].titleId);
+          thisTitleID = thisTitleID.replace(" ", "");
+          //console.warn("enhancements list #6, response.items[",i,"].titleId = '", response.items[i].titleId, "' ; thisTitleID = '", thisTitleID, "' after js.replace.");
+          //console.warn('ihs_search.js, call getJournalDetail next');
+          getJournalDetail(thisTitleID); // search_home.js
 
-  getJournalDetail(response.items[i].titleId);
-}
-//end AJE 2016-11-04
+          return; // bail on the rest of this function; our work is done
 
-
+        } //end enhancements list #6: if(response.items.length == 1) AJE 2016-11-04
       } // end for
     } // end else
 
@@ -232,7 +234,7 @@ if(response.items.length == 1){
               //  app/controllers/SearchJournals.java
             preventCache: true,
             error: function(e) {
-                alert("Error: " + e.message);
+                alert("ihs_search.js, searchJournalByTitle Error: " + e.message);
             },
             load: populateSearchList
         });
@@ -266,7 +268,7 @@ console.log('browseJBT, value.length = ',value.length,', should search'); // AJE
               //  app/controllers/SearchJournals.java
             preventCache: true,
             error: function(e) {
-                alert("browseJournalByTitle has Error: " + e.message);
+                alert("ihs_search.js, browseJournalByTitle Error: " + e.message);
             },
             load: populateSearchList
         });
@@ -294,7 +296,7 @@ console.log('browseJBT, value.length = ',value.length,', should search'); // AJE
           url: "/search/containsJournalByTitle/" + value,
           preventCache: true,
           error: function(e) {
-              alert("containsJournalByTitle has Error: " + e.message);
+              alert("ihs_searcg.js, containsJournalByTitle Error: " + e.message);
           },
           load: populateSearchList
       });
@@ -319,7 +321,7 @@ console.log('browseJBT, value.length = ',value.length,', should search'); // AJE
                 url: "/search/searchJournalByISSN/" + st,
                 preventCache: true,
                 error: function(e) {
-                    alert("Error: " + e.message);
+                    alert("ihs_search.js, searchJournalByISSN Error: " + e.message);
                 },
                 load: populateSearchList
             });
@@ -343,7 +345,7 @@ function searchJournalByOCLC(search) {
               url: "/search/searchJournalByOCLC/" + st,
               preventCache: true,
               error: function(e) {
-                  alert("Error: " + e.message);
+                  alert("ihs_search.js, searchJournalByOCLC Error: " + e.message);
               },
               load: populateSearchList
           });
