@@ -87,7 +87,7 @@ function clearUnusedSearchFields(calling_function){
   // toggle_search_home_title_components : new function AJE 2016-09-20 : show/hide parts of page in title searches, results of searches, display of bib info summary/'tools'/timeline/volumes/issues
   function toggle_search_home_title_components(calling_function){
 
-    console.log('ihs_search.js, toggle_search_home_title_components("',calling_function,'")');
+    //console.log('ihs_search.js, toggle_search_home_title_components("',calling_function,'")');
 
     if (calling_function == 'populateSearchList'){
       // hide these
