@@ -13,7 +13,7 @@ $( window ).load(function() {
 	        url: "/administration/getAllGroup",
 	        preventCache: true,
 	        error: function(e) {
-	            alert("Error: " + e.message);
+	            alert("ihs_administration_member.js, getAllGroup Error: " + e.message);
 	            hideWaiting();
 	        },
 	        load: populateGroupList
@@ -31,7 +31,7 @@ $( window ).load(function() {
 	        url: "/administration/getCountryState",
 	        preventCache: false,
 	        error: function(e) {
-	            alert("Error: " + e.message);
+	            alert("ihs_administration_member.js, getCountryState Error: " + e.message);
 	            hideWaiting();
 	        },
 	        load: populateCountryState
@@ -183,7 +183,7 @@ function addMember(){
 		load: updatAddStatus,
 		error: function(error) {
 			hideWaiting();
-			alert("Error:" + error);
+			alert("ihs_administration_member.js, addAMember Error:" + error);
 			}
 	});
 
@@ -214,7 +214,7 @@ function searchMemberByName(){
 	        url: "/administration/searchMember/"+searchParameter,
 	        preventCache: true,
 	        error: function(e) {
-	            alert("Error: " + e.message);
+	            alert("ihs_administration_member.js, searchMember Error: " + e.message);
 	            hideWaiting();
 	        },
 	        load: populateSearchList
@@ -346,7 +346,7 @@ function editMember(k){
 		load: updateEditStatus,
 		error: function(error) {
 			hideWaiting();
-			alert("Error:" + error);
+			alert("ihs_administration_member.js, editAMember Error:" + error);
 			}
 	});
 
