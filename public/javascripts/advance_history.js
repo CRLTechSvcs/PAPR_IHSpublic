@@ -15,6 +15,8 @@ var currentTitle = {};
 
 	function populateJournalDetail(response, ioArgs){
 
+    console.info('advance_history.js, populateJournalDetail(response=', response, ', ioArgs=', ioArgs')');
+
 		var html ="";
 
 		for (var i=0; i < response.length; i++) {
@@ -59,7 +61,7 @@ var currentTitle = {};
 	        },
 	        error: function(e) {
 	        	hideWaiting();
-	            alert("Error: " + e.message);
+	            alert("advance_history.js, finalSavePrevTitle, Error: " + e.message);
 	        }
 	    });
 
@@ -237,7 +239,7 @@ var currentTitle = {};
 	        },
 	        error: function(error) {
 	        	 hideWaiting();
-	            alert("Error:" + error);
+	            alert("advance_history.js, advancedEditing/postTitle Error:" + error);
 	        }
 	    });
 	    $( "#dialog-cur-confirm" ).dialog('close');
@@ -606,7 +608,7 @@ var currentTitle = {};
 	        url: "/advancedEditing/GetTitles/" + titleid,
 	        preventCache: true,
 	        error: function(e) {
-	            alert("Error: " + e.message);
+	            alert("advance_history.js, GetTitles Error: " + e.message);
 	        },
 	        load: populateJournalDetail
 	    });
@@ -624,8 +626,8 @@ var currentTitle = {};
 	    var results = document.getElementById('results');
 
 
-      // AJE 2016-11-01 to give proper 'no results found' message
-      //console.warn('advance history: populateSearchList: ioArgs.url = "', ioArgs.url, '"; ioArgs.url.indexOf(browseJournalByTitle) == ', ioArgs.url.indexOf('browseJournalByTitle'));
+    // AJE 2016-11-01 clear unused search boxes
+    //console.warn('advance history: populateSearchList: ioArgs.url = "', ioArgs.url, '"; ioArgs.url.indexOf(browseJournalByTitle) == ', ioArgs.url.indexOf('browseJournalByTitle'));
       var search_box = '';
       if(ioArgs.url.indexOf('browseJournalByTitle') != -1 ){
         search_box = document.getElementById('browse_titleid');
