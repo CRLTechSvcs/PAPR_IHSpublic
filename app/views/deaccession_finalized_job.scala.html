@@ -72,7 +72,7 @@
 	     			url: "/deaccessionSummary/" + url + "/0",
 	     			preventCache: true,
 	     			error: function (e) {
-	         			alert("Error: " + e.message);
+	         			alert("deaccession_finalized_job.scala.html, deaccessionSummary Error: " + e.message);
 	     			},
 	     			load: populateIngestionJobSummary
 	  	     });
@@ -86,7 +86,7 @@
 	     			preventCache: true,
 	     			error: function (e) {
 
-	         			alert("Error: " + e.message);
+	         			alert("deaccession_finalized_job.scala.html, submitDeaccessionJob Error: " + e.message);
 	     			},
 	     			load: function (response) {
 	         			window.location="/deaccession_summary";
