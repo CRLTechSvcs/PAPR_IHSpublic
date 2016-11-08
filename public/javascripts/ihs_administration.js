@@ -50,7 +50,7 @@ function addGroup(){
 		load: updateStatus,
 		error: function(error) {
 			hideWaiting();
-			alert("Error:" + error);
+			alert("ihs_administration.js, addAGroup Error:" + error);
 			}
 	});
 
@@ -88,7 +88,7 @@ function searchGroup(){
 	        url: "/administration/serchGroup/"+searchParameter,
 	        preventCache: true,
 	        error: function(e) {
-	            alert("Error: " + e.message);
+	            alert("ihs_administration.js, serchGroup Error: " + e.message);
 	            hideWaiting();
 	        },
 	        load: populateSearchList
@@ -122,7 +122,7 @@ function submiteGroupChange(i){
 		load: updateEditStatus,
 		error: function(error) {
 			hideWaiting();
-			alert("Error:" + error);
+			alert("ihs_administration.js, editGroup Error:" + error);
 			}
 	});
 
