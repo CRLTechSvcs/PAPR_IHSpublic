@@ -102,6 +102,7 @@ function clearUnusedSearchFields(calling_function){
     else if (calling_function == 'clear_search'){ // new block 2016-10-26 : see main.scala.html
       // clear the search boxes and wipe out any search results
       document.getElementById('search_boxes_form').reset();
+      document.getElementById('search_results_header').style.display = "none";
       document.getElementById('results').innerHTML = ' ';
     }
     else if (calling_function == 'getJournalDetail') {
@@ -175,19 +176,6 @@ function clearUnusedSearchFields(calling_function){
 
         li.appendChild(a);
         ul.appendChild(li);
-
-        // AJE 2016-11-04 : enhancements list #6: if only 1 title returned, display its detail screen immediately (no clicking on the title)
-        //console.warn("populateSearchList response.items.length == ", response.items.length);
-        if(response.items.length == 1){
-          var thisTitleID = new String(response.items[i].titleId);
-          thisTitleID = thisTitleID.replace(" ", "");
-          //console.warn("enhancements list #6, response.items[",i,"].titleId = '", response.items[i].titleId, "' ; thisTitleID = '", thisTitleID, "' after js.replace.");
-          //console.warn('ihs_search.js, call getJournalDetail next');
-          getJournalDetail(thisTitleID); // search_home.js
-
-          return; // bail on the rest of this function; our work is done
-
-        } //end enhancements list #6: if(response.items.length == 1) AJE 2016-11-04
       } // end for
     } // end else
 
@@ -197,6 +185,16 @@ function clearUnusedSearchFields(calling_function){
     results.style.display = "block"; // ... this; now do some more toggling, call new AJE function, in ihs_search.js
     toggle_search_home_title_components('populateSearchList');
     // AJE : resume Travant original
+
+    // AJE 2016-11-04 : enhancements list #6: if only 1 title returned, display its detail screen immediately (no clicking on the title)
+    //console.warn("populateSearchList response.items.length == ", response.items.length);
+    if(response.items.length == 1){
+      var thisTitleID = new String(response.items[0].titleId);
+      thisTitleID = thisTitleID.replace(" ", "");
+      //console.warn("enhancements list #6, response.items[",i,"].titleId = '", response.items[i].titleId, "' ; thisTitleID = '", thisTitleID, "' after js.replace.");
+      //console.warn('ihs_search.js, call getJournalDetail next');
+      getJournalDetail(thisTitleID); // search_home.js
+    } //end enhancements list #6: if(response.items.length == 1) AJE 2016-11-04
 
 	}// end populateSearchList, moved by AJE from search_home.js 2016-09-21
 
