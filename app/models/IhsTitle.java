@@ -93,7 +93,23 @@ public class IhsTitle extends Model {
     + "WHERE title LIKE '%param%' " // AJE new TEST
 		+ "ORDER BY title ASC "
 		+ "LIMIT  50;";
-  // end AJE 2016-10-24/27
+	static String printISSNequalsSql = "SELECT titleId, title, " // AJE 2016-11-10
+    + "MATCH (title) AGAINST ('param' IN BOOLEAN MODE) as relevance, "
+    + "P.name AS publisher "
+		+ "FROM ihstitle T "
+		+ "JOIN ihspublisher P ON T.publisherID = P.publisherID "
+    + "WHERE printISSN = 'param' "
+		+ "ORDER BY title ASC "
+		+ "LIMIT  50;";
+	static String OCLCequalsSql = "SELECT titleId, title, " // AJE 2016-11-10
+    + "MATCH (title) AGAINST ('param' IN BOOLEAN MODE) as relevance, "
+    + "P.name AS publisher "
+		+ "FROM ihstitle T "
+		+ "JOIN ihspublisher P ON T.publisherID = P.publisherID "
+    + "WHERE oclcNumber = 'param' "
+		+ "ORDER BY title ASC "
+		+ "LIMIT  50;";
+  // end AJE 2016-10-24/27, and 2016-11-10
 
 	/**
 	 *
@@ -303,7 +319,7 @@ Logger.info("app/models/IhsTitle.java : getTitleBrowse has results sqlRows.size(
 
     if (sqlRows.size() > 0){
       for(SqlRow sqlRow : sqlRows){
-        //titleViews.add(new TitleView( sqlRow.getInteger("titleId"), sqlRow.getString("title")));
+        //titleViews.add(new TitleView( sqlRow.getInteger("titleId"), sqlRow.getString("title"))); // Travant original
         titleViews.add(
           new TitleView(
             sqlRow.getInteger("titleId"),
@@ -327,34 +343,91 @@ Logger.info("app/models/IhsTitle.java : getTitleBrowse has results sqlRows.size(
 
 
 	public static List <TitleView> getByISSN(String search){
-
+	  /* AJE 2016-11-10 this block is the original Travant code:
+	    problem: if > 1 title has the ISSN, there will be failure
+	    solution: build this to be like getTitleContains
 		 List <TitleView> titleViews= new ArrayList<TitleView>();
-
 		 IhsTitle ihsTitle = IhsTitle.find
 				 			.where()
 				 			.eq("printISSN", search)
 				 			.findUnique();
-
 		if(ihsTitle != null)
 			titleViews.add(new TitleView( ihsTitle.titleID, ihsTitle.title));
-
 		return titleViews;
+		// end Travant original block : begin new AJE 2016-11-10 */
+    Logger.info("app/models/IhsTitle.java : getByISSN(search=|" +search+"|).");
+    List <TitleView> titleViews = new ArrayList<TitleView>();
+    String tmpSql = printISSNequalsSql.replaceAll("param", search);
+    Logger.info("app/models/IhsTitle.java : getByISSN will use SQL: " +tmpSql);
+
+    List<SqlRow> sqlRows = Ebean.createSqlQuery(tmpSql)
+      .findList();
+
+    if (sqlRows.size() > 0){
+      for(SqlRow sqlRow : sqlRows){
+        titleViews.add(
+          new TitleView(
+            sqlRow.getInteger("titleId"),
+            sqlRow.getString("title"),
+            sqlRow.getString("publisher")
+        ));
+        Logger.info(sqlRow.getInteger("titleId").toString()+ " ; "+ sqlRow.getString("title") + " / " + sqlRow.getString("publisher") );
+      }
+    } else {
+      titleViews.add(
+          new TitleView(
+            0, // sqlRow.getInteger("titleId"),
+            "No results for '" +search+ "'.", //sqlRow.getString("title"),
+            " " // sqlRow.getString("publisher")
+        ));
+    }
+
+    return titleViews;
 
 	}
 
 	public static List <TitleView> getByOCLC(String search){
-
+/* AJE 2016-11-10 this block is the original Travant code:
+	    problem: if > 1 title has the OCLC, there will be failure (though there should be no such titles
+	    solution: build this to be like getTitleContains
 		 List <TitleView> titleViews= new ArrayList<TitleView>();
-
 		 IhsTitle ihsTitle = IhsTitle.find
 				 			.where()
 				 			.eq("oclcNumber", search)
 				 			.findUnique();
-
 		if(ihsTitle != null)
 			titleViews.add(new TitleView( ihsTitle.titleID, ihsTitle.title));
-
 		return titleViews;
+		// end Travant original block : begin new AJE 2016-11-10 */
+    Logger.info("app/models/IhsTitle.java : getByOCLC(search=|" +search+"|).");
+    List <TitleView> titleViews = new ArrayList<TitleView>();
+    String tmpSql = OCLCequalsSql.replaceAll("param", search);
+    Logger.info("app/models/IhsTitle.java : getByOCLC will use SQL: " +tmpSql);
+
+    List<SqlRow> sqlRows = Ebean.createSqlQuery(tmpSql)
+      .findList();
+
+    if (sqlRows.size() > 0){
+      for(SqlRow sqlRow : sqlRows){
+        titleViews.add(
+          new TitleView(
+            sqlRow.getInteger("titleId"),
+            sqlRow.getString("title"),
+            sqlRow.getString("publisher")
+        ));
+        Logger.info(sqlRow.getInteger("titleId").toString()+ " ; "+ sqlRow.getString("title") + " / " + sqlRow.getString("publisher") );
+      }
+    } else {
+      titleViews.add(
+          new TitleView(
+            0, // sqlRow.getInteger("titleId"),
+            "No results for '" +search+ "'.", //sqlRow.getString("title"),
+            " " // sqlRow.getString("publisher")
+        ));
+    }
+
+    return titleViews;
+
 
 	}
 
