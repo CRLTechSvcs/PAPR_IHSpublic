@@ -106,6 +106,7 @@ public class SearchJournals extends Controller {
 *****************************************************************/
 
 	public static Result searchJournalByISSN(String searchValue) {
+    Logger.info("app.controllers.SearchJournals.java searchJournalByISSN("+searchValue+").");
 
 		List<TitleView> titleViews = IhsTitle.getByISSN(searchValue);
 
@@ -183,6 +184,9 @@ public class SearchJournals extends Controller {
 				holdingView = mapper.readValue(jsonString, HoldingView.class);
 
 				if (holdingView.holdingId != 0) {
+
+          Logger.info("SearchJournals.java, postHoldingConditions(): holdingView.holdingId != 0, it is '"+holdingView.holdingId+".");
+
 					IhsHolding ihsHolding = IhsHolding.find
 							.byId(holdingView.holdingId);
 
@@ -236,7 +240,9 @@ public class SearchJournals extends Controller {
 
 					ihsHolding.update();
 
-				} else {
+				} else { // holdingView.holdingId == 0
+
+          Logger.info("SearchJournals.java, postHoldingConditions(): holdingView.holdingId == 0, see? '"+holdingView.holdingId+".");
 
 					List<IhsHolding> ihsHoldings = IhsHolding.find.where()
 							.in("holdingID", holdingView.holdingIds).findList();
@@ -265,17 +271,14 @@ public class SearchJournals extends Controller {
 										.byId(validationLevel.id);
 								ihsHolding.svalidationLevel = svalidationLevel;
 							}
-
 						}
 
 						for (IhsVerifiedView ihsVerified : holdingView.ihsVerified) {
-
 							if (ihsVerified.checked == 1 && ihsVerified.id !=0) {
 								SihsVarified sihsVarified = SihsVarified.find
 										.byId(ihsVerified.id);
 								ihsHolding.sihsVarified = sihsVarified;
 							}
-
 						}
 
 
