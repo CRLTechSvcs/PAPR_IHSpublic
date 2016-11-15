@@ -21,6 +21,11 @@ import play.Logger;
 import play.Play;
 //import util.DeaccessionReport.HeaderFooter;
 
+// AJE 2016-11-14
+import com.avaje.ebean.Ebean;
+import com.avaje.ebean.SqlRow;
+import java.text.SimpleDateFormat;
+// end AJE 2016-11-14
 
 
 import util.Helper;
@@ -70,7 +75,7 @@ public class IssuesHeldReport {
 			this.report = report;
 			this.date = date;
 			this.org = org;
-		}
+		} // end HeaderFooter
 
 		public void onStartPage(PdfWriter writer, Document document) {
 
@@ -85,7 +90,6 @@ public class IssuesHeldReport {
 					Element.ALIGN_CENTER, // AJE 2016-01-25 this is original
 					// Element.ALIGN_RIGHT, // 2016-01-25 AJE worse for cutting off the edge?
           new Phrase(report, FontFactory.getFont( // AJE test ; this line is original
-					//new Phrase("Report Name AJE", FontFactory.getFont( // AJE: this line does affect the output
 							FontFactory.HELVETICA, 10, Font.NORMAL)),
 							//rect.getLeft() + 88, rect.getHeight() - 20, 0f); // AJE 2016-01-21 original values here
 							rect.getLeft() + 180, rect.getHeight() - 20, 0f); // AJE 2016-01-22 long IhsMember.name means first part of 'report' (title of report generated) pushed off side of page
@@ -104,12 +108,15 @@ public class IssuesHeldReport {
         // AJE 2016-01-20 16:43 here is the original location of the "if (pagenumber == 1)" block
 
         // AJE 2016-01-21 this is header table
-				table = new PdfPTable(5);
+				//table = new PdfPTable(5); // AJE 2016-11-09 5 columns? we need 6 now > enhancement #12: Display commitment type at the issue level on IssuesHeldReport
+				table = new PdfPTable(6); // AJE 2016-11-09
 				//table.setWidths(new float[] { 1.2f, 2, 3, 4, 5 }); // AJE 2016-01-21 original values here
 				// AJE 2016-01-21 note there are 2 places where table.setWidths() is invoked: one for the header and one for the data
 				//table.setWidths(new float[] { 9f, 2, 3, 4, 5 }); // AJE 2016-01-21 new values here : squeezes 'Volume' label
 				//table.setWidths(new float[] { 8f, 3, 4, 5, 6 }); // AJE 2016-01-21 new values here
-				table.setWidths(new float[] { 8f, 3, 4, 5, 6 }); // AJE 2016-01-21 new values here
+				//table.setWidths(new float[] { 8f, 3, 4, 5, 6 }); // AJE 2016-01-21 new values here
+				table.setWidths(new float[] { 8f, 3, 4, 5, 6, 7 }); // AJE 2016-11-09 enhancement #12: Display commitment type at the issue level on IssuesHeldReport
+
 				table.setWidthPercentage(100);
 
 				cell = new PdfPCell(new Phrase("")); // AJE 2016-01-22 if filled in, this appears at top of every page under 'report' and 'Prepared [date'
@@ -123,7 +130,11 @@ public class IssuesHeldReport {
 /* AJE 2016-01-20 16:46 : new location for "if (pagenumber == 1)" block - now AFTER the first header :
     this puts the Title-Volume-Issue-Date-Location headers on every page INCLUDING the first,
     which is new and was the original request by Amy for how it should look */
+
+
+
         if (pagenumber == 1) { // AJE 2016-01-13 tried removing IF braces, so do this on every page : FAILED: headers show up on no pages at all, revert to original
+
 					//Image image1 = Image.getInstance("public/images/papr_logo.gif"); // old AJE 2016-09-30
 					Image image1 = Image.getInstance("public/images/papr_ihs_logo.gif");
 					document.add(image1);
@@ -155,45 +166,56 @@ public class IssuesHeldReport {
 					table.addCell(cell);
 
 					document.add(table);
+        } // end if (pagenumber == 1)
 
-				} // AJE 2016-01-22 : next : whole else block is AJE, to put column headers on pages after #1
-				else {
-          table = new PdfPTable(5);
-				  table.setWidths(new float[] { 8f, 3, 4, 5, 6 }); // AJE 2016-01-21 new values here
-				  table.setWidthPercentage(100);
+        // AJE 2016-01-22 : next : whole else block is AJE, to put column headers on pages after #1
+				//table = new PdfPTable(5); // AJE 2016-11-09 5 columns? we need 6 now > enhancement #12: Display commitment type at the issue level on IssuesHeldReport
+				table = new PdfPTable(6); // AJE 2016-11-09
 
-  				cell = new PdfPCell(new Phrase("Title (ISSN)",
-  				    FontFactory.getFont( FontFactory.HELVETICA, 16, Font.BOLD)));
-  				cell.setHorizontalAlignment(Element.ALIGN_CENTER);
-  				table.addCell(cell);
+			  //table.setWidths(new float[] { 8f, 3, 4, 5, 6 }); // AJE 2016-01-21 new values here
+			  table.setWidths(new float[] { 8f, 3, 4, 5, 6, 7 }); // AJE 2016-11-09
+			  table.setWidthPercentage(100);
 
-  				cell = new PdfPCell(new Phrase("Volume",
-  						FontFactory.getFont(FontFactory.HELVETICA, 16, Font.BOLD)));
-  				cell.setHorizontalAlignment(Element.ALIGN_CENTER);
-  				table.addCell(cell);
+				cell = new PdfPCell(new Phrase("Title",
+				    FontFactory.getFont( FontFactory.HELVETICA, 16, Font.BOLD)));
+				cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+				table.addCell(cell);
 
-  				cell = new PdfPCell(new Phrase("Number",
-  						FontFactory.getFont(FontFactory.HELVETICA, 16, Font.BOLD)));
-  				cell.setHorizontalAlignment(Element.ALIGN_CENTER);
-  				table.addCell(cell);
+				cell = new PdfPCell(new Phrase("Volume",
+						FontFactory.getFont(FontFactory.HELVETICA, 16, Font.BOLD)));
+				cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+				table.addCell(cell);
 
-  				cell = new PdfPCell(new Phrase("Date",
-  				    FontFactory.getFont( FontFactory.HELVETICA, 16, Font.BOLD)));
-  				cell.setHorizontalAlignment(Element.ALIGN_CENTER);
-  				table.addCell(cell);
+				cell = new PdfPCell(new Phrase("Number",
+						FontFactory.getFont(FontFactory.HELVETICA, 16, Font.BOLD)));
+				cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+				table.addCell(cell);
 
-  				cell = new PdfPCell(new Phrase("Location",
-  				    FontFactory.getFont( FontFactory.HELVETICA, 16, Font.BOLD)));
-  				cell.setHorizontalAlignment(Element.ALIGN_CENTER);
-  				table.addCell(cell);
+				cell = new PdfPCell(new Phrase("Date/Issue",
+				    FontFactory.getFont( FontFactory.HELVETICA, 16, Font.BOLD)));
+				cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+				table.addCell(cell);
 
-  				cell = new PdfPCell(new Phrase("")); // AJE 2016-01-22 the blank line after column header on top of every page
-  				cell.setColspan(5);
-  				cell.setBorder(Rectangle.NO_BORDER);
-  				table.addCell(cell);
+				cell = new PdfPCell(new Phrase("Location",
+				    FontFactory.getFont( FontFactory.HELVETICA, 16, Font.BOLD)));
+				cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+				table.addCell(cell);
 
-  				document.add(table);
-			  }// end if : the else part is AJE 2016-01-22
+// AJE 2016-11-09 enhancement #12: Display commitment type at the issue level on IssuesHeldReport
+				cell = new PdfPCell(new Phrase("Commitment Type",
+				    FontFactory.getFont( FontFactory.HELVETICA, 16, Font.BOLD)));
+				cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+				table.addCell(cell);
+
+				cell = new PdfPCell(new Phrase("")); // AJE 2016-01-22 the blank line after column header on top of every page
+				cell.setColspan(5);
+				cell.setBorder(Rectangle.NO_BORDER);
+				table.addCell(cell);
+
+				document.add(table);
+// }// end if/else : the else part is AJE 2016-01-22
+
+
 /* end AJE 2016-01-20 16:46 : new location for if block */
 
 			} catch (Exception e) {
@@ -201,7 +223,7 @@ public class IssuesHeldReport {
 				Logger.error("IssuesHeldReport:", e);
 			}
 
-		}
+		} // end public void onStartPage
 
 		public void onEndPage(PdfWriter writer, Document document) {
 
@@ -215,7 +237,7 @@ public class IssuesHeldReport {
 							.getFont(FontFactory.HELVETICA, 10, Font.BOLD)),
 					rect.getRight() - 20, 10, 0f);
 
-		}
+		} // end public void onEndPage
 	} // end class HeaderFooter
 
 
@@ -253,28 +275,35 @@ public class IssuesHeldReport {
       report = report + " : " + ihsMember.name; // AJE 2016-01-21 : see comment 'make room for IhsMember.Name'
 
 			//HeaderFooter event = new HeaderFooter(report, date, ihsMember.name); // AJE 2016-09-30 use new variable
-			HeaderFooter event = new HeaderFooter(report, date, ihsMember.name);
+			HeaderFooter header_footer = new HeaderFooter(report, date, ihsMember.name);
 
-			writer.setPageEvent(event);
+			writer.setPageEvent(header_footer);
 
 			document.open();
 
 			for(IhsTitle ihsTitle: ihsTitles){
 
-				String issn = Helper.formatIssn(ihsTitle.printISSN) ;
+				String issn = Helper.formatIssn(ihsTitle.printISSN) ; // AJE 2016-01-20 add printISSN to title header as 'issn'
+				String oclcNumber = ihsTitle.oclcNumber; // AJE 2016-11-15 add oclcNumber to title header
+        //Logger.info("oclcNumber var for "+ihsTitle.oclcNumber+" is "+oclcNumber+ " ; before switch, length()=" +Integer.toString(ihsTitle.oclcNumber.length()));
 
-				//String title =  ihsTitle.title + " | " + issn; // AJE 2016-01-13 -- want first and all subsequent pages to show a header
-				//String title =  ihsTitle.title + " | " + issn + " | held by: " +ihsMember.name; // AJE 2016-01-20 : make it more awesome
-				// above is awesome but if we put the title + issn into Title column and org_name into Location column, no need for this header at all
 				String title = "";
-				if(ihsTitle.title.endsWith(".")){ // AJE 2016-01-21 this if block added to remove trailing periods from titles
-          title =  ihsTitle.title.substring(0, ihsTitle.title.length() - 1) + " (" +issn+ ") ";
+				if(ihsTitle.title.endsWith(".")){// AJE 2016-01-21 if block added to remove trailing periods from titles
+          title =  ihsTitle.title.substring(0, ihsTitle.title.length() - 1);
         } else {
-          title =  ihsTitle.title + " (" +issn+ ")";
-        }// AJE 2016-01-21 end
+          title =  ihsTitle.title;
+        }
+        String title_header = title;
 
-				//event.setTitle("line 249      "+ title);
-				event.setTitle("      "+ title); // AJE : original values here
+        // AJE 2016-11-14 -- lots of issns / oclcs are blank
+
+        if((issn != "") || (oclcNumber != "")){ title_header +=  " ( "; }// open parens
+				if(issn != ""){ title_header +=  issn; }
+				if((issn != "") && (oclcNumber != "")){ title_header +=  " ; "; }
+        if(oclcNumber != ""){ title_header +=  "OCLC: " + oclcNumber; }
+        if((issn != "") || (oclcNumber != "")){ title_header +=  " )"; }// close parens
+
+				header_footer.setTitle("      "+ title_header); // AJE : original values here
 
 				PdfPTable table = new PdfPTable(1);
 				table.setWidthPercentage(100);
@@ -284,71 +313,33 @@ public class IssuesHeldReport {
 				cell.setColspan(1);
 				cell.setBorder(Rectangle.NO_BORDER);
 				table.addCell(cell);
+        /* end AJE 2016-01-20 10:46 *****************************************/
 
-/*
-end AJE 2016-01-20 10:46
-*****************************************/
-				cell = new PdfPCell(new Phrase(title,
+				cell = new PdfPCell(new Phrase(title_header,
 						FontFactory.getFont(FontFactory.HELVETICA, 16, Font.BOLD))); // AJE 2016-01-20 font size was 12
 				cell.setColspan(1);
 				table.addCell(cell);
 /* AJE 2016-01-21 try adding header row after every title header cell */
-        document.add(table); // AJE 2016-01-22 add the title cell before changing the table back to 5 columns
+        document.add(table); // AJE 2016-01-22 add the title cell before changing the table back to 5 columns [6 columns]
 
-  			table = new PdfPTable(5);
-  			table.setWidths(new float[] { 8f, 3, 4, 5, 6 }); // AJE 2016-01-21 new values here
+				//table = new PdfPTable(5); // AJE 2016-11-09 5 columns? we need 6 now > enhancement #12: Display commitment type at the issue level on IssuesHeldReport
+				table = new PdfPTable(6); // AJE 2016-11-09
+
+  			//table.setWidths(new float[] { 8f, 3, 4, 5, 6 }); // AJE 2016-01-21 new values here
+  			table.setWidths(new float[] { 8f, 3, 4, 5, 6, 7 }); // AJE 2016-11-09
   			table.setWidthPercentage(100);
   // end AJE 2016-01-22 new
 
-				cell = new PdfPCell(new Phrase("Title (ISSN)",
-				    FontFactory.getFont( FontFactory.HELVETICA, 16, Font.BOLD)));
-				cell.setHorizontalAlignment(Element.ALIGN_CENTER);
-				table.addCell(cell);
-
-				cell = new PdfPCell(new Phrase("Volume",
-						FontFactory.getFont(FontFactory.HELVETICA, 16, Font.BOLD)));
-				cell.setHorizontalAlignment(Element.ALIGN_CENTER);
-				table.addCell(cell);
-
-				cell = new PdfPCell(new Phrase("Number",
-						FontFactory.getFont(FontFactory.HELVETICA, 16, Font.BOLD)));
-				cell.setHorizontalAlignment(Element.ALIGN_CENTER);
-				table.addCell(cell);
-
-				cell = new PdfPCell(new Phrase("Date",
-				    FontFactory.getFont( FontFactory.HELVETICA, 16, Font.BOLD)));
-				cell.setHorizontalAlignment(Element.ALIGN_CENTER);
-				table.addCell(cell);
-
-				cell = new PdfPCell(new Phrase("Location",
-				    FontFactory.getFont( FontFactory.HELVETICA, 16, Font.BOLD)));
-				cell.setHorizontalAlignment(Element.ALIGN_CENTER);
-				table.addCell(cell);
-
-        // AJE 2016-01-20 removed blank line, reinstated next day ; 2016-01-22 removed again, added again
-				cell = new PdfPCell(new Phrase("")); // AJE 2016-01-22 the blank line after first (or new) title and column headers
-				cell.setColspan(5);
-				cell.setBorder(Rectangle.NO_BORDER);
-        // System.out.println("\n\n cell.getFixedHeight() = :" +cell.getFixedHeight()+ ":\n\n"); // AJE : no fixed height
-        cell.setFixedHeight(3f); // AJE 2016-01-22 new, to make the height of the blank line lower
-				table.addCell(cell);
-
+        // AJE 2016-11-15 see file IssuesHeldReport_with_cmtd_out_header_for_every_title.java for removed snippet that puts headers after every new title : I now think this is too busy, but it was on this line
 				document.add(table);
 
 				// AJE 2016-01-22 now reset table to prevent header row from showing twice after title
-  			table = new PdfPTable(5);
-  			table.setWidths(new float[] { 8f, 3, 4, 5, 6 }); // AJE 2016-01-21 new values here
+				//table = new PdfPTable(5); // AJE 2016-11-09 5 columns? we need 6 now > enhancement #12: Display commitment type at the issue level on IssuesHeldReport
+				table = new PdfPTable(6); // AJE 2016-11-09
+
+  			//table.setWidths(new float[] { 8f, 3, 4, 5, 6 }); // AJE 2016-01-21 new values here
+  			table.setWidths(new float[] { 8f, 3, 4, 5, 6, 7 }); // AJE 2016-11-09
   			table.setWidthPercentage(100);
-
-/* end AJE 2016-01-21 try adding header row after every title header cell */
-
-
-				cell = new PdfPCell(new Phrase("line 331")); // AJE 2016-01-22 the blank line after ... can't find this in output
-				cell.setColspan(1);
-				cell.setBorder(Rectangle.NO_BORDER);
-				table.addCell(cell);
-				document.add(table);
-
 
 				boolean shaded = true;
 
@@ -357,21 +348,18 @@ end AJE 2016-01-20 10:46
 				for(IhsVolume ihsVolume : ihsTitle.ihsVolume){
 
 					for( IhsIssue ihsIssue : ihsVolume.ihsissues){
-						event.setTitleid(j);
+						header_footer.setTitleid(j);
 
             // AJE 2016-01-21 this is data table
-						table = new PdfPTable(5);
+    				//table = new PdfPTable(5); // AJE 2016-11-09 5 columns? we need 6 now > enhancement #12: Display commitment type at the issue level on IssuesHeldReport
+    				table = new PdfPTable(6); // AJE 2016-11-09
+
 						//table.setWidths(new float[] { 1.2f, 2, 3, 4, 5 }); // AJE 2016-01-21 original values here
 						// AJE 2016-01-21 note there are 2 places where table.setWidths() is invoked: one for the header and one for the data
-						table.setWidths(new float[] { 8f, 3, 4, 5, 6 }); // AJE 2016-01-21 new values here
+						//table.setWidths(new float[] { 8f, 3, 4, 5, 6 }); // AJE 2016-01-21 new values here
+						table.setWidths(new float[] { 8f, 3, 4, 5, 6, 7 }); // AJE 2016-11-09
 						table.setWidthPercentage(100);
 
-						// cell = new PdfPCell(new Phrase(j+"", // AJE 2016-01-20 15:10 changed this Travant original to put meaningful data in first column
-    				if(ihsTitle.title.endsWith(".")){ // AJE 2016-01-21 this if block added to remove trailing periods from titles
-              title =  ihsTitle.title.substring(0, ihsTitle.title.length() - 1) + " (" +issn+ ")";
-            } else {
-              title =  ihsTitle.title + " (" +issn+ ")";
-            }// AJE 2016-01-21 end
 						cell = new PdfPCell(new Phrase( title, // AJE 2016-01-20 17:55 new inclusion of title + ISSN ; approved by Amy
 								//FontFactory.getFont(FontFactory.HELVETICA, 10, Font.NORMAL))); // AJE 2016-01-21 original values here
 								FontFactory.getFont(FontFactory.HELVETICA, 8, Font.NORMAL)));	// new AJE 2016-01-21 : this changes rarely, so smaller to fit and de-emphasize
@@ -380,8 +368,9 @@ end AJE 2016-01-20 10:46
 
 						j++;
 
-						if (shaded)
+						if (shaded){
 							cell.setGrayFill(0.9f);
+						}
 						table.addCell(cell);
 
 						//cell = new PdfPCell(new Phrase(ihsVolume.volumeNumber, // AJE added abbreviation before data: this line Travant original
@@ -389,8 +378,9 @@ end AJE 2016-01-20 10:46
 								FontFactory.getFont(FontFactory.HELVETICA, 10, Font.BOLD))); // AJE 2016-01-21 was Font.NORMAL
             cell.setHorizontalAlignment(Element.ALIGN_CENTER);	// new AJE 2016-01-20
 						cell.setBorder(Rectangle.NO_BORDER);
-						if (shaded)
+						if (shaded){
 							cell.setGrayFill(0.9f);
+						}
 						table.addCell(cell);
 
 						//cell = new PdfPCell(new Phrase(ihsIssue.issueNumber,  // AJE added abbreviation before data: this line Travant original
@@ -398,30 +388,98 @@ end AJE 2016-01-20 10:46
 								FontFactory.getFont(FontFactory.HELVETICA, 10, Font.BOLD))); // AJE 2016-01-21 was Font.NORMAL
             cell.setHorizontalAlignment(Element.ALIGN_CENTER);	// new AJE 2016-01-20
 						cell.setBorder(Rectangle.NO_BORDER);
-						if (shaded)
+						if (shaded){
 							cell.setGrayFill(0.9f);
+            }
 						table.addCell(cell);
 
-						String datemmdyy =  ihsIssue.publicationDate !=null ? dateFormatmmyy.print(ihsIssue.publicationDate) : "";
+// AJE 2016-11-09 let's get the issue name value in here too (datemmdyy was always there)
+						//String datemmdyy =  ihsIssue.publicationDate != null ? dateFormatmmyy.print(ihsIssue.publicationDate) : ""; // Travant original
+						String datemmdyy =  ihsIssue.publicationDate != null ? dateFormatmmyy.print(ihsIssue.publicationDate) : ""; // AJE 2016-11-09
+            String issueName = ihsIssue.name != null ? ihsIssue.name : "";
+            String issueDateAndName = "";
+            if (datemmdyy != "" && issueName != ""){
+              issueDateAndName = datemmdyy + " ; " + issueName;
+            } else if (datemmdyy != "" ){
+              issueDateAndName = datemmdyy;
+            } else if (issueName != "" ){
+              issueDateAndName = issueName;
+            }
 
-						cell = new PdfPCell(new Phrase(datemmdyy,
+						//cell = new PdfPCell(new Phrase(datemmdyy,
+						cell = new PdfPCell(new Phrase(issueDateAndName,
 								FontFactory.getFont(FontFactory.HELVETICA, 10, Font.BOLD))); // AJE 2016-01-21 was Font.NORMAL
             cell.setHorizontalAlignment(Element.ALIGN_CENTER);	// new AJE 2016-01-20
 						cell.setBorder(Rectangle.NO_BORDER);
-						if (shaded)
+						if (shaded){
 							cell.setGrayFill(0.9f);
+            }
 						table.addCell(cell);
+
+            // "Location" column was developed here, moved below in connection with enhancement #12
+
+          // AJE 2016-11-14 enhancement #12: Display commitment type at the issue level on IssuesHeldReport ;
+          // for this issue held by this member, get the committment type
+
+            String this_holding_location = ""; // blank location default, when issue not held by member
+            String this_commitment_type = ""; // blank commitment default, when issue not held by member
+            String commitmentSQL = "SELECT * FROM ihsholding WHERE holdingID = ( ";
+              commitmentSQL += "SELECT holdingID FROM ihsholding WHERE issueID = "+ihsIssue.issueID+ " ";
+              commitmentSQL += "AND memberID = " +ihsMember.memberID + " ";
+            commitmentSQL += ");";
+
+            /* Logger.info("createPdf will use SQL: ");
+            Logger.info(commitmentSQL); */
+
+            List<SqlRow> sqlRows = Ebean.createSqlQuery(commitmentSQL).findList();
+            if (sqlRows.size() > 0){
+              Integer tvindex = 0;
+              for(SqlRow sqlRow : sqlRows){
+                Integer this_commitment_id = Integer.parseInt(sqlRow.getString("commitmentID"));
+                switch (this_commitment_id) {
+                  // copied values from SELECT * FROM scommitment; : can use scommitment.name or scommitment.description, which are all the same value
+                  case 1:
+                    this_commitment_type = "Uncommitted";
+                    this_holding_location = ihsMember.name;
+                    break;
+                  case 2:
+                    this_commitment_type = "Committed";
+                    this_holding_location = ihsMember.name;
+                    break;
+                  case 3:
+                    this_commitment_type = "Electronic";
+                    this_holding_location = ihsMember.name;
+                    break;
+                }
+               tvindex++;
+              }
+            } else {
+              //Logger.info("else: No holdings commitment type results for ihsTitle.title '" +ihsTitle.title+"' > ihsIssue.issueID " +ihsIssue.issueID+ " held by '" +ihsMember.name+ "'.");
+              //this_commitment_type = "Uncommitted";
+            }
 
 						//cell = new PdfPCell(new Phrase("", // AJE 2016-01-13: this line Travant original
 						// AJE 2016-01-20 DEVNOTE: empty string used above shows there is no Location data or field yet
-						cell = new PdfPCell(new Phrase(ihsMember.name, // AJE 2016-01-20 17:58 per Amy: show holding organization in this column
+						//cell = new PdfPCell(new Phrase(ihsMember.name, // AJE 2016-01-20 17:58 per Amy: show holding organization in this column
+            // AJE 2016-11-09 enhancement #12: Display commitment type at the issue level on IssuesHeldReport -- here is the new column
+						cell = new PdfPCell(new Phrase(this_holding_location, // AJE 2016-11-15
 								//FontFactory.getFont(FontFactory.HELVETICA, 10, Font.NORMAL))); // AJE 2016-01-21 original values here
 								FontFactory.getFont(FontFactory.HELVETICA, 8, Font.NORMAL)));	// new AJE 2016-01-21 : this is always same in this report, so smaller font to fit and de-emphasize
-            cell.setHorizontalAlignment(Element.ALIGN_LEFT);	// new AJE 2016-01-20
+            cell.setHorizontalAlignment(Element.ALIGN_CENTER);	// new AJE 2016-01-20
 						cell.setBorder(Rectangle.NO_BORDER);
-						if (shaded)
+						if (shaded){
 							cell.setGrayFill(0.9f);
+            }
+						table.addCell(cell);
 
+            // AJE 2016-11-09 enhancement #12: Display commitment type at the issue level on IssuesHeldReport -- here is the new column
+						cell = new PdfPCell(new Phrase(this_commitment_type,
+								FontFactory.getFont(FontFactory.HELVETICA, 8, Font.NORMAL)));	// new AJE 2016-01-21 : this is always same in this report, so smaller font to fit and de-emphasize
+            cell.setHorizontalAlignment(Element.ALIGN_CENTER);	// new AJE 2016-01-20
+						cell.setBorder(Rectangle.NO_BORDER);
+						if (shaded){
+							cell.setGrayFill(0.9f);
+            }
 						table.addCell(cell);
 
 						document.add(table);
