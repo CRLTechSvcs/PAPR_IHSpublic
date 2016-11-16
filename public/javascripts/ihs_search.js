@@ -154,17 +154,21 @@ function clearUnusedSearchFields(calling_function){
     ul.setAttribute('id', 'search-list');
 
     /* AJE 2016-10-26 handle searches where no results were found */
+    //console.log("response.items.length = " +response.items.length+ " items in populateSearchList ; r.i[0].titleID = " +response.items[0].titleID+ ".");
     if ( (response.items.length < 1) ||
-         (response.items.length == 1 && response.items[0].titleId == 0)) {
+         ((response.items[0].titleId == 0) || (response.items[0].titleId == undefined) || (response.items[0].titleId == ""))
+       ) {
+      //console.log("populateSearchList hit the IF");
       var li = document.createElement('li');
-      li.innerHTML = "<h2>No results were found for '"+search_value+"'</h2>";
+      li.innerHTML = "<h2>No results were found for <span class='search_term'>&nbsp;'"+search_value+"'&nbsp;</span></h2>";
       ul.appendChild(li);
     } else {
+      //console.log("populateSearchList hit the ELSE");
       for (i = 0; i < response.items.length; i++) {
         var li = document.createElement('li');
         var a = document.createElement('a');
 
-        //console.log(i +') response.items[',i,'].title: "', response.items[i].title, ' *.publisher: "', response.items[i].publisher, ' ; response.items[i] = ', response.items[i]);// AJE 2016-09-20
+        console.log(i +') response.items[',i,'].title: "', response.items[i].title, ' *.publisher: "', response.items[i].publisher, ' ; response.items[i] = ', response.items[i]);// AJE 2016-09-20
         var display_title = response.items[i].title + " / " + response.items[i].publisher;  // AJE 2016-10-25
         //a.innerHTML = response.items[i].title; // Travant original
         a.innerHTML = display_title; // AJE 2016-10-25
@@ -188,11 +192,13 @@ function clearUnusedSearchFields(calling_function){
 
     // AJE 2016-11-04 : enhancements list #6: if only 1 title returned, display its detail screen immediately (no clicking on the title)
     //console.warn("populateSearchList response.items.length == ", response.items.length);
-    if(response.items.length == 1){
+    if((response.items.length == 1)
+      && ((response.items[0].titleId != 0) && (response.items[0].titleId != ""))
+    ){
       var thisTitleID = new String(response.items[0].titleId);
       thisTitleID = thisTitleID.replace(" ", "");
       //console.warn("enhancements list #6, response.items[",i,"].titleId = '", response.items[i].titleId, "' ; thisTitleID = '", thisTitleID, "' after js.replace.");
-      //console.warn('ihs_search.js, call getJournalDetail next');
+      //console.warn("ihs_search.js, populateSearchList will call getJournalDetail("+thisTitleID+").");
       getJournalDetail(thisTitleID); // search_home.js
     } //end enhancements list #6: if(response.items.length == 1) AJE 2016-11-04
 
@@ -218,14 +224,6 @@ function clearUnusedSearchFields(calling_function){
         //console.log('searchJBT, value.length < 2 [no results found for '+value+' yet]'); // AJE 2016-09-21
     } else {
       console.log('searchJBT, value.length = ',value.length,', should search'); // AJE 2016-10-27
-        /*
-          AJE 2016-09-21 DEVNOTE: why is this is condition even here?
-          part A: if the remainder of [search term with its spaces replaced] / 3 is 0
-          or
-          part B: if there is a space at the end of the search term;
-          2016-10-27 removed it
-        */
-    //if (value1.length % 3  == 0 || search.value.charAt(search.value.length-1) == ' ') {
         dojo.xhrGet({
             handleAs: 'json',
             url: "/search/searchJournalByTitle/" + value,
@@ -236,7 +234,6 @@ function clearUnusedSearchFields(calling_function){
             },
             load: populateSearchList
         });
-    //} // end questionable IF 2016-10-27
     }
 	} // end Travant's searchJournalByTitle
 
@@ -257,20 +254,17 @@ function clearUnusedSearchFields(calling_function){
         //results.innerHTML = ' '; // Travant
         //console.log('browseJBT, value.length < 2 [no results found for '+value+' yet]'); // AJE 2016-09-21
     } else {
-console.log('browseJBT, value.length = ',value.length,', should search'); // AJE 2016-10-27
-    // AJE 2016-10-27 remove Travant's IF
-    // if (value1.length % 3  == 0 || search.value.charAt(search.value.length-1) == ' ') {
-        dojo.xhrGet({
-            handleAs: 'json',
-            url: "/search/browseJournalByTitle/" + value,
-              //  app/controllers/SearchJournals.java
-            preventCache: true,
-            error: function(e) {
-                alert("ihs_search.js, browseJournalByTitle Error: " + e.message);
-            },
-            load: populateSearchList
-        });
-    // } // end questionable IF 2016-10-27
+    //console.log('browseJBT, value.length = ',value.length,', should search'); // AJE 2016-10-27
+      dojo.xhrGet({
+          handleAs: 'json',
+          url: "/search/browseJournalByTitle/" + value,
+            //  app/controllers/SearchJournals.java
+          preventCache: true,
+          error: function(e) {
+              alert("ihs_search.js, browseJournalByTitle Error: " + e.message);
+          },
+          load: populateSearchList
+      });
     }
 	} // end AJE 2016-10-24 browseJournalByTitle
 	/*****************************************************
