@@ -197,7 +197,13 @@ input.search-small {
 #show_search_results{ /* AJE 2016-10-26 new for Amy enhancement list #5 */
  margin-left:10px;
 }
-
+.search_term{ /* AJE 2016-11-16 new because I think it will look good */
+ /* color: #485b2e; */
+  color: #000000;
+  /* background-color: #e9e6d3; */
+  background-color: #bab8a8;
+  text-decoration: underline;
+}
 #results {
 	/* visibility: hidden; # AJE 2016-09-16 changed this Travant original */
 	height: 458px; /* AJE 2016-09-15 this line is Travant original */
