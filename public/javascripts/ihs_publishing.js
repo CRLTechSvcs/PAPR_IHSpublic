@@ -73,7 +73,7 @@ function submitPub(){
 	publishingView.fileFormat = fileFormat;
 	publishingView.startDate = startDate;
 	publishingView.endDate = endDate;
-alert('startDate = ' +startDate+ '\n endDate = ' +endDate+ '\npublishingView.startDate = ' +publishingView.startDate+ '\npublishingView.endDate = '+publishingView.endDate);
+  //alert('startDate = ' +startDate+ '\n endDate = ' +endDate+ '\npublishingView.startDate = ' +publishingView.startDate+ '\npublishingView.endDate = '+publishingView.endDate);
 
 	showWaiting();
 
