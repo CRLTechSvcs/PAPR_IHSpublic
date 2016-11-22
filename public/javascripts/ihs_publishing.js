@@ -26,7 +26,7 @@ function submitPub(){
 	var fileFormat = $('#fileFormat').val();
 	var startDate =  $('#startDate').val();
 	var endDate =  $('#endDate').val();
-	alert('submitPub begins with startDate=' +startDate+ '\nendDate='+endDate);
+	//console.info('submitPub begins with startDate=' +startDate+ '\nendDate='+endDate);
 
 	var errorMessage = '';
 
@@ -51,17 +51,34 @@ function submitPub(){
 		return;
 	}
 
+// AJE 2016-11-21 reformat the date value so it goes nicely into new DateTime(publishingView.startDate) in Publishing.java
+  var startYear = startDate.substr(6);
+  var startMonth = startDate.substr(0, 2);
+  var startDay = startDate.substr(3, 2);
+  startDate =  startYear +"-"+  startMonth +"-"+ startDay;
+	//alert('1) submitPub continues with startYear=' +startYear+ '\nstartMonth='+startMonth+ "\nstartDay = " +startDay+ "\n\nstartDate = " +startDate);
+
+  var endYear = endDate.substr(6);
+  var endMonth = endDate.substr(0, 2);
+  var endDay = endDate.substr(3, 2);
+  endDate =  endYear +"-"+  endMonth +"-"+ endDay;
+	//alert('2) submitPub continues with endYear=' +endYear+ '\nendMonth='+endMonth+ "\nendDay = " +endDay+ "\n\nendDate = " +endDate);
+	console.info('3) submitPub continues with startDate=' +startDate+ '\nendDate='+endDate);
+	//alert('3) submitPub continues with startDate=' +startDate+ '\nendDate='+endDate);
+
+// AJE 2016-11-21
+
+
 	publishingView.jobName = jobName;
 	publishingView.fileFormat = fileFormat;
 	publishingView.startDate = startDate;
 	publishingView.endDate = endDate;
-console.warn('startDate = ', startDate, '; endDate = ', endDate);
-alert('startDate = ' +startDate+ '\n endDate = ' +endDate+ '\npublishingView.startDate = ' +publishingView.startDate+ '\npublishingView.endDate = ', publishingView.endDate);
+alert('startDate = ' +startDate+ '\n endDate = ' +endDate+ '\npublishingView.startDate = ' +publishingView.startDate+ '\npublishingView.endDate = '+publishingView.endDate);
 
 	showWaiting();
 
 	dojo.rawXhrPost({
-        url: "/publishing/postPublishingView",
+        url: "/publishing/postPublishingView", // see file: conf\routes
         postData: dojo.toJson(publishingView),
         headers: {
             "Content-Type": "application/json",
