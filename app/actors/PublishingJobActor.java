@@ -33,6 +33,13 @@ import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.apache.poi.ss.usermodel.Row;
 
+// AJE 2016-11-21
+import play.db.ebean.Model;
+import com.avaje.ebean.Ebean;
+import com.avaje.ebean.SqlRow;
+// AJE 2016-11-21
+
+
 public class PublishingJobActor extends UntypedActor {
 
 	static Random rand = new Random();
@@ -98,6 +105,8 @@ public class PublishingJobActor extends UntypedActor {
 					Logger.info("ihsPublishingJob.fileformat == " +ihsPublishingJob.fileformat+ ", thus will call buildPortico ; this Portico block is the only one where value of 'link' is set.");
           link = buildPortico(ihsTitles);
 					Logger.info("after buildPortico, link = " +link+ ".");
+					ihsPublishingJob.link = link;
+					Logger.info("AJE explicitly set ihsPublishingJob.link = " +link+ ", = " + ihsPublishingJob.link);
 				} else if (ihsPublishingJob.fileformat == 3) {
 					Logger.info("ihsPublishingJob.fileformat == " +ihsPublishingJob.fileformat+ ", thus will call buildIhsXls. Value of 'link' is never set in this block.");
 					buildIhsXls(ihsTitles); // AJE 2016-09-30 buildIhsXls was delivered as empty brackets by Travant
@@ -150,7 +159,12 @@ Logger.info("... using AJE simplified link.replace next ; buildPortico DOES NOT 
 link = link.replace('\\','/');
 ihsPublishingJob.setLink("<a href=" + link + ">Download</a>");
 Logger.info("PublishingJobActor.java, onReceive, AFTER replace has ihsPublishingJob.link = " +ihsPublishingJob.link);
-ihsPublishingJob.update();
+Logger.info("PublishingJobActor.java: onReceive: AJE: (1) ihsPublishingJob.update() is not valid? created dummy in IhsPublishingJob.java");
+
+ihsPublishingJob.update(); // Travant original appears to cause error "javax.persistence.OptimisticLockException: Data has changed"
+// AJE 2016-11-21 added fake method body in IhsPublishingJob.java
+
+
 //Logger.info("... NEW GET in routes for /public/reports ; new value in application.conf for application.PUBLISHING.process.data.Dir.  Yes, publishing is supposedly a different thing from reporting, and yes, there is an application.REPORTING.process.data.Dir");
 //Logger.info("AJE 2016-09-30 why no 'href' in link: " +link+ " ?  It is present in database.ihsreportingjob.link field.");
 
@@ -159,13 +173,15 @@ ihsPublishingJob.update();
         // AJE 2016-09-30 resume Travant original code
 
 			} catch (Exception e) {
+				//Logger.info("PublishingJobActor.java: onReceive: in catch block, AJE disabled singestionJobStatus and ihsPublishingJob.update()");
+				Logger.info("PublishingJobActor.java: onReceive: AJE: (EXCEPTION CATCH) ihsPublishingJob.update() is not valid? created dummy in IhsPublishingJob.java");
 
 				SingestionJobStatus singestionJobStatus = (SingestionJobStatus) SingestionJobStatus.find
 						.where().eq("name", SingestionJobStatus.InternalError)
 						.findUnique();
-
 				ihsPublishingJob.setSingestionJobStatus(singestionJobStatus);
 				ihsPublishingJob.update();
+
 				Logger.error("PublishingJobActor.java: onReceive: has Exception: ", e);
 			}
 		} // end if (message instanceof Integer)
