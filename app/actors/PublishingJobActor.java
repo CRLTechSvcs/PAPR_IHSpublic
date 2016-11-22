@@ -62,7 +62,10 @@ public class PublishingJobActor extends UntypedActor {
 
 			Logger.info("PublishingJobActor.onReceive. 'Start Running Publishing job': "+
 			  "ihsPublishingJob.startDate='" +ihsPublishingJob.startDate+"', ihsPublishingJob.endDate='"+ihsPublishingJob.endDate+"'.");
-      Logger.info("In the dates, year + day of month is probably right, but note month is always '01'?");
+
+      // AJE 2016-11-22 next statement is true IF we have used Travant's version of setting startDate/endDate (in Publishing.java).
+      //    Seems to have been resolved with combo of ihs_publishing.js:function submitPub and Publishing.java:postPublishingView
+      //Logger.info("In the dates, year + day of month is probably right, but note month is always '01'?");
 
 			if (ihsPublishingJob.startDate != null
 					&& ihsPublishingJob.endDate != null) {
