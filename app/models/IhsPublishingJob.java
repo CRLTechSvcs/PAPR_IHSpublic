@@ -14,7 +14,8 @@ import play.db.ebean.Model;
 import play.Logger; /* AJE 2016-09-30 */
 
 @Entity
-@Table(name = "ihspublishingJob")
+//@Table(name = "ihspublishingJob") // Travant original
+@Table(name = "ihspublishingjob") // AJE 2016-11-21
 public class IhsPublishingJob  extends Model{
 
 	private static final long serialVersionUID = 1L;
@@ -65,6 +66,26 @@ public class IhsPublishingJob  extends Model{
 		this.fileformat = fileformat;
 	}
 
+  // AJE 2016-11-21 new constructor contains 'link'
+	public IhsPublishingJob(DateTime dateInitiated,  String jobName,
+			IhsUser ihsUser, DateTime startDate, DateTime endDate,  String jsonString,
+			SingestionJobStatus singestionJobStatus,
+			String link,
+			int fileformat) {
+Logger.info("IhsPublishingJob.java, AJE 2016-11-21 new IhsPublishingJob constructor contains 'link'");
+		this.jobName = jobName;
+		this.ihsUser = ihsUser;
+		this.startDate = startDate;
+		this.endDate = endDate;
+		this.jsonString = jsonString;
+		this.singestionJobStatus = singestionJobStatus;
+		this.link = link;
+		this.fileformat = fileformat;
+Logger.info("IhsPublishingJob.java, AJE 2016-11-21 new IhsPublishingJob constructor complete: link=" +link +".");
+	}
+
+
+
 	public void setSingestionJobStatus(SingestionJobStatus singestionJobStatus){
 		this.singestionJobStatus = singestionJobStatus;
 	}
@@ -76,4 +97,11 @@ public class IhsPublishingJob  extends Model{
 
 	public static Finder<Integer, IhsPublishingJob> find = new Finder<Integer, IhsPublishingJob>(
 			Integer.class, IhsPublishingJob.class);
+
+
+	public void update(){
+		Logger.info("IhsPublishingJob.java, public void update is a fake method added by AJE 2016-11-21.");
+	}
+
+
 }
