@@ -45,7 +45,8 @@ public class Publishing extends Controller {
 	static DateTimeFormatter dtf = DateTimeFormat
 			.forPattern("MMM dd, yyyy HH:mm aa");
 
-	static DateTimeFormatter shortdtf = DateTimeFormat.forPattern("mm/dd/yyyy");
+	static DateTimeFormatter shortdtf = DateTimeFormat.forPattern("mm/dd/yyyy"); // Travant original
+	//static DateTimeFormatter shortdtf = DateTimeFormat.forPattern("yyyy-mm-dd"); // AJE 2016-11-22
 
 	public static Result publishing_published_data() {
 		return ok(publishing_published_data.render());
@@ -81,18 +82,24 @@ public class Publishing extends Controller {
 
       Logger.info("Publishing.java: (1) postPublishingView(); publishingView.startDate=" +publishingView.startDate+ "; publishingView.endDate=" +publishingView.endDate);
       /*
-        AJE 2016-11-02 up to this point, startDate + endDate are valid,
-          same values from <input> fields
+        AJE 2016-11-02 up to this point, startDate + endDate are valid, same values from <input> fields
         But Logger message "(2)" after these next DateTime declarations shows that these 2 lines
           reset the MONTH to always '01' (but YEAR and DAY are ok)
 
+        AJE 2016-11-22 after fixing the Javascript input to YYYY-MM-DD in ihs_publishing.js,
+          Travant's setting of startDate/endDate causes 'Invalid format: "2016-11-01" is malformed at "16-11-01"'
+          So about line 49 AJE changed shortdtf to take yyyy-mm-dd ; Travant's block below then did not fail, but proceeded to assign the wrong month.
+      /*
+        // Disable Travant:
 			DateTime startDate = "".equals(publishingView.startDate) ? null
 					: shortdtf.parseDateTime(publishingView.startDate); // Travant original
 			DateTime endDate = "".equals(publishingView.endDate) ? null
 					: shortdtf.parseDateTime(publishingView.endDate); // Travant original
+Logger.info("Publishing.java: (2) date set by TRAVANT");
       */
       DateTime startDate = new DateTime(publishingView.startDate); // AJE 2016-11-02
       DateTime endDate   = new DateTime(publishingView.endDate); // AJE 2016-11-02
+      Logger.info("Publishing.java: (2) date set by AJE");
 
       Logger.info("Publishing.java: (2) postPublishingView(); has startDate=" +startDate+ "; endDate=" +endDate);
 
@@ -100,24 +107,41 @@ public class Publishing extends Controller {
 					.where().eq("name", SingestionJobStatus.Queued)
 					.findUnique();
 
+/* Travant original */
 			IhsPublishingJob ihsPublishingJob = new IhsPublishingJob(
 					new DateTime(), publishingView.jobName, ihsUser, startDate,
 					endDate, jsonString, singestionJobStatus,
 					publishingView.fileFormat);
+/*
+			IhsPublishingJob ihsPublishingJob = new IhsPublishingJob(
+					new DateTime(), publishingView.jobName, ihsUser, startDate,
+					endDate, jsonString, singestionJobStatus,
+					link, // AJE 2016-11-21 new constructor accepts 'link'
+					publishingView.fileFormat);
+*/
+
+			Logger.info("Publishing.java: next is ihsPublishingJob.save()");
 
 			ihsPublishingJob.save();
+
+      Logger.info("Publishing.java: back from ihsPublishingJob.save(); now get myActor");
 
 			ActorSelection myActor = AppActorSystem.getInstance().getActorSystem()
 					.actorSelection("user/PublishingJobActor");
 
+      String junkable = Integer.toString(ihsPublishingJob.publishingJobId);
+      Logger.info("Publishing.java: got myActor; now myActor.tell(" +junkable+ ", null)");
+
 			myActor.tell(new Integer(ihsPublishingJob.publishingJobId), null);
+
+      Logger.info("Publishing.java: myActor has told");
 
 		} catch (Exception e) {
 			Logger.error("ingestion_exception_resolve", e);
 			return internalServerError("ingestion_exception_resolve");
 		}
 		return ok();
-	}
+	} // end postPublishingView
 
 	public static Result getAllPublishingJobs() {
 
@@ -137,27 +161,27 @@ public class Publishing extends Controller {
 
 		for (IhsPublishingJob ihsPublishingJob : ihsPublishingJobs) {
 
-			String foramType ="";
+			String formatType ="";
 
 			if(ihsPublishingJob.fileformat == 1){
-				foramType = MARK;
+				formatType = MARK;
 			}else if (ihsPublishingJob.fileformat == 2){
-				foramType = PORTICO;
+				formatType = PORTICO;
 			}else if(ihsPublishingJob.fileformat == 3){
-				foramType = IHS_XLS;
+				formatType = IHS_XLS;
 			}else if(ihsPublishingJob.fileformat == 4){
-				foramType = IHS_CSV;
+				formatType = IHS_CSV;
 			}
 
 
-			String startDate = ihsPublishingJob.startDate != null ? shortdtf.print( ihsPublishingJob.startDate) + " to ": "Begining to";
+			String startDate = ihsPublishingJob.startDate != null ? shortdtf.print( ihsPublishingJob.startDate) + " to ": "Beginning to";
 			String endDate = ihsPublishingJob.endDate != null ? shortdtf.print( ihsPublishingJob.endDate): " End";
 
 
 			PublishingJobView publishingJobView = new PublishingJobView(
 					dtf.print(ihsPublishingJob.dateInitiated),
 					ihsPublishingJob.jobName,
-					foramType,
+					formatType,
 					ihsPublishingJob.ihsUser.ihsMember.name,
 					ihsPublishingJob.ihsUser.getName(),
 					startDate + endDate,
@@ -190,27 +214,27 @@ public class Publishing extends Controller {
 
 		for (IhsPublishingJob ihsPublishingJob : ihsPublishingJobs) {
 
-			String foramType ="";
+			String formatType ="";
 
 			if(ihsPublishingJob.fileformat == 1){
-				foramType = MARK;
+				formatType = MARK;
 			}else if (ihsPublishingJob.fileformat == 2){
-				foramType = PORTICO;
+				formatType = PORTICO;
 			}else if(ihsPublishingJob.fileformat == 3){
-				foramType = IHS_XLS;
+				formatType = IHS_XLS;
 			}else if(ihsPublishingJob.fileformat == 4){
-				foramType = IHS_CSV;
+				formatType = IHS_CSV;
 			}
 
 
-			String startDate = ihsPublishingJob.startDate != null ? shortdtf.print( ihsPublishingJob.startDate) + " to ": "Begining to";
+			String startDate = ihsPublishingJob.startDate != null ? shortdtf.print( ihsPublishingJob.startDate) + " to ": "Beginning to";
 			String endDate = ihsPublishingJob.endDate != null ? shortdtf.print( ihsPublishingJob.endDate): " End";
 
 
 			PublishingJobView publishingJobView = new PublishingJobView(
 					dtf.print(ihsPublishingJob.dateInitiated),
 					ihsPublishingJob.jobName,
-					foramType,
+					formatType,
 					ihsPublishingJob.ihsUser.ihsMember.name,
 					ihsPublishingJob.ihsUser.getName(),
 					startDate + endDate,
@@ -243,27 +267,27 @@ public class Publishing extends Controller {
 
 		for (IhsPublishingJob ihsPublishingJob : ihsPublishingJobs) {
 
-			String foramType ="";
+			String formatType ="";
 
 			if(ihsPublishingJob.fileformat == 1){
-				foramType = MARK;
+				formatType = MARK;
 			}else if (ihsPublishingJob.fileformat == 2){
-				foramType = PORTICO;
+				formatType = PORTICO;
 			}else if(ihsPublishingJob.fileformat == 3){
-				foramType = IHS_XLS;
+				formatType = IHS_XLS;
 			}else if(ihsPublishingJob.fileformat == 4){
-				foramType = IHS_CSV;
+				formatType = IHS_CSV;
 			}
 
 
-			String startDate = ihsPublishingJob.startDate != null ? shortdtf.print( ihsPublishingJob.startDate) + " to ": "Begining to";
+			String startDate = ihsPublishingJob.startDate != null ? shortdtf.print( ihsPublishingJob.startDate) + " to ": "Beginning to";
 			String endDate = ihsPublishingJob.endDate != null ? shortdtf.print( ihsPublishingJob.endDate): " End";
 
 
 			PublishingJobView publishingJobView = new PublishingJobView(
 					dtf.print(ihsPublishingJob.dateInitiated),
 					ihsPublishingJob.jobName,
-					foramType,
+					formatType,
 					ihsPublishingJob.ihsUser.ihsMember.name,
 					ihsPublishingJob.ihsUser.getName(),
 					startDate + endDate,
