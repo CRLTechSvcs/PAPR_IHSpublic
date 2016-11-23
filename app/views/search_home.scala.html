@@ -6,9 +6,9 @@
 	var call1 = false;
 	var call2 = false;
 	var holdings = {};
-	var memberid= 0;
-	var members={};
-	var globalHoldingIndex=0;
+	var memberid = 0;
+	var members = {};
+	var globalHoldingIndex = 0;
 	var globalholdings = {};
 	var globalTitleId = 0;
 
@@ -59,32 +59,10 @@
 	});
 
 
-  /*
-  // AJE 2016-11-08 function getJournalDetail by Travant in this file appears to be a duplicate, so the entire function has been commented out: make the system use function populateJournalDetail in search_home.js
-	function getJournalDetail(titleid){
-
-	    console.info('search_home.scala.html, getJournalDetail(', titleid, ')');
-
-		 dojo.xhrGet({
-	        handleAs: 'json',
-	        url: "/advancedEditing/GetTitles/" + titleid,
-	        preventCache: true,
-	        error: function(e) {
-	            alert("search_home.scala.html, GetTitles Error: " + e.message);
-	        },
-	        load: populateJournalDetail
-	    });
-
-      console.info('search_home.scala.html, after dojo.xhrGet');
-
-	    globalTitleId = titleid;
-	    showWaiting();
-	}
-	*/
+  // AJE 2016-11-08 function getJournalDetail by Travant in this file appears to be a duplicate, so the entire function has been commented out: make the system use function populateJournalDetail in search_home.js ; 2016-11-23 removed code entirely
 
   /*
-	function populateJournalDetail(){
-    // AJE 2016-11-08 function populateJournalDetail code delivered empty by Travant, so the entire function has been commented out: make the system use function populateJournalDetail in search_home.js
+	function populateJournalDetail(){ // AJE 2016-11-08 function populateJournalDetail code delivered empty by Travant, so the entire function has been commented out: make the system use function populateJournalDetail in search_home.js
     //console.info('search_home.scala.html, empty populateJournalDetail.');
 	}
 	*/
