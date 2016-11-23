@@ -19,9 +19,9 @@ require(["dijit/TitlePane","dojo/dom","dojo/domReady!"], function(dom) {
 				    /* AJE 2016-09-26 standard1 and standard2 should appear (toggle, see IFs below) on
 				        app/views/deaccession_new_deaccession.scala.html */
 	        	var standard1= '<h2 style="margin-top:0px;">Minimum Requirements to Meet Withdrawal Threshold</h2> '+
-			                   '<p>Issues Held of Title\'s Run: <input type="text" value="'+ view.deaccessionIthacaView.HeldOfTitle +'" class="resizedTextbox" onkeyup="updateFiled(\'HeldOfTitle\', this)">%</p>'+
-			                   '<p>Number Page Verified Copies: <input type="text" value="'+ view.deaccessionIthacaView.PageVerifiedCopy +'"  class="resizedTextbox" onkeyup="updateFiled(\'PageVerifiedCopy\', this)"></p>'+
-					           '<p>Maximum Image/Page Ratio: <input type="text" value="'+ view.deaccessionIthacaView.ImagePageRatio +'"  class="resizedTextbox" onkeyup="updateFiled(\'ImagePageRatio\', this)">%</p>';
+			                   '<p>Issues Held of Title\'s Run: <input type="text" value="'+ view.deaccessionIthacaView.HeldOfTitle +'" class="resizedTextbox" onkeyup=" updateField(\'HeldOfTitle\', this)">%</p>'+
+			                   '<p>Number Page Verified Copies: <input type="text" value="'+ view.deaccessionIthacaView.PageVerifiedCopy +'"  class="resizedTextbox" onkeyup=" updateField(\'PageVerifiedCopy\', this)"></p>'+
+					           '<p>Maximum Image/Page Ratio: <input type="text" value="'+ view.deaccessionIthacaView.ImagePageRatio +'"  class="resizedTextbox" onkeyup=" updateField(\'ImagePageRatio\', this)">%</p>';
 
 			      document.getElementById('standard1').innerHTML = standard1;
 
@@ -33,10 +33,10 @@ require(["dijit/TitlePane","dojo/dom","dojo/domReady!"], function(dom) {
 			 	    levelList += "</select>";
 
 			      var standard2 = '<h2 style="margin-top:0px;">Preservation Criteria</h2>'+
-              '<p>Issues in Good Condition:  <input type="text" value="'+ view.deaccessionCrlView.goodCondition +'"  class="resizedTextbox" onkeyup="updateFiled(\'goodCondition\', this)"> </p>'+
+              '<p>Issues in Good Condition:  <input type="text" value="'+ view.deaccessionCrlView.goodCondition +'"  class="resizedTextbox" onkeyup=" updateField(\'goodCondition\', this)"> </p>'+
               '<p>Issues Verified:'+
               levelList +
-              '&nbsp;<input type="text" value="'+ view.deaccessionCrlView.verfiedCopy +'"  class="resizedTextbox" onkeyup="updateFiled(\'verfiedCopy\', this)"></p>';
+              '&nbsp;<input type="text" value="'+ view.deaccessionCrlView.verfiedCopy +'"  class="resizedTextbox" onkeyup=" updateField(\'verfiedCopy\', this)"></p>';
 
   			    document.getElementById('standard2').innerHTML = standard2;
 
@@ -70,7 +70,7 @@ require(["dijit/TitlePane","dojo/dom","dojo/domReady!"], function(dom) {
 });
 
 
-function updateFiled(field, obj){
+function  updateField(field, obj){
 
 	var value= obj.value;
 
