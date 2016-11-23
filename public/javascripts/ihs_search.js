@@ -87,7 +87,7 @@ function clearUnusedSearchFields(calling_function){
   // toggle_search_home_title_components : new function AJE 2016-09-20 : show/hide parts of page in title searches, results of searches, display of bib info summary/'tools'/timeline/volumes/issues
   function toggle_search_home_title_components(calling_function){
 
-    //console.log('ihs_search.js, toggle_search_home_title_components("',calling_function,'")');
+    console.log('ihs_search.js, toggle_search_home_title_components("',calling_function,'")');
 
     if (calling_function == 'populateSearchList'){
       // hide these
@@ -106,9 +106,6 @@ function clearUnusedSearchFields(calling_function){
       document.getElementById('results').innerHTML = ' ';
     }
     else if (calling_function == 'getJournalDetail') {
-    /* else if (calling_function == 'getJournalDetail' ||
-      calling_function == 'populateJournalDetail' ||
-      calling_function == 'populateVolumeDetail') { */
 	    // hide these
 	    document.getElementById('search_results_header').style.display = "none";
 	    document.getElementById('results').style.display = "none"; // list of titles
@@ -237,6 +234,8 @@ function clearUnusedSearchFields(calling_function){
     }
 	} // end Travant's searchJournalByTitle
 
+
+
 	/*****************************************************
 	AJE 2016-10-24 : browseJournalByTitle is a copy of searchJournalByTitle; uses app/controllers/SearchJournals.java > browseJournalByTitle
 	*/
@@ -267,6 +266,9 @@ function clearUnusedSearchFields(calling_function){
       });
     }
 	} // end AJE 2016-10-24 browseJournalByTitle
+
+
+
 	/*****************************************************
 	AJE 2016-10-27 : containsJournalByTitle is a copy of searchJournalByTitle; uses app/controllers/SearchJournals.java > containsJournalByTitle
 	*/
@@ -320,6 +322,8 @@ function clearUnusedSearchFields(calling_function){
         }
     }
 	}
+
+
 
 function searchJournalByOCLC(search) {
   clearUnusedSearchFields('searchJournalByOCLC');
