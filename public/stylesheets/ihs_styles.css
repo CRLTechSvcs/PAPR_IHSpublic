@@ -306,6 +306,12 @@ div.timeline:hover .coupontooltip { /* NEW */
     display: block;
 }
 
+.freq_pub_range { /* AJE 2016-11-22 new, used in advance_history.js ; the definition was hard-coded in multiple 'style' tags */
+  overflow-y: scroll;
+  padding-right: 5px;
+  height: 140px;
+}
+
 
 .coupontooltip {
     display: none;  /* NEW */
