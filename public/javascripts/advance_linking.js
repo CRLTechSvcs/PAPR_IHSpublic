@@ -15,7 +15,7 @@
       },
       load: function (response, ioArgs){
       	hideWaiting();
-      	getJournalDetail(globalTitleId);
+      	getJournalDetail_adv_link(globalTitleId);
       }
 	  });
 		$( "#dialog" ).dialog('close');
@@ -33,7 +33,7 @@
       },
       load: function (response, ioArgs){
       	hideWaiting();
-      	getJournalDetail(globalTitleId);
+      	getJournalDetail_adv_link(globalTitleId);
       }
     });
 		$( "#dialog" ).dialog('close');
@@ -55,7 +55,7 @@
       },
       load: function (response, ioArgs){
       	hideWaiting();
-      	getJournalDetail(globalTitleId);
+      	getJournalDetail_adv_link(globalTitleId);
       }
 	  });
 		showWaiting();
@@ -75,13 +75,18 @@
       },
       load: function (response, ioArgs){
       	hideWaiting();
-      	getJournalDetail(globalTitleId);
+      	getJournalDetail_adv_link(globalTitleId);
       }
 	  });
 		showWaiting();
 	}
 
+
+
 	function drawLinkView( response, ioArgs ){
+
+    console.info('advance_linking.js, drawLinkView( response=', response, ' ; ioArgs=', ioArgs, ')');
+
     var html  = '<br /><br /><br /><br /><br /> '+
       '<h2>'+ response.title +'</h2>' +
       '<br /><br />'+ response.publicationRange + '<br /><br /> ' +
@@ -134,36 +139,17 @@
 
 
 
-  // toggle_search_home_title_components : new function AJE 2016-09-20 : show/hide parts of page in title searches, results of searches, display of bib info summary/'tools'/timeline/volumes/issues
 
+	function populateSearchList_adv_link(response, ioArgs) { // AJE 2016-11-23 may not actually get called
 
+	  console.info('populateSearchList_adv_link(response=', response, ' ; ioArgs=', ioArgs, '): flipsarch = ', flipsarch, '.'); // AJE 2016-09-16 testing
+    hideWaiting(); // AJE 2016-11-23
 
+	  if(flipsarch){
+  	  console.info('populateSearchList_adv_link, flipsarch block with flipsarch = ', flipsarch, '.'); // AJE 2016-09-16 testing
 
-
-
-
-	function populateSearchList(response, ioArgs) {
-  	  console.info('advance_LINKING.js: populateSearchList(response=', response, ' ; ioArgs=', ioArgs); // AJE 2016-09-16 testing
-      hideWaiting(); // AJE 2016-11-01
-
-	    var results = document.getElementById('results');
-
-    // AJE 2016-11-01 clear unused search boxes
-    //console.warn('advance history: populateSearchList: ioArgs.url = "', ioArgs.url, '"; ioArgs.url.indexOf(browseJournalByTitle) == ', ioArgs.url.indexOf('browseJournalByTitle'));
-      var search_box = '';
-      if(ioArgs.url.indexOf('browseJournalByTitle') != -1 ){
-        search_box = document.getElementById('browse_titleid');
-      } else if(ioArgs.url.indexOf('containsJournalByTitle') != -1 ){
-        search_box = document.getElementById('contains_titleid');
-      } else if(ioArgs.url.indexOf('searchJournalByTitle') != -1 ){
-        search_box = document.getElementById('titleid');
-      } else if(ioArgs.url.indexOf('searchJournalByISSN') != -1 ){
-        search_box = document.getElementById('issnid');
-      } else if(ioArgs.url.indexOf('searchJournalByOCLC') != -1 ){
-        search_box = document.getElementById('oclcid');
-      }
-      var search_value = search_box.value;
-      // end AJE 2016-11-01
+	    var results  = document.getElementById('results');
+	    results.style.visibility = "visible";
 
 	    var ul = document.getElementById('search-list');
 	    if (ul != null) {
@@ -172,47 +158,97 @@
 	    ul = document.createElement('ul');
 	    ul.setAttribute('id', 'search-list');
 
-      /* AJE 2016-11-01 handle searches where no results were found */
-      if ( (response.items.length < 1) ||
-           (response.items.length == 1 && response.items[0].titleId == 0)) {
+	    for (i = 0; i < response.items.length; i++) {
         var li = document.createElement('li');
-        li.innerHTML = "<h2>No results were found for '"+search_value+"'</h2>";
-        ul.appendChild(li);
-      } else {
-  	    for (i = 0; i < response.items.length; i++) {
-          var li = document.createElement('li');
-          var a = document.createElement('a');
+        var a = document.createElement('a');
 
-          var display_title = response.items[i].title + " / " + response.items[i].publisher;  // AJE 2016-11-01
-          a.innerHTML = display_title; // AJE 2016-11-01
-          a.setAttribute('href', 'javascript:getJournalDetail(' + response.items[i].titleId + ');');
-          a.setAttribute('title', response.items[i].title);
-          li.appendChild(a);
-          ul.appendChild(li);
-        } // end for
-      } // end else
+        a.innerHTML = response.items[i].title;
+        a.setAttribute('href', 'javascript:getJournalDetail_adv_link(' + response.items[i].titleId + ');');
+        a.setAttribute('title', response.items[i].title);
+        li.appendChild(a);
+        ul.appendChild(li);
+	    }
+
 	    results.appendChild(ul);
-      results.style.display = "block"; // ... this; now do some more toggling, call new AJE function, in ihs_search.js
-      toggle_search_home_title_components('populateSearchList');
-      // AJE : resume Travant original
+
+	  } else { // not flipsarch
+	  	 var html = "";
+	  	 for (i = 0; i < response.items.length; i++) {
+	  	 	if(response.items[i].titleId != globaltitleid){
+	  	 		html +=
+	  	 		'<a href="javascript:addParent('+ response.items[i].titleId +');">' +
+	  	 		  '<img src="/assets/images/parent.gif">&nbsp;</a>' +
+	  	 		'<a href="javascript:addChild('+ response.items[i].titleId +');">' +
+	  	 		  '<img src="/assets/images/child.gif"></a>&nbsp; &nbsp;' +
+	  	 		  response.items[i].title +'<br/>';
+	  	 	}
+	  	 }
+
+	     document.getElementById('dialogue-results').innerHTML = html;
+	  }
+	} // end populateSearchList_adv_link
+
+
+
+
+
+	function populateJournalDetail_adv_link(response, ioArgs){
+    console.info('populateJournalDetail_adv_link(response=', response, ', ioArgs=', ioArgs, ')');
+
+		var html ="";
+
+		for (var i=0; i < response.length; i++) {
+			if( response[i].currentVersionFlag == "Y"){
+				currentTitle = response[i];
+				currentTitleChanged = clone(currentTitle);
+
+        // AJE 2016-11-28 : next is fine for advance_history, not here
+				//document.getElementById('currentTitle').innerHTML =  drawCurrentTitle(); // ihs_search.js
+        //console.info('populateJournalDetail_adv_link is not filling #currentTitle.innerHTML because no such element.');
+
+        document.getElementById('links').innerHTML =  drawLinkView(response, ioArgs); // advance_linking.js
+        console.info('populateJournalDetail_adv_link is filling #currentTitle.innerHTML because no such element.');
+
+			} else {
+				var preTitle = response[i];
+				html += drawPreviousTitle(preTitle);
+			} // end if/else
+		} // end for
+
+		document.getElementById('search').style.display = 'none';
+		/* AJE 2016-11-28
+		document.getElementById('currentTitle').style.display = 'block';
+		document.getElementById('previousTitle').innerHTML =  html;
+		document.getElementById('previousTitle').style.display = 'block'; */
+		document.getElementById('links').innerHTML =  html;
+		document.getElementById('links').style.display = 'block';
+		document.getElementById('links').style.display = 'block';
+    // end AJE 2016-11-28
+
+		hideWaiting();
+
 	}
 
 
-	function getJournalDetail(titleid){
-	  console.info('advance_LINKING.js, getJournalDetail(', titleid, ')');
-    dojo.xhrGet({
-      handleAs: 'json',
-      url: "/advancedEditing/GetTitles/" + titleid,
-      preventCache: true,
-      error: function(e) {
-        alert("advance_history.js, GetTitles Error: " + e.message);
-      },
-      load: populateJournalDetail
+
+	function getJournalDetail_adv_link(titleid){ // AJE 2016-11-23 renamed this function to reflect its location
+    console.info('getJournalDetail_adv_link(', titleid, ')');
+	  flipsarch = false;
+	  globalTitleId=titleid;
+	  globaltitleid = titleid;
+
+  	dojo.xhrGet({
+        handleAs: 'json',
+        url: "/advancedEditing/getLinkView/" + titleid,
+        preventCache: true,
+        error: function(e) {
+            alert("advance_linking.js, getLinkView Error: " + e.message);
+        },
+        load: drawLinkView
     });
-    globalTitleId = titleid;
+
     showWaiting();
 	}
-
 
 
 	function addLink(titleid){
