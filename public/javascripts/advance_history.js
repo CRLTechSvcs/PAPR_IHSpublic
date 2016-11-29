@@ -21,7 +21,7 @@ var currentTitle = {};
 	        load: function(data) {
 
 				hideWaiting();
-				getJournalDetail(globalTitleId);
+				getJournalDetail_adv_hist(globalTitleId);
 
 	        },
 	        error: function(e) {
@@ -50,6 +50,7 @@ var currentTitle = {};
     			 $( "#dialog-pre-confirm" ).dialog({title:'Confirm Save of Changes to Previous Version', width: 500,  height: 100, modal: true});
   		});
 	}
+
 
 	function drawPreviousTitle(previousTitle){
 		var tmptitle = "";
@@ -106,71 +107,7 @@ var currentTitle = {};
 
 	}
 
-	function drawCurrentTitle(){
-		var tmptitle = "";
-		if(currentTitle.title.length > strLen + 1){
-			tmptitle = currentTitle.title.substring(0,strLen);
-		} else {
-			tmptitle = currentTitle.title;
-		}
-
-		var publisherName;
-
-		for(var i = 0; i< publisher.length; i++){
-			if (publisher[i].id == currentTitle.publisher ){
-				publisherName=publisher[i].name;
-			}
-		}
-
-		var innerhtml =
-		  '<div id="current" >'+
-      '<div class="history-title1">'+
-        '<span id="current-title" title="'+ currentTitle.title +'">'+ tmptitle + '</span>'+
-        '&emsp;&emsp;(Current Version)'+
-      '</div>';
-
-    innerhtml +=
-    '<div class="history-title2" id="edit-button">'+
-      '<a href="javascript:drawEditCurrentTitle();" id="edit-current" title="Edit the Current Version">'+
-      '<img src="/assets/images/edit.gif" /></a>'+
-    '</div>';
-
-    innerhtml +=
-    '<div class="history-col1" >'+
-      '<ul class="no-decoration">'+
-        '<li class="edit-only"><strong>Title:</strong> <span ></span></li>'+
-        '<li class="edit-only"><strong>Alpha Title:</strong> <span >Africa Today.</span></li>'+
-        '<li><strong>Publisher:</strong> <span >' + publisherName +'</span></li>'+
-        '<li><strong>Print ISSN:</strong> <span >'+currentTitle.printISSN +'</span></li>'+
-        '<li><strong>Electronic ISSN:</strong> <span >'+currentTitle.eISSN +'</span></li>'+
-        '<li><strong>OCLC Number:</strong> <span >'+currentTitle.oclcNumber +'</span></li>'+
-        '<li><strong>LCCN:</strong> <span>'+currentTitle.lccn +'</span></li>'+
-        '<li><strong>Note:</strong> <span >'+currentTitle.note +'</span></li>'+
-        '<li><strong>Image Page Ratio:</strong> <span >'+currentTitle.imagePageRatio +'</span></li>'+
-        '<li><strong>Publication Range:</strong> '+currentTitle.publicationRange +'</li>'+
-        '<li><strong>Publication Language:</strong> '+currentTitle.language +'</li>'+
-        '<li><strong>Publication Country:</strong> '+currentTitle.country +'</li>'+
-      '</ul>'+
-    '</div>';
-
-      innerhtml +=
-        '<div class="history-col2" style="padding:0px 10px;">'+
-          '<strong>Frequency Ranges:</strong><br /><br />'+
-          '<div class="freq_pub_range">'+ drawPubRange(currentTitle) +'</div>'+
-        '</div>'+
-				'</div>' + // closes id="current" ?
-				'<br/><br/><br/><br/><br/><br/>'+
-				'<div>' +
-					'<hr/>&emsp;<strong>Date Changed:'+ currentTitle.changeDate + '</strong>'+
-					'&emsp;&emsp;<strong>Changed by User:'+ currentTitle.changeUser + ' </strong>'+
-					'&emsp;&emsp;<strong>Changed by Member:'+ currentTitle.changeMember + ' </strong>'+
-					'<hr />'+
-				'</div>';
-
-    return innerhtml;
-
-	}
-
+  // function drawCurrentTitle() was moved 2016-11-23 by AJE from here to ihs_search.js, since advance_linking.js seems to need it too
 
 
 	function finalSaveCurrentTitle(){
@@ -185,7 +122,7 @@ var currentTitle = {};
 
       load: function(data) {
       	hideWaiting();
-  	    getJournalDetail(globalTitleId);
+  	    getJournalDetail_adv_hist(globalTitleId);
       },
       error: function(error) {
         hideWaiting();
@@ -227,7 +164,7 @@ var currentTitle = {};
       alert("advance_history.js, cancelCurrentTitle Error:" + error);
     }
 		currentTitleChanged = clone(currentTitle);
-		document.getElementById('currentTitle').innerHTML =  drawCurrentTitle();
+		document.getElementById('currentTitle').innerHTML =  drawCurrentTitle(); // ihs_search.js
 	}
 
 	function updateTitle(field, txt){
@@ -434,26 +371,7 @@ var currentTitle = {};
 	}
 
 
-
-	function drawPubRange(currentTitle){
-		var pubRange ="";
-		var timerange = ' ' ;
-		for(var i = 0; i < currentTitle.publicationRangeViews.length; i++) {
-			for(var j = 0; j < periodicityType.length; j++){
-				if(periodicityType[j].id == currentTitle.publicationRangeViews[i].pubRangeId){
-					pubRange = periodicityType[j].name;
-				}
-			}
-      timerange +=
-      '<div style="float:left;">' +
-        currentTitle.publicationRangeViews[i].startDate +' to ' +
-        currentTitle.publicationRangeViews[i].endDate +
-      '</div><br/>' +
-      '<div style="padding-left:20px;"> ' + pubRange + '</div>' +
-      '<hr/>';
-    } // end for i
-    return timerange;
-	}
+  // function drawPubRange() was moved 2016-11-28 by AJE from here to ihs_search.js, since advance_linking.js seems to need it too
 
 
 	function drawEditPubRange(currentTitle){
@@ -485,19 +403,19 @@ var currentTitle = {};
 
 
 
-  // toggle_search_home_title_components : new function AJE 2016-09-20 : show/hide parts of page in title searches, results of searches, display of bib info summary/'tools'/timeline/volumes/issues
-  function toggle_search_home_title_components(calling_function){
+  // toggle_page_parts_adv_hist : new function AJE 2016-11-23 : show/hide parts of page in title searches, results of searches, display of bib info summary/'tools'/timeline/volumes/issues
+  function toggle_page_parts_adv_hist(calling_function){
 
-    console.log('advance_history.js, toggle_search_home_title_components("',calling_function,'")');
+    console.log('toggle_page_parts_adv_hist("',calling_function,'")');
 
-    if (calling_function == 'populateSearchList'){
+    if (calling_function == 'populateSearchList_adv_hist'){
       // hide these
       document.getElementById('summary').style.display = "none"; // AJE new
       document.getElementById('timeline').style.display = "none"; // AJE new
       document.getElementById('issues').style.display = "none"; // AJE new
       // show these
       document.getElementById('search_results_header').style.display = "block"; // AJE new
-      // # results is done in populateSearchList, but sometimes fails to appear, so explicitly do it now
+      // # results is done in populateSearchList_adv_hist, but sometimes fails to appear, so explicitly do it now
       document.getElementById('results').style.display = "block"; // AJE new
     }
     else if (calling_function == 'clear_search'){ // new block 2016-10-26 : see main.scala.html
@@ -506,10 +424,7 @@ var currentTitle = {};
       document.getElementById('search_results_header').style.display = "none";
       document.getElementById('results').innerHTML = ' ';
     }
-    else if (calling_function == 'getJournalDetail') {
-    /* else if (calling_function == 'getJournalDetail' ||
-      calling_function == 'populateJournalDetail' ||
-      calling_function == 'populateVolumeDetail') { */
+    else if (calling_function == 'getJournalDetail_adv_hist') {
 	    // hide these
 	    document.getElementById('search_results_header').style.display = "none";
 	    document.getElementById('results').style.display = "none"; // list of titles
@@ -518,21 +433,21 @@ var currentTitle = {};
 	    document.getElementById("timeline").style.display = "block";
 	    document.getElementById('issues').style.display = "block";
     }
-  } // end toggle_search_home_title_components // end AJE 2016-09-20, resume Travant original
+  } // end toggle_page_parts_adv_hist // end AJE 2016-09-20, resume Travant original
 
 
 
 
 
 
-	function populateSearchList(response, ioArgs) {
-  	  console.info('advance_HISTORY.js: populateSearchList(response=', response, ' ; ioArgs=', ioArgs); // AJE 2016-09-16 testing
+	function populateSearchList_adv_hist(response, ioArgs) {
+  	  console.info('populateSearchList_adv_hist(response=', response, ' ; ioArgs=', ioArgs); // AJE 2016-09-16 testing
       hideWaiting(); // AJE 2016-11-01
 
 	    var results = document.getElementById('results');
 
     // AJE 2016-11-01 clear unused search boxes
-    //console.warn('advance history: populateSearchList: ioArgs.url = "', ioArgs.url, '"; ioArgs.url.indexOf(browseJournalByTitle) == ', ioArgs.url.indexOf('browseJournalByTitle'));
+    //console.warn('populateSearchList_adv_hist: ioArgs.url = "', ioArgs.url, '"; ioArgs.url.indexOf(browseJournalByTitle) == ', ioArgs.url.indexOf('browseJournalByTitle'));
       var search_box = '';
       if(ioArgs.url.indexOf('browseJournalByTitle') != -1 ){
         search_box = document.getElementById('browse_titleid');
@@ -568,7 +483,7 @@ var currentTitle = {};
 
           var display_title = response.items[i].title + " / " + response.items[i].publisher;  // AJE 2016-11-01
           a.innerHTML = display_title; // AJE 2016-11-01
-          a.setAttribute('href', 'javascript:getJournalDetail(' + response.items[i].titleId + ');');
+          a.setAttribute('href', 'javascript:getJournalDetail_adv_hist(' + response.items[i].titleId + ');');
           a.setAttribute('title', response.items[i].title);
           li.appendChild(a);
           ul.appendChild(li);
@@ -576,16 +491,40 @@ var currentTitle = {};
       } // end else
 	    results.appendChild(ul);
       results.style.display = "block"; // ... this; now do some more toggling, call new AJE function, in ihs_search.js
-      toggle_search_home_title_components('populateSearchList');
+      toggle_page_parts_adv_hist('populateSearchList_adv_hist');
       // AJE : resume Travant original
 	}
 
 
+	function populateJournalDetail_adv_hist(response, ioArgs){
+    console.info('populateJournalDetail_adv_hist(response=', response, ', ioArgs=', ioArgs, ')');
+		var html = "";
+
+		for (var i=0; i < response.length; i++) {
+			if( response[i].currentVersionFlag == "Y"){
+				currentTitle = response[i];
+				currentTitleChanged = clone(currentTitle);
+				document.getElementById('currentTitle').innerHTML =  drawCurrentTitle(); // ihs_search.js
+			} else {
+				var preTitle =   response[i];
+				html += drawPreviousTitle(preTitle);
+			} // end if/else
+		} // end for
+
+		document.getElementById('search').style.display = 'none';
+		document.getElementById('currentTitle').style.display = 'block';
+		document.getElementById('previousTitle').innerHTML =  html;
+		document.getElementById('previousTitle').style.display = 'block';
+
+		hideWaiting();
+
+	} // end populateJournalDetail_adv_hist
 
 
 
-	function getJournalDetail(titleid){
-	  console.info('advance_HISTORY.js, getJournalDetail(', titleid, ')');
+
+	function getJournalDetail_adv_hist(titleid){ // AJE 2016-11-23 renamed this function to reflect its location
+	  console.info('getJournalDetail_adv_hist(', titleid, ')');
     dojo.xhrGet({
       handleAs: 'json',
       url: "/advancedEditing/GetTitles/" + titleid,
@@ -593,7 +532,8 @@ var currentTitle = {};
       error: function(e) {
         alert("advance_history.js, GetTitles Error: " + e.message);
       },
-      load: populateJournalDetail
+      //load: populateJournalDetail // AJE 2016-11-23 changed from this Travant original
+      load: populateJournalDetail_adv_hist
     });
     globalTitleId = titleid;
     showWaiting();
