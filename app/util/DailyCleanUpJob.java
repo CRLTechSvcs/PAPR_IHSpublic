@@ -13,6 +13,8 @@ import org.quartz.Job;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
 
+import java.text.SimpleDateFormat; // AJE 2016-11-29
+
 import play.Logger;
 
 public class DailyCleanUpJob implements Job {
@@ -23,7 +25,13 @@ public class DailyCleanUpJob implements Job {
 	public void execute(JobExecutionContext context)
 			throws JobExecutionException {
 
-		Logger.info("Starting DailyCleanUpJob");
+		// Logger.info("Starting DailyCleanUpJob"); // Travant original
+		// AJE 2016-11-29 http://stackoverflow.com/questions/833768/java-code-for-getting-current-time
+    SimpleDateFormat time_formatter = new SimpleDateFormat("yyyy-MM-dd_HH:mm:ss.SSS");
+    String current_time_str = time_formatter.format(System.currentTimeMillis());
+    Logger.info("Starting DailyCleanUpJob at " +current_time_str);
+    // end AJE 2016-11-29
+
 
 		List<IhsIngestionJob> ihsIngestionJobs = IhsIngestionJob.find.where()
 				.le("creationDate", new DateTime().minusDays(days)).findList();
@@ -40,7 +48,7 @@ public class DailyCleanUpJob implements Job {
 							+ " file can't be deleted");
 				}
 
-				
+
 			} catch (Exception e) {
 				Logger.error( ihsIngestionJob.sourceFileString + " file can't be deleted", e);
 			}
@@ -74,11 +82,11 @@ public class DailyCleanUpJob implements Job {
 
 		}
 
-		
+
 		List<IhsReportingJob> ihsReportingJobs = IhsReportingJob.find.where()
 				.le("dateInitiated", new DateTime().minusDays(days)).findList();
 
-		
+
 		for (IhsReportingJob ihsReportingJob : ihsReportingJobs) {
 
 			try {
@@ -97,7 +105,7 @@ public class DailyCleanUpJob implements Job {
 				ihsReportingJob.delete();
 			}
 		}
-		
+
 
 		List<IhsPublishingJob> ihsPublishingJobs = IhsPublishingJob.find
 				.where().le("dateInitiated", new DateTime().minusDays(days))
@@ -115,7 +123,7 @@ public class DailyCleanUpJob implements Job {
 							+ " file can't be deleted");
 				}
 
-				
+
 
 			} catch (Exception e) {
 				Logger.error( ihsPublishingJob.link + " file can't be deleted");
@@ -124,7 +132,13 @@ public class DailyCleanUpJob implements Job {
 				ihsPublishingJob.delete();
 			}
 		}
-		Logger.info("Done DailyCleanUpJob");
+
+		// Logger.info("Done DailyCleanUpJob");// Travant original
+		// AJE 2016-11-29 http://stackoverflow.com/questions/833768/java-code-for-getting-current-time
+    time_formatter = new SimpleDateFormat("yyyy-MM-dd_HH:mm:ss.SSS");
+    current_time_str = time_formatter.format(System.currentTimeMillis());
+    Logger.info("Finished DailyCleanUpJob at " +current_time_str);
+    // end AJE 2016-11-29
 
 	}
 
