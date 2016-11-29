@@ -3,12 +3,51 @@
 @main(title = "advance_editing_linking") {
 
     <script src="@routes.Assets.at("javascripts/jquery-1.11.1.min.js")" type="text/javascript"></script>
-
 <!--
 AJE 2016-11-23 jquery-ui may be the cause of the "Error: multiple define" that pops up on these pages
 <script src="@routes.Assets.at("javascripts/jquery-ui-1.11.3/jquery-ui.js")" type="text/javascript"></script> -->
 
   <script type="text/javascript">
+    // AJE 2016-11-23 added next, after search_home.scala.html to resolve error...
+  	var call1 = false;
+  	var call2 = false;
+		require(["dijit/TitlePane", "dojo/dom", "dojo/domReady!", "dojo/query", "dijit/registry", "dojox/widget/Standby"]);
+    // end AJE 2016-11-23
+
+		 var publisher = {};
+
+		 var periodicityType = {};
+
+		 $( document ).ready(function() {
+    		dojo.xhrGet({
+	       			 handleAs: 'json',
+	       				 url: "/advancedEditing/GetPublishers",
+	       				 preventCache: false,
+	        	   		 error: function(e) {
+	            			alert("advanced_editing_history.scala.html, GetPublishers Error: " + e.message);
+	        		},
+	        		load: populatePublisher
+	    		});
+
+	    		dojo.xhrGet({
+	       			 handleAs: 'json',
+	       				 url: "/advancedEditing/GetPeriodicityType",
+	       				 preventCache: false,
+	        	   		 error: function(e) {
+	            			alert("advanced_editing_history.scala.html GetPeriodicityType Error: " + e.message);
+	        		},
+	        		load: populatePeriodicityType
+	    		});
+  	  	});
+
+
+		function populatePublisher(response, ioArgs){
+			publisher = response;
+		}
+
+		function populatePeriodicityType(response, ioArgs){
+			periodicityType = response;
+		}
 
   </script>
 
@@ -68,7 +107,11 @@ AJE 2016-11-22 Travant has this block defined twice! see below about line 61, wh
         </div>
       </div>
 
-		 <div id = "link" style="display: none;">
+    	<div id="dialogue-results">
+    	  <!--AJE 2016-11-28 accomodating some script; this id was in the block that Travant double-defined, so copied in here-->
+    	</div>
+
+		 <div id="link" style="display: none;">
 				<div id="links-parents" class="links"></div>
 				<div id="links-current" class="links"></div>
 				<div id="links-children" class="links"></div>
