@@ -9,6 +9,11 @@ AJE 2016-11-23 jquery-ui may be the cause of the "Error: multiple define" that p
 <script src="@routes.Assets.at("javascripts/jquery-ui-1.11.3/jquery-ui.js")" type="text/javascript"></script> -->
 
    	<script type="text/javascript">
+    // AJE 2016-11-23 added next, after search_home.scala.html to resolve error...
+  	var call1 = false;
+  	var call2 = false;
+		require(["dijit/TitlePane", "dojo/dom", "dojo/domReady!", "dojo/query", "dijit/registry", "dojox/widget/Standby"]);
+    // end AJE 2016-11-23
 
 		 var publisher = {};
 
@@ -48,6 +53,7 @@ AJE 2016-11-23 jquery-ui may be the cause of the "Error: multiple define" that p
 	</script>
 
   <script src="@routes.Assets.at("javascripts/ihs_common.js")" type="text/javascript"></script>
+  <script src="@routes.Assets.at("javascripts/advance_history.js")" type="text/javascript"></script>
   <script src="@routes.Assets.at("javascripts/search_home.js")" type="text/javascript"></script>
   <script src="@routes.Assets.at("javascripts/ihs_search.js")" type="text/javascript"></script>
 
@@ -93,7 +99,22 @@ AJE 2016-11-23 jquery-ui may be the cause of the "Error: multiple define" that p
 					<div id="summary" style="display:none;"><!--AJE 2016-09-29 empty div as quickest way to make toggle_search_home_title_components work like that on search_home--></div>
 					<div id="search_results_header" style="display:none;"><!--AJE 2016-09-29 same again--></div>
 					<div id="timeline" style="display:none;"><!--AJE 2016-09-29 same again--></div>
-					<div id="issues" style="display:none;"><!--AJE 2016-09-29 same again--></div>
+
+       		<div id="issues" style="display:none;"><!--AJE 2016-11-23 same again-->
+    				<div id="tools_for_title_issues"><button id="want-status" style="display:none;" value="0" onClick="setJournalWantStatus()">Title Status Not Wanted</button>
+    					<button id="collapse-all-volumes" onClick="collapseAllVolumes();" >Collapse Volumes</button>
+    					<button id="expand-all-volumes"  onClick="expandAllVolumes();">Expand Volumes</button>
+    				</div>
+  					<div id="childissues"><table id="table1"><!--AJE 2016-10-18 now styled in ihs_styles.css--></table></div>
+  				</div>
+
+
+					<div id="title-col1" style="display:none;"><!--AJE 2016-11-23 same again, different script same idea--></div>
+       		<div id="globaledit"><!--AJE 2016-11-23 same again, different script same idea-->
+       			<div id="childiedit"><!--AJE 2016-11-23 same again, different script same idea--></div>
+  				</div>
+
+
 		   </div>
 		 </div>
 
