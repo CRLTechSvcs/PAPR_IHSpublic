@@ -18,6 +18,20 @@
 
     //console.info('search_home.js, populateJournalDetail(response=', response, ', ioArgs=', ioArgs, ')');
 
+    /* AJE 2016-11-23 shunt over to similar functions in other files ; the names are new but the content is more or less Travant's: may never have worked       advanced_editing_history */
+    var page = location.href;
+    //console.info('search_home.js, getJournalDetail("', id, '"), in YES page=', page);
+    if (page.indexOf("advanced_editing_history") > -1) {
+      console.info('search_home.js, populateJournalDetail, exiting with populateJournalDetail_adv_hist(',response, ',', ioArgs,')');
+      populateJournalDetail_adv_hist(response, ioArgs); // advance_history.js
+      return;
+    } else if (page.indexOf("advanced_editing_linking") > -1) {
+      console.info('search_home.js, populateJournalDetail, exiting with populateJournalDetail_adv_link(',response, ',', ioArgs,')');
+      populateJournalDetail_adv_link(response, ioArgs); // advance_linking.js
+      return;
+    } /* AJE 2016-11-23 end shunt */
+
+
 		// AJE 2016-06-03: mine was stepped on so reinstated
     document.getElementById("title-col1").innerHTML = '<br>' + response.title;
 
@@ -784,6 +798,19 @@ console.info('drawGlobaledit has holdings[globalHoldingIndex=',globalHoldingInde
 
       //console.info('search_home.js, getJournalDetail("', id, '")');
 
+      /* AJE 2016-11-23 shunt over to similar functions in other files ; the names are new but the content is more or less Travant's: may never have worked       advanced_editing_history */
+      var page = location.href;
+      //console.info('search_home.js, getJournalDetail("', id, '"), in YES page=', page);
+      if (page.indexOf("advanced_editing_history") > -1) {
+        console.info('search_home.js, getJournalDetail, exiting with getJournalDetail_adv_hist(',id,')');
+        getJournalDetail_adv_hist(id); // advance_history.js
+        return;
+      } else if (page.indexOf("advanced_editing_linking") > -1) {
+        console.info('search_home.js, getJournalDetail, exiting with getJournalDetail_adv_link(',id,')');
+        getJournalDetail_adv_link(id); // advance_linking.js
+        return;
+      } /* AJE 2016-11-23 end shunt */
+
 	    // AJE 2016-09-15 if search results are in main whitespace area (as per Amy req.) then they need to be hidden first of all
 	    // document.getElementById("results").style.visibility = "hidden"; // still takes up space
 	    toggle_search_home_title_components('getJournalDetail'); // in ihs_search.js
@@ -864,6 +891,7 @@ console.info('drawGlobaledit has holdings[globalHoldingIndex=',globalHoldingInde
           }
         }
       });
+
 	}
 
 
