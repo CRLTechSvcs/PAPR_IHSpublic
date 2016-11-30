@@ -159,10 +159,13 @@
 	    ul.setAttribute('id', 'search-list');
 
 	    for (i = 0; i < response.items.length; i++) {
+console.info('populateSearchList_adv_link, for response.items ', i,' of ', response.items.length,'.'); // AJE 2016-09-16 testing
         var li = document.createElement('li');
         var a = document.createElement('a');
 
-        a.innerHTML = response.items[i].title;
+        //a.innerHTML = response.items[i].title;// Travant original
+        var display_title = response.items[i].title + " / " + response.items[i].publisher;  // AJE 2016-11-29
+        a.innerHTML = display_title; // AJE 2016-11-29
         a.setAttribute('href', 'javascript:getJournalDetail_adv_link(' + response.items[i].titleId + ');');
         a.setAttribute('title', response.items[i].title);
         li.appendChild(a);
