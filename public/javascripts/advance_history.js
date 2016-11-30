@@ -481,8 +481,9 @@ var currentTitle = {};
           var li = document.createElement('li');
           var a = document.createElement('a');
 
-          var display_title = response.items[i].title + " / " + response.items[i].publisher;  // AJE 2016-11-01
-          a.innerHTML = display_title; // AJE 2016-11-01
+          //a.innerHTML = response.items[i].title;// Travant original
+          var display_title = response.items[i].title + " / " + response.items[i].publisher;  // AJE 2016-11-29
+          a.innerHTML = display_title; // AJE 2016-11-29
           a.setAttribute('href', 'javascript:getJournalDetail_adv_hist(' + response.items[i].titleId + ');');
           a.setAttribute('title', response.items[i].title);
           li.appendChild(a);
