@@ -271,10 +271,11 @@ function clearUnusedSearchFields(calling_function){
           var li = document.createElement('li');
           var a = document.createElement('a');
 
-          console.log(i +') response.items[',i,'].title: "', response.items[i].title, ' *.publisher: "', response.items[i].publisher, ' ; response.items[i] = ', response.items[i]);// AJE 2016-09-20
+          //console.log(i +') response.items[',i,'].title: "', response.items[i].title, ' *.publisher: "', response.items[i].publisher, ' ; response.items[i] = ', response.items[i]);// AJE 2016-09-20
+
           var display_title = response.items[i].title + " / " + response.items[i].publisher;  // AJE 2016-10-25
           //a.innerHTML = response.items[i].title; // Travant original
-a.innerHTML = display_title + "ihs_search.js, populateSearchList a.setAttribute next"; // AJE 2016-10-25
+          a.innerHTML = display_title; // AJE 2016-10-25
 
           /* AJE 2016-11-23 shunt over to similar functions in other files ; the names are new but the content is more or less Travant's: may never have worked       advanced_editing_history */
           if (page.indexOf("advanced_editing_history") > -1) {
@@ -335,7 +336,7 @@ a.innerHTML = display_title + "ihs_search.js, populateSearchList a.setAttribute 
         //results.innerHTML = ' '; // Travant
         //console.log('searchJBT, value.length < 2 [no results found for '+value+' yet]'); // AJE 2016-09-21
     } else {
-      console.log('searchJBT, value.length = ',value.length,', should search'); // AJE 2016-10-27
+      //console.log('searchJBT, value.length = ',value.length,', should search'); // AJE 2016-10-27
         dojo.xhrGet({
             handleAs: 'json',
             url: "/search/searchJournalByTitle/" + value,
@@ -399,7 +400,7 @@ a.innerHTML = display_title + "ihs_search.js, populateSearchList a.setAttribute 
     if (value.length < 2 ) {
         //console.log('containsJBT, value.length < 2 [no results found for '+value+' yet]'); // AJE 2016-09-21
     } else {
-      console.log('containsJBT, value.length = ',value.length,', should search'); // AJE 2016-10-27
+      //console.log('containsJBT, value.length = ',value.length,', should search'); // AJE 2016-10-27
       dojo.xhrGet({
           handleAs: 'json',
           url: "/search/containsJournalByTitle/" + value,
