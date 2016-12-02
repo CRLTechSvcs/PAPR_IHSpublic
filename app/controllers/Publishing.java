@@ -83,7 +83,7 @@ public class Publishing extends Controller {
       Logger.info("Publishing.java: (1) postPublishingView(); publishingView.startDate=" +publishingView.startDate+ "; publishingView.endDate=" +publishingView.endDate);
       /*
         AJE 2016-11-02 up to this point, startDate + endDate are valid, same values from <input> fields
-        But Logger message "(2)" after these next DateTime declarations shows that these 2 lines
+        But Logger message "[2]" after these next DateTime declarations shows that these 2 lines
           reset the MONTH to always '01' (but YEAR and DAY are ok)
 
         AJE 2016-11-22 after fixing the Javascript input to YYYY-MM-DD in ihs_publishing.js,
@@ -95,13 +95,13 @@ public class Publishing extends Controller {
 					: shortdtf.parseDateTime(publishingView.startDate); // Travant original
 			DateTime endDate = "".equals(publishingView.endDate) ? null
 					: shortdtf.parseDateTime(publishingView.endDate); // Travant original
-Logger.info("Publishing.java: (2) date set by TRAVANT");
+Logger.info("Publishing.java: [2] date set by TRAVANT");
       */
       DateTime startDate = new DateTime(publishingView.startDate); // AJE 2016-11-02
       DateTime endDate   = new DateTime(publishingView.endDate); // AJE 2016-11-02
-      Logger.info("Publishing.java: (2) date set by AJE");
+      Logger.info("Publishing.java: [2] date set by AJE");
 
-      Logger.info("Publishing.java: (2) postPublishingView(); has startDate=" +startDate+ "; endDate=" +endDate);
+      Logger.info("Publishing.java: [2] postPublishingView(); has startDate=" +startDate+ "; endDate=" +endDate);
 
 			SingestionJobStatus singestionJobStatus = (SingestionJobStatus) SingestionJobStatus.find
 					.where().eq("name", SingestionJobStatus.Queued)
