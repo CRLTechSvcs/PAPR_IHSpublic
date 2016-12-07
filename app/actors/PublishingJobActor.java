@@ -124,7 +124,8 @@ public class PublishingJobActor extends UntypedActor {
 					buildIhsXls(ihsTitles); // AJE 2016-09-30 buildIhsXls was delivered as empty brackets by Travant
 				} else if (ihsPublishingJob.fileformat == 4) {
 					Logger.info("ihsPublishingJob.fileformat == " +ihsPublishingJob.fileformat+ ", thus will call buildIhsCsv. Value of 'link' is never set in this block.");
-					buildIhsCsv(ihsTitles); // AJE 2016-09-30 buildIhsCsv was delivered as empty brackets by Travant
+					// buildIhsCsv(ihsTitles); // AJE 2016-09-30 buildIhsCsv was delivered as empty brackets by Travant
+					link = buildIhsCsv(ihsTitles); // AJE 2016-09-30 buildIhsCsv was delivered as empty brackets by Travant
 				}
 
 				SingestionJobStatus singestionJobStatus = (SingestionJobStatus) SingestionJobStatus.find
@@ -157,6 +158,7 @@ public class PublishingJobActor extends UntypedActor {
 AJE 2016-09-30
 NOTE THAT UNLIKE THE SECTION 2 CALLING buildPortico,
 CALLING THE OTHER build* FUNCTIONS DOES NOT SET link = THE RETURN VALUE OF THOSE FUNCTIONS
+AJE 2016-12-06 buildIhsCsv now returns link as well
 */
 /*
 Logger.info("before AJE resets link, link = " +link+ ".");
@@ -171,11 +173,10 @@ Logger.info("... using AJE simplified link.replace next ; buildPortico DOES NOT 
 link = link.replace('\\','/');
 ihsPublishingJob.setLink("<a href=" + link + ">Download</a>");
 Logger.info("PublishingJobActor.java, onReceive, AFTER replace has ihsPublishingJob.link = " +ihsPublishingJob.link);
-Logger.info("PublishingJobActor.java: onReceive: AJE: (1) ihsPublishingJob.update() is not valid? created dummy in IhsPublishingJob.java");
 
-ihsPublishingJob.update(); // Travant original appears to cause error "javax.persistence.OptimisticLockException: Data has changed"
-// AJE 2016-11-21 added fake method body in IhsPublishingJob.java
-
+//Logger.info("PublishingJobActor.java: onReceive: AJE: (1) ihsPublishingJob.update() is not valid? created dummy in IhsPublishingJob.java");
+ihsPublishingJob.update(); // Travant original ; appeared to cause error "javax.persistence.OptimisticLockException: Data has changed"
+// AJE 2016-11-21 added fake "public void update()" method body in IhsPublishingJob.java ; rescinded 2016-12-06, I think it is using update() of the superclass?
 
 //Logger.info("... NEW GET in routes for /public/reports ; new value in application.conf for application.PUBLISHING.process.data.Dir.  Yes, publishing is supposedly a different thing from reporting, and yes, there is an application.REPORTING.process.data.Dir");
 //Logger.info("AJE 2016-09-30 why no 'href' in link: " +link+ " ?  It is present in database.ihsreportingjob.link field.");
@@ -420,7 +421,7 @@ ihsPublishingJob.update(); // Travant original appears to cause error "javax.per
 
       Integer titleID = ihsTitle.titleID; // int(11) NOT NULL AUTO_INCREMENT,
       //Integer titleTypeID = ihsTitle.titleTypeID; // int(11) NOT NULL // NOT IN THE DATA
-      Integer titleTypeID = 0;
+      Integer titleTypeID = -1;
       String title = ihsTitle.title != null ? ihsTitle.title : ""; // varchar(512) NOT NULL,
       String alphaTitle = ihsTitle.alphaTitle != null ? ihsTitle.alphaTitle : ""; // varchar(512) DEFAULT NULL,
       String printISSN = ihsTitle.printISSN != null ? Helper.formatIssn(ihsTitle.printISSN) : ""; // varchar(32) DEFAULT NULL,
@@ -428,20 +429,21 @@ ihsPublishingJob.update(); // Travant original appears to cause error "javax.per
       String oclcNumber = ihsTitle.oclcNumber != null ? ihsTitle.oclcNumber : ""; // varchar(32) DEFAULT NULL,
       String lccn = ihsTitle.lccn != null ? ihsTitle.lccn : ""; // varchar(32) DEFAULT NULL,
       //Integer publisherID = ihsTitle.publisherID; // int(11) NOT NULL // NOT IN THE DATA
-      Integer publisherID = 0;
+      Integer publisherID = -1;
       String description = ihsTitle.description != null ? ihsTitle.description : ""; // varchar(512) DEFAULT NULL,
       //Integer titleStatusID = ihsTitle.titleStatusID; // int(11) NOT NULL // NOT IN THE DATA
-      Integer titleStatusID = 0;
+      Integer titleStatusID = -1;
       String changeDate = ihsTitle.changeDate != null ? ihsTitle.changeDate.toString() : ""; // date NOT NULL,
       //Integer userID = ihsTitle.userId; // int(11) NOT NULL // NOT IN THE DATA
-      Integer userID = 0;
+      Integer userID = -1;
       //Integer titleVersion = ihsTitle.titleVersion; // int(11) DEFAULT '0' // NOT IN THE DATA
-      Integer titleVersion = 0;
+      Integer titleVersion = -1;
+      //Integer imagePageRatio = ihsTitle.imagePageRatio != null ? ihsTitle.imagePageRatio : -1; //int(11) DEFAULT '0' // NOT IN THE DATA
       Integer imagePageRatio = 0; // int(11) DEFAULT NULL,
       String language = ihsTitle.language != null ? ihsTitle.language : ""; // varchar(32) NOT NULL,
       String country = ihsTitle.country != null ? ihsTitle.country : ""; // varchar(32) NOT NULL,
       //Integer volumeLevelFlag = ihsTitle.volumeLevelFlag; // char(1) DEFAULT '0' // NOT IN THE DATA
-      Integer volumeLevelFlag = 0;
+      Integer volumeLevelFlag = -1;
       // now some fields not in the database
       String holdings = ""; // from builderHolding, not in database
       String titleCSVcontent = Integer.toString(titleID) + "|" + Integer.toString(titleTypeID) + "|";
