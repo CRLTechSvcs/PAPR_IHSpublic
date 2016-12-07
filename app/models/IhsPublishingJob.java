@@ -98,10 +98,10 @@ Logger.info("IhsPublishingJob.java, AJE 2016-11-21 new IhsPublishingJob construc
 	public static Finder<Integer, IhsPublishingJob> find = new Finder<Integer, IhsPublishingJob>(
 			Integer.class, IhsPublishingJob.class);
 
-
+/*
 	public void update(){
 		Logger.info("IhsPublishingJob.java, public void update is a fake method added by AJE 2016-11-21.");
 	}
-
+*/
 
 }
