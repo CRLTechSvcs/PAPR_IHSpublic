@@ -96,7 +96,7 @@ GET /deaccessionSummary/submitDeaccessionJob/:jobId			controllers.Deaccession.su
 POST /deaccessionSummary/postDeaccessionReport	  controllers.Deaccession.postDeaccessionReport()
 POST /deaccessionSummary/postDeaccessionJob       controllers.Deaccession.postDeaccessionJob()
 
-##Publishing
+##Publishing ## AJE 2016-12-06 'Publishing' in config files refers to interface sections labeled 'Export Data'
 GET /publishing_published_data			controllers.Publishing.publishing_published_data()
 GET /publishing_publish_new_data		controllers.Publishing.publishing_publish_new_data()
 GET /publishing/getPublishingView       controllers.Publishing.getPublishingView()
@@ -155,4 +155,6 @@ GET     /assets/*file               controllers.Assets.at(path="/public", file)
 GET     /public/reports/*file					controllers.Assets.versioned(path="/public/reports", file)
 # AJE 2016-09-30 next is for 'Publishing', interface now labeled 'Export Data'
 GET     /data/pubprocess/*file					controllers.Assets.versioned(path="/data/pubprocess", file)
+# AJE 2016-12-06
+# GET     /publishing/*file					controllers.Assets.versioned(path="/data/pubprocess", file)
 
