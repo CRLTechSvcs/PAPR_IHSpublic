@@ -24,10 +24,10 @@ import json.TitleView;
 import com.avaje.ebean.Ebean;
 import com.avaje.ebean.SqlRow;
 
-// AJE 2016-10-19
-import play.db.ebean.Model;
-import play.Logger;
-// AJE 2016-10-19
+
+//import play.db.ebean.Model; // AJE 2016-10-19 // was already there
+import play.Logger; // AJE 2016-10-19
+
 
 
 /**

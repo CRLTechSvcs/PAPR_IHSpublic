@@ -203,6 +203,7 @@ Logger.info("Publishing.java: [2] date set by TRAVANT");
 		List<IhsDeaccessionJob> ihsDeaccessionJobs;
 
 		String user = session().get(Login.User);
+		Logger.info("app|controllers|Publishing.java: getAUserPublishingJobs() has user=" +user+".");
 
 		AppUser appUser = Helper.getAppUserFromCache(user);
 
@@ -230,7 +231,6 @@ Logger.info("Publishing.java: [2] date set by TRAVANT");
 			String startDate = ihsPublishingJob.startDate != null ? shortdtf.print( ihsPublishingJob.startDate) + " to ": "Beginning to";
 			String endDate = ihsPublishingJob.endDate != null ? shortdtf.print( ihsPublishingJob.endDate): " End";
 
-
 			PublishingJobView publishingJobView = new PublishingJobView(
 					dtf.print(ihsPublishingJob.dateInitiated),
 					ihsPublishingJob.jobName,
@@ -243,6 +243,9 @@ Logger.info("Publishing.java: [2] date set by TRAVANT");
 
 			);
 			pageingJson.items.add(publishingJobView);
+		Logger.info("...has ihsPublishingJob.jobName=" +ihsPublishingJob.jobName+" ; ihsPublishingJob.link=" +ihsPublishingJob.link+".");
+		Logger.info("...has formatType=" +formatType+" ; ihsPublishingJob.startDate="+ihsPublishingJob.startDate+", startDate=" +startDate+".");
+		Logger.info("...has ihsPublishingJob.endDate="+ihsPublishingJob.endDate+", endDate=" +endDate+".");		
 
 		}
 

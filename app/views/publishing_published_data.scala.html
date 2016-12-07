@@ -49,11 +49,21 @@
 
 	  function populatepublishingJobSummary(response, ioArgs){
 
+			console.info('publishing_published_data.scala.html populatepublishingJobSummary(response='+response+', ioArgs='+ioArgs+')');
+
 	  		var dataExceptionStore = new dojo.data.ItemFileReadStore({
 	    			 	data: {
 	         			items: response.items
 	     			}
 	 			});
+	 			
+	 			/* AJE 2016-12-06 16:25:21 #
+				console.info('ppd.s.html ppJS: response.items='+response.items+'.');
+	 			var i = 0;
+	 			for (i=0; i < response.items.length; i++){
+	 				console.info('ppJS: response.items[i='+i+'] ="'+response.items[i]+'".');
+	 			}
+	 			# AJE 2016-12-06 16:25:21 */
 
 	 			var dataExceptionGrid = dijit.byId('publishing-job-summary');
 
@@ -61,6 +71,8 @@
 	  }
 
 	  function getJobs (url){
+
+			console.info('publishing_published_data.scala.html getJobs(url="'+url+'")');
 
 	     dojo.xhrGet({
      			handleAs: 'json',
