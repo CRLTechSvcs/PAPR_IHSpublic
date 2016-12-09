@@ -37,7 +37,8 @@ import static play.libs.Json.toJson;
 public class Publishing extends Controller {
 
 	static int MAX_ROW = 100;
-	static String MARK ="MARC Text File (.txt)";
+	//static String MARK ="MARC Text File (.txt)"; // Travant original
+	static String MARC ="MARC Text File (.mrk)";
 	static String PORTICO = "Portico Excel File (.xls, .xlsx)";
 	static String IHS_XLS ="IHS Holdings Data Excel File (.xls, .xlsx)";
 	static String IHS_CSV ="IHS Holdings Data CSV File (.csv)";
@@ -80,7 +81,7 @@ public class Publishing extends Controller {
 
 			IhsUser ihsUser = IhsUser.find.byId(appUser.userId);
 
-      Logger.info("Publishing.java: (1) postPublishingView(); publishingView.startDate=" +publishingView.startDate+ "; publishingView.endDate=" +publishingView.endDate);
+      Logger.info("Publishing.java: [1] postPublishingView(); publishingView.startDate=" +publishingView.startDate+ "; publishingView.endDate=" +publishingView.endDate);
       /*
         AJE 2016-11-02 up to this point, startDate + endDate are valid, same values from <input> fields
         But Logger message "[2]" after these next DateTime declarations shows that these 2 lines
@@ -99,9 +100,7 @@ Logger.info("Publishing.java: [2] date set by TRAVANT");
       */
       DateTime startDate = new DateTime(publishingView.startDate); // AJE 2016-11-02
       DateTime endDate   = new DateTime(publishingView.endDate); // AJE 2016-11-02
-      Logger.info("Publishing.java: [2] date set by AJE");
-
-      Logger.info("Publishing.java: [2] postPublishingView(); has startDate=" +startDate+ "; endDate=" +endDate);
+      Logger.info("Publishing.java: [2] date set by AJE ; postPublishingView(); has startDate=" +startDate+ "; endDate=" +endDate);
 
 			SingestionJobStatus singestionJobStatus = (SingestionJobStatus) SingestionJobStatus.find
 					.where().eq("name", SingestionJobStatus.Queued)
@@ -143,6 +142,8 @@ Logger.info("Publishing.java: [2] date set by TRAVANT");
 		return ok();
 	} // end postPublishingView
 
+
+
 	public static Result getAllPublishingJobs() {
 
 		PageingJson pageingJson = new PageingJson();
@@ -164,7 +165,7 @@ Logger.info("Publishing.java: [2] date set by TRAVANT");
 			String formatType ="";
 
 			if(ihsPublishingJob.fileformat == 1){
-				formatType = MARK;
+				formatType = MARC;
 			}else if (ihsPublishingJob.fileformat == 2){
 				formatType = PORTICO;
 			}else if(ihsPublishingJob.fileformat == 3){
@@ -173,10 +174,8 @@ Logger.info("Publishing.java: [2] date set by TRAVANT");
 				formatType = IHS_CSV;
 			}
 
-
 			String startDate = ihsPublishingJob.startDate != null ? shortdtf.print( ihsPublishingJob.startDate) + " to ": "Beginning to";
 			String endDate = ihsPublishingJob.endDate != null ? shortdtf.print( ihsPublishingJob.endDate): " End";
-
 
 			PublishingJobView publishingJobView = new PublishingJobView(
 					dtf.print(ihsPublishingJob.dateInitiated),
@@ -203,7 +202,6 @@ Logger.info("Publishing.java: [2] date set by TRAVANT");
 		List<IhsDeaccessionJob> ihsDeaccessionJobs;
 
 		String user = session().get(Login.User);
-		Logger.info("app|controllers|Publishing.java: getAUserPublishingJobs() has user=" +user+".");
 
 		AppUser appUser = Helper.getAppUserFromCache(user);
 
@@ -218,7 +216,7 @@ Logger.info("Publishing.java: [2] date set by TRAVANT");
 			String formatType ="";
 
 			if(ihsPublishingJob.fileformat == 1){
-				formatType = MARK;
+				formatType = MARC;
 			}else if (ihsPublishingJob.fileformat == 2){
 				formatType = PORTICO;
 			}else if(ihsPublishingJob.fileformat == 3){
@@ -230,7 +228,13 @@ Logger.info("Publishing.java: [2] date set by TRAVANT");
 
 			String startDate = ihsPublishingJob.startDate != null ? shortdtf.print( ihsPublishingJob.startDate) + " to ": "Beginning to";
 			String endDate = ihsPublishingJob.endDate != null ? shortdtf.print( ihsPublishingJob.endDate): " End";
-
+/*
+  		Logger.info("app.controllers.Publishing.java: getAUserPublishingJobs() has ihsPublishingJob.jobName=" +ihsPublishingJob.jobName+".");
+  		Logger.info("...has user=" +user+" ; ihsPublishingJob.link=" +ihsPublishingJob.link+".");
+  		Logger.info("...has ihsPublishingJob.fileformat="+Integer.toString(ihsPublishingJob.fileformat)+" ; formatType=" +formatType+".");
+  		Logger.info("...has ihsPublishingJob.startDate="+ihsPublishingJob.startDate+", startDate=" +startDate+".");
+  		Logger.info("...has ihsPublishingJob.endDate="+ihsPublishingJob.endDate+", endDate=" +endDate+".\n\n");
+*/
 			PublishingJobView publishingJobView = new PublishingJobView(
 					dtf.print(ihsPublishingJob.dateInitiated),
 					ihsPublishingJob.jobName,
@@ -240,17 +244,15 @@ Logger.info("Publishing.java: [2] date set by TRAVANT");
 					startDate + endDate,
 					ihsPublishingJob.singestionJobStatus.name,
 					ihsPublishingJob.link
-
 			);
 			pageingJson.items.add(publishingJobView);
-		Logger.info("...has ihsPublishingJob.jobName=" +ihsPublishingJob.jobName+" ; ihsPublishingJob.link=" +ihsPublishingJob.link+".");
-		Logger.info("...has formatType=" +formatType+" ; ihsPublishingJob.startDate="+ihsPublishingJob.startDate+", startDate=" +startDate+".");
-		Logger.info("...has ihsPublishingJob.endDate="+ihsPublishingJob.endDate+", endDate=" +endDate+".");		
 
-		}
+		} // end for
 
 		return ok(toJson(pageingJson));
-	}
+	} // end getAUserPublishingJobs
+
+
 
 	public static Result getAMemberPublishingJobs() {
 
@@ -273,7 +275,7 @@ Logger.info("Publishing.java: [2] date set by TRAVANT");
 			String formatType ="";
 
 			if(ihsPublishingJob.fileformat == 1){
-				formatType = MARK;
+				formatType = MARC;
 			}else if (ihsPublishingJob.fileformat == 2){
 				formatType = PORTICO;
 			}else if(ihsPublishingJob.fileformat == 3){
