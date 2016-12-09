@@ -44,7 +44,7 @@ import org.quartz.impl.StdSchedulerFactory;
 public class Global extends GlobalSettings {
 
 	Scheduler scheduler1;
-	
+
 	public <T extends EssentialFilter> Class<T>[] filters() {
 		return new Class[] { GzipFilter.class };
 	}
@@ -52,12 +52,12 @@ public class Global extends GlobalSettings {
 	private Logger.ALogger log = Logger.of(Global.class);
 
 	public void onStart(Application app) {
-		Logger.info("Application has started");
+		Logger.info("/app/Global.java: Application has started");
 
 		// Chech
 
 		//if (play.api.Play.isProd(play.api.Play.current())) {
-			
+
 			//System.out.println("prod");
 			SingestionJobStatus singestionJobStatus = SingestionJobStatus.find
 					.where().eq("name", SingestionJobStatus.Processing)
@@ -73,34 +73,34 @@ public class Global extends GlobalSettings {
 				IhsIngestionJob.updateJobId(singestionJobStatusCom,
 						ihsIngestionJob);
 			}
-			
+
 			//set up a quartz cron job
-			
+
 
 			JobDetail job1 = JobBuilder.newJob(DailyCleanUpJob.class)
 					.withIdentity("DailyCleanUpJob", "DailyCleanUpJobGroup").build();
-			
-			
+
+
 			Trigger trigger1 = TriggerBuilder.newTrigger()
 					.withIdentity("DailyCleanUpJobCronTrigger", "DailyCleanUpJobGroup")
 					//.withSchedule(CronScheduleBuilder.cronSchedule("0/5 * * * * ?")) //Every file second
 					.withSchedule(CronScheduleBuilder.cronSchedule("0 0 0 * * ?")) //Run every midnight
 					.build();
-			
-			
+
+
 			try {
 				scheduler1 = new StdSchedulerFactory().getScheduler();
-			
-			scheduler1.start();
-			scheduler1.scheduleJob(job1, trigger1);
-			
+
+			  scheduler1.start();
+			  scheduler1.scheduleJob(job1, trigger1);
+
 			} catch (SchedulerException e) {
-				Logger.error("Can't start Daily clean up job", e);
+				Logger.error("/app/Global.java: SchedulerException, Can't start Daily clean up job: ", e);
 				System.exit(1);
 			}
-			
+
 			// End cron job set up
-			
+
 		if (play.api.Play.isDev(play.api.Play.current())) {
 			System.out.println("Dev");
 
@@ -109,7 +109,8 @@ public class Global extends GlobalSettings {
 						"ActveDesc");
 				smemberStatus.save();
 
-				IhsMember ihsMember = new IhsMember("PAPR", "PARP",
+				//IhsMember ihsMember = new IhsMember("PAPR", "PARP", // Travant original
+				IhsMember ihsMember = new IhsMember("PAPR", "PAPR", // AJE 2016-12-07
 						smemberStatus, "papr");
 				ihsMember.save();
 
@@ -188,7 +189,7 @@ public class Global extends GlobalSettings {
 				title1.save();
 
 				new IhsPublicationRange(title1, null, new DateTime() , new DateTime()).save();
-				
+
 				IhsTitle title2 = new IhsTitle("Africa Bibliography",
 						stitleType /* type */, "Africa Bibliography",
 						"15563619", "15563626", "oclcNumber", "lccn",
@@ -196,7 +197,7 @@ public class Global extends GlobalSettings {
 				title2.save();
 
 				new IhsPublicationRange(title2, null, new DateTime() , new DateTime()).save();
-				
+
 				IhsTitle title3 = new IhsTitle("Africa Education Review",
 						stitleType /* type */, "Africa Education Review",
 						"15563620", "15563626", "oclcNumber", "lccn",
@@ -204,7 +205,7 @@ public class Global extends GlobalSettings {
 				title3.save();
 
 				new IhsPublicationRange(title3, null, new DateTime() , new DateTime()).save();
-				
+
 				IhsTitle title4 = new IhsTitle("Africa Today",
 						stitleType /* type */, "Africa Today",
 						"15563621", "15563626", "oclcNumber", "lccn",
@@ -212,7 +213,7 @@ public class Global extends GlobalSettings {
 				title4.save();
 
 				new IhsPublicationRange(title4, null, new DateTime() , new DateTime()).save();
-				
+
 				IhsTitle title5 = new IhsTitle("African Arts",
 						stitleType /* type */, "African Arts",
 						"15563622", "15563626", "oclcNumber", "lccn",
@@ -220,16 +221,15 @@ public class Global extends GlobalSettings {
 				title5.save();
 
 				new IhsPublicationRange(title5, null, new DateTime() , new DateTime()).save();
-				
-				
+
+
 				/*--------------------SingestionJobStatus  --------------*/
 
 				new SingestionJobStatus(SingestionJobStatus.Queued,
 						SingestionJobStatus.Queued).save();
 				new SingestionJobStatus(SingestionJobStatus.Processing,
 						SingestionJobStatus.Processing).save();
-				new SingestionJobStatus(
-						SingestionJobStatus.FileProcessingError,
+				new SingestionJobStatus(SingestionJobStatus.FileProcessingError,
 						SingestionJobStatus.FileProcessingError).save();
 				new SingestionJobStatus(SingestionJobStatus.Complete,
 						SingestionJobStatus.Complete).save();
@@ -248,8 +248,7 @@ public class Global extends GlobalSettings {
 						SingestionRecordStatus.OnHold).save();
 				new SingestionRecordStatus(SingestionRecordStatus.Processing,
 						SingestionRecordStatus.Processing).save();
-				new SingestionRecordStatus(
-						SingestionRecordStatus.BadRecordError,
+				new SingestionRecordStatus(SingestionRecordStatus.BadRecordError,
 						SingestionRecordStatus.BadRecordError).save();
 				new SingestionRecordStatus(SingestionRecordStatus.Ingnored,
 						SingestionRecordStatus.Ingnored).save();
@@ -273,15 +272,12 @@ public class Global extends GlobalSettings {
 
 				new SingestionExceptionType(
 						SingestionExceptionType.NoAuthorizedPublicationRange,
-						SingestionExceptionType.NoAuthorizedPublicationRange)
-						.save();
+						SingestionExceptionType.NoAuthorizedPublicationRange).save();
 				new SingestionExceptionType(
 						SingestionExceptionType.NoAuthorizedTitle,
 						SingestionExceptionType.NoAuthorizedTitle).save();
-
 				new SingestionExceptionStatus(
-						SingestionExceptionStatus.Available, "Available")
-						.save();
+						SingestionExceptionStatus.Available, "Available").save();
 
 			}
 
@@ -296,7 +292,7 @@ public class Global extends GlobalSettings {
 		try {
 			scheduler1.shutdown();
 		} catch (SchedulerException e) {
-			
+
 			Logger.error("",e);
 		}
 	}
