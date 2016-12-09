@@ -114,7 +114,7 @@ public class IngestionJobActor extends UntypedActor {
 
 
 						if ( ihsIngestionRecords.size() > 0){
-						    //Get all the record with bad foramt and write to a static file
+						    //Get all the record with bad format and write to a static file
 							String sourceFileString = ihsIngestionJob.sourceFileString + IhsIngestionJob.badExten;
 							FileWriter outFile =  new FileWriter(sourceFileString);
 							PrintWriter out = new PrintWriter(outFile);
