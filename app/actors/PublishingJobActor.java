@@ -329,7 +329,7 @@ ihsPublishingJob.update(); // Travant original ; appeared to cause error "javax.
         fos.write(bytesArray);
     		fos.close();
         fos.flush();
-        Logger.info("buildMarcText: titleMRKcontent + newline written successfully at " +destFileString);
+        //Logger.info("buildMarcText: titleMRKcontent + newline written successfully at " +destFileString);
       } catch (IOException e) { // TODO Auto-generated
   		  Logger.info("buildMarcText error with writing titleMRKcontent: \n" +e);
       }
@@ -584,7 +584,7 @@ ihsPublishingJob.update(); // Travant original ; appeared to cause error "javax.
         int volumeIndex = 0;
 
         if(startVolume && startIssue) {
-          Logger.info("titleMRKcontent: inside for (IhsVolume ihsVolume: ihsTitle.ihsVolume); ihsTitle.ihsVolume.size()=" +ihsTitle.ihsVolume.size()+ "; volumeIndex = " +volumeIndex);
+          //Logger.info("titleMRKcontent: inside for (IhsVolume ihsVolume: ihsTitle.ihsVolume); ihsTitle.ihsVolume.size()=" +ihsTitle.ihsVolume.size()+ "; volumeIndex = " +volumeIndex);
         }
 
 				if(!startVolume) {
@@ -597,7 +597,7 @@ ihsPublishingJob.update(); // Travant original ; appeared to cause error "javax.
 				for(IhsIssue ihsissue: ihsVolume.ihsissues){
 
           if(startVolume && startIssue) {
-            Logger.info("titleMRKcontent: inside for (IhsIssue ihsissue: ihsVolume.ihsissues); ihsVolume.ihsissues.size()=" +ihsVolume.ihsissues.size()+ "; issueIndex = " +issueIndex);
+            //Logger.info("titleCSVcontent: inside for (IhsIssue ihsissue: ihsVolume.ihsissues); ihsVolume.ihsissues.size()=" +ihsVolume.ihsissues.size()+ "; issueIndex = " +issueIndex);
           }
 					if(!startIssue) {
 					  builderHolding.append(",");
