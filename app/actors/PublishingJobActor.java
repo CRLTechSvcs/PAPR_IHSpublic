@@ -55,8 +55,12 @@ public class PublishingJobActor extends UntypedActor {
 
 			List<IhsTitle> ihsTitles = null;
 
+      Logger.info("... will try to ihsPublishingJob = IhsPublishingJob.find.byId(ihsPublishingJobId=" +Integer.toString(ihsPublishingJobId)+ ").");
+
 			IhsPublishingJob ihsPublishingJob = IhsPublishingJob.find
 					.byId(ihsPublishingJobId);
+
+      //Logger.info("... found. ihsPublishingJob.size()=" +Integer.toString(ihsPublishingJob.size())+ ").");
 
 			String link = "";
 
@@ -79,11 +83,6 @@ public class PublishingJobActor extends UntypedActor {
 						.fetch("ihsPublicationRange").where()
 						.ge("changeDate", ihsPublishingJob.startDate)
 						.le("changeDate", ihsPublishingJob.endDate).findList();
-
-        Logger.info("...ihsTitles.size() = "+Integer.toString(ihsTitles.size())+".");
-        //Logger.info("...ihsTitles.get(0).alphaTitle = "+ihsTitles.get(0).alphaTitle+".");
-        //Logger.info("...ihsTitles[0].title = "+ihsTitles[0].title+".");
-
 			} else if (ihsPublishingJob.startDate != null) {
   			Logger.info("PublishingJobActor.onReceive: enter if startDate NOT null block");
 
@@ -105,14 +104,19 @@ public class PublishingJobActor extends UntypedActor {
 						.fetch("ihsPublicationRange").findList();
 			}
 
-      Logger.info("PublishingJobActor.onReceive: ihsTitles is the parameter to "+
-        //"buildMArk/buildPortico/buildIhsXls, or buildIhsCsv, and it is '"+ihsTitles+"'.");
+        Logger.info("...ihsTitles.size() = "+Integer.toString(ihsTitles.size())+".");
+        //Logger.info("...ihsTitles.get(0).alphaTitle = "+ihsTitles.get(0).alphaTitle+".");
+        //Logger.info("...ihsTitles[0].title = "+ihsTitles[0].title+".");
+
+      Logger.info("...ihsTitles is the parameter to "+
+        //"buildMarcText/buildPortico/buildIhsXls, or buildIhsCsv, and it is '"+ihsTitles+"'.");
         "build* functions [is too long to do on screen].");
 
 			try {
 				if (ihsPublishingJob.fileformat == 1) {
-					Logger.info("ihsPublishingJob.fileformat == " +ihsPublishingJob.fileformat+ ", thus will call buildMArk. Value of 'link' is never set in this block.");
-					buildMArk(ihsTitles); // AJE 2016-09-30 buildMArk was delivered as empty brackets by Travant
+					Logger.info("ihsPublishingJob.fileformat == " +ihsPublishingJob.fileformat+ ", thus will call buildMarcText. Value of 'link' is never set in this block.");
+					link = buildMarcText(ihsTitles); // AJE 2016-09-30 buildMarcText was delivered as empty brackets by Travant
+					Logger.info("after buildMarcText, link = " +link+ ".");
 				} else if (ihsPublishingJob.fileformat == 2) {
 					Logger.info("ihsPublishingJob.fileformat == " +ihsPublishingJob.fileformat+ ", thus will call buildPortico ; this Portico block is the only one where value of 'link' is set.");
           link = buildPortico(ihsTitles);
@@ -126,6 +130,7 @@ public class PublishingJobActor extends UntypedActor {
 					Logger.info("ihsPublishingJob.fileformat == " +ihsPublishingJob.fileformat+ ", thus will call buildIhsCsv. Value of 'link' is never set in this block.");
 					// buildIhsCsv(ihsTitles); // AJE 2016-09-30 buildIhsCsv was delivered as empty brackets by Travant
 					link = buildIhsCsv(ihsTitles); // AJE 2016-09-30 buildIhsCsv was delivered as empty brackets by Travant
+					Logger.info("after buildIhsCsv, link = " +link+ ".");
 				}
 
 				SingestionJobStatus singestionJobStatus = (SingestionJobStatus) SingestionJobStatus.find
@@ -168,15 +173,32 @@ Logger.info("after AJE resets link, link = " +link+ ".");
 */
 
 
-Logger.info("PublishingJobActor.java, onReceive, BEFORE replace has ihsPublishingJob.link = " +ihsPublishingJob.link);
+Logger.info("PublishingJobActor.java, onReceive, BEFORE replace has ihsPublishingJob.link = " +ihsPublishingJob.link+ " ; but plain link = " +link+ ".");
 Logger.info("... using AJE simplified link.replace next ; buildPortico DOES NOT ALWAYS RETURN A VALID LINK");
 link = link.replace('\\','/');
 ihsPublishingJob.setLink("<a href=" + link + ">Download</a>");
-Logger.info("PublishingJobActor.java, onReceive, AFTER replace has ihsPublishingJob.link = " +ihsPublishingJob.link);
+Logger.info("...AFTER replace, ihsPublishingJob.publishingJobId="+Integer.toString(ihsPublishingJob.publishingJobId)+", has ihsPublishingJob.link = " +ihsPublishingJob.link);
 
 //Logger.info("PublishingJobActor.java: onReceive: AJE: (1) ihsPublishingJob.update() is not valid? created dummy in IhsPublishingJob.java");
-ihsPublishingJob.update(); // Travant original ; appeared to cause error "javax.persistence.OptimisticLockException: Data has changed"
+// THIS WHOLE TRY BLOCK IS ANDY TEST -- ONLY ihsPublishingJob.update(); IS TRAVANT
+/*
+try{
+  Logger.info(" ... try ... if (ihsPublishingJob.fileformat ["+Integer.toString(ihsPublishingJob.fileformat)+"] != 1) THEN wil call ihsPublishingJob.update().");
+  if (ihsPublishingJob.fileformat != 1){
+    Logger.info(" ... try ... ihsPublishingJob.update() next.");
+*/
+ihsPublishingJob.update(); // Travant original ; appeared to cause error "javax.persistence.OptimisticLockException:Data has changed"
+/*
+  } else { Logger.info(" ... else ... no call to ihsPublishingJob.update().");
+ }
+} catch (Exception e) {
+Logger.info("PublishingJobActor.java: onReceive: ihsPublishingJob.update() caused Exception: ", e);
+}
+*/
+
 // AJE 2016-11-21 added fake "public void update()" method body in IhsPublishingJob.java ; rescinded 2016-12-06, I think it is using update() of the superclass?
+
+// AJE 2016-12-09 for calls to buildIhsCsv, IhsPublishingJob.update() works; not
 
 //Logger.info("... NEW GET in routes for /public/reports ; new value in application.conf for application.PUBLISHING.process.data.Dir.  Yes, publishing is supposedly a different thing from reporting, and yes, there is an application.REPORTING.process.data.Dir");
 //Logger.info("AJE 2016-09-30 why no 'href' in link: " +link+ " ?  It is present in database.ihsreportingjob.link field.");
@@ -201,35 +223,152 @@ ihsPublishingJob.update(); // Travant original ; appeared to cause error "javax.
 
 	} // end onReceive
 
-	void buildMArk(List<IhsTitle> ihsTitles) {// AJE 2016-09-30 read the Logger: there was nothing here before today
-    Logger.info("buildMArk was delivered as empty brackets by Travant: all it does it print this message"); // AJE 2016-09-30
 
 
-    String thisTitle = ihsTitles.get(0).title;
-    Logger.info("buildMArk has thisTitle = " +thisTitle);
+	String buildMarcText(List<IhsTitle> ihsTitles) { // Travant titled this 'buildMArk'
+	  // AJE 2016-09-30 read the Logger: there was nothing here before today
+    //Logger.info("buildMarcText was delivered as empty brackets by Travant: all it does it print this message"); // AJE 2016-09-30
+    Logger.info("buildMarcText was delivered as empty brackets by Travant: all content now by CRL 2016-12-07."); // AJE 2016-12-02
 
-
-
-
-
-
-	}
-
-	String buildPortico(List<IhsTitle> ihsTitles) throws IOException {
-
-    Logger.info("PublishingJobActor.java: enter buildPortico: May cause 'java.lang.OutOfMemoryError: Java heap space.'"); // AJ 2016-09-30
-    Logger.info("PublishingJobActor.java: enter buildPortico: did not crash when only a 5 day range chosen, but did for 30"); // AJ 2016-09-30
-
-
-		String dataDir = Play.application().configuration().getString("application.publishing.process.data.Dir");
-    Logger.info("buildPortico has dataDir = " +dataDir);
-
-		String fileName = rand.nextInt(10000) + "-" + "portico.xlsx";
-    Logger.info("buildPortico has fileName = " +fileName);
-
+		// String dataDir = Play.application().configuration().getString("application.publishing.process.data.Dir"); // Travant original
+    String dataDir = Play.application().configuration().getString("application.exporting.process.data.Dir"); // AJE 2016-12-07
+		String fileName = rand.nextInt(10000) + "_IHSexport.mrk";
 		// String destFileString = dataDir + File.separator + fileName; // Travant original
 		String destFileString = dataDir + System.getProperty("file.separator") + fileName; // AJE replaced 2016-11-02
-    Logger.info("buildPortico has NEW destFileString = " +destFileString);
+		  destFileString = destFileString.replace('\\','/');
+    Logger.info("buildMarcText has dataDir = " +dataDir+ " ; fileName = " +fileName+ " ; destFileString = " +destFileString);
+
+		int titleIndex = 0;
+    //Logger.info("buildMarcText: next is for IhsTitle; ihsTitles.size()=" +ihsTitles.size());
+		for (IhsTitle ihsTitle : ihsTitles) {
+
+      //Logger.info("buildMarcText: inside for (IhsTitle ihsTitle : ihsTitles); ihsTitles.size() = " +ihsTitles.size()+ "; titleIndex = " +titleIndex);
+
+      Integer titleID = ihsTitle.titleID; // int(11) NOT NULL AUTO_INCREMENT,
+      //Integer titleTypeID = ihsTitle.titleTypeID; // int(11) NOT NULL // NOT IN THE DATA
+      Integer titleTypeID = -1;
+      String title = ihsTitle.title != null ? ihsTitle.title : ""; // varchar(512) NOT NULL,
+      String alphaTitle = ihsTitle.alphaTitle != null ? ihsTitle.alphaTitle : ""; // varchar(512) DEFAULT NULL,
+      String printISSN = ihsTitle.printISSN != null ? Helper.formatIssn(ihsTitle.printISSN) : ""; // varchar(32) DEFAULT NULL,
+      String eISSN = ihsTitle.eISSN != null ? Helper.formatIssn(ihsTitle.eISSN) : ""; // varchar(32) DEFAULT NULL,
+      String oclcNumber = ihsTitle.oclcNumber != null ? ihsTitle.oclcNumber : ""; // varchar(32) DEFAULT NULL,
+      String lccn = ihsTitle.lccn != null ? ihsTitle.lccn : ""; // varchar(32) DEFAULT NULL,
+      //Integer publisherID = ihsTitle.publisherID; // int(11) NOT NULL // NOT IN THE DATA
+      Integer publisherID = -1;
+      String description = ihsTitle.description != null ? ihsTitle.description : ""; // varchar(512) DEFAULT NULL,
+      //Integer titleStatusID = ihsTitle.titleStatusID; // int(11) NOT NULL // NOT IN THE DATA
+      Integer titleStatusID = -1;
+      String changeDate = ihsTitle.changeDate != null ? ihsTitle.changeDate.toString() : ""; // date NOT NULL,
+      //Integer userID = ihsTitle.userId; // int(11) NOT NULL // NOT IN THE DATA
+      Integer userID = -1;
+      //Integer titleVersion = ihsTitle.titleVersion; // int(11) DEFAULT '0' // NOT IN THE DATA
+      Integer titleVersion = -1;
+      //Integer imagePageRatio = ihsTitle.imagePageRatio != null ? ihsTitle.imagePageRatio : -1; //int(11) DEFAULT '0' // NOT IN THE DATA
+      Integer imagePageRatio = 0; // int(11) DEFAULT NULL,
+      String language = ihsTitle.language != null ? ihsTitle.language : ""; // varchar(32) NOT NULL,
+      String country = ihsTitle.country != null ? ihsTitle.country : ""; // varchar(32) NOT NULL,
+      //Integer volumeLevelFlag = ihsTitle.volumeLevelFlag; // char(1) DEFAULT '0' // NOT IN THE DATA
+      Integer volumeLevelFlag = -1;
+
+      String titleMRKcontent = "=001  IHS-" +Integer.toString(titleID) + ":"+ Integer.toString(titleTypeID) + "\n";
+        titleMRKcontent += "=010  \\\\$a" + lccn + "\n";
+        titleMRKcontent += "=022  \\\\$a" + printISSN + "\n";
+        titleMRKcontent += "=022  \\\\$a" + eISSN + "\n";
+        titleMRKcontent += "=035  \\\\$a" + oclcNumber + "\n";
+        titleMRKcontent += "=245  00$a" +title + "\n";
+        titleMRKcontent += "=246  00$a"+ alphaTitle + "\n";
+        titleMRKcontent += "=264  \1$b"+ Integer.toString(publisherID) + "\n";
+        titleMRKcontent += "=500  \\\\$adescription: " + description + "\n";
+        titleMRKcontent += "=500  \\\\$atitleID: " + Integer.toString(titleID) + "\n";
+        titleMRKcontent += "=500  \\\\$atitleTypeID: " + Integer.toString(titleTypeID) + "\n";
+        titleMRKcontent += "=500  \\\\$atitleStatusID: " + Integer.toString(titleStatusID) + "\n";
+        titleMRKcontent += "=500  \\\\$achangeDate: " +changeDate.substring(0,10) + "\n";
+        titleMRKcontent += "=500  \\\\$auserID: " +Integer.toString(userID) + "\n";
+        titleMRKcontent += "=500  \\\\$atitleVersion: " +Integer.toString(titleVersion) + "\n";
+        titleMRKcontent += "=500  \\\\$aIssue-level data in system? : ";
+        if(volumeLevelFlag == -1) {
+          titleMRKcontent += Integer.toString(volumeLevelFlag)+" = [no information]\n";
+        } else if(volumeLevelFlag == 0) {
+          titleMRKcontent += Integer.toString(volumeLevelFlag)+" = yes\n";
+        } else if(volumeLevelFlag == 1) {
+          titleMRKcontent += Integer.toString(volumeLevelFlag)+" = no\n";
+        }
+        titleMRKcontent += "=500  \\\\$aimagePageRatio: " +Integer.toString(imagePageRatio) + "\n" ;
+        titleMRKcontent += "=522  \\\\$aFrom "+ country + "\n";
+        titleMRKcontent += "=546  \\\\$aIn "+ language + "\n";
+
+			StringBuilder builderHolding = new StringBuilder();
+			boolean startVolume = true;
+			boolean startIssue = true;
+
+			for(IhsVolume ihsVolume: ihsTitle.ihsVolume){
+        int volumeIndex = 0;
+
+        if(startVolume && startIssue) {
+          //Logger.info("buildMarcText: inside for (IhsVolume ihsVolume: ihsTitle.ihsVolume); ihsTitle.ihsVolume.size()=" +ihsTitle.ihsVolume.size()+ "; volumeIndex = " +volumeIndex);
+        }
+
+				if(!startVolume) {
+				  builderHolding.append(",");
+				}
+				startVolume = false;
+				builderHolding.append("v.").append(ihsVolume.volumeNumber).append("(");
+
+        int issueIndex = 0;
+				for(IhsIssue ihsissue: ihsVolume.ihsissues){
+
+          if(startVolume && startIssue) {
+            //Logger.info("buildMarcText: inside for (IhsIssue ihsissue: ihsVolume.ihsissues); ihsVolume.ihsissues.size()=" +ihsVolume.ihsissues.size()+ "; issueIndex = " +issueIndex);
+          }
+
+					if(!startIssue) {
+					  builderHolding.append(",");
+					}
+					startIssue=false;
+					builderHolding.append(ihsissue.issueNumber);
+
+					issueIndex++;
+				} // end for IhsIssue ihsissue
+
+				builderHolding.append(")");
+				startIssue = true;
+				volumeIndex++;
+			} // end for IhsVolume ihsVolume
+
+        titleMRKcontent += "=945  \\\\$a"+ builderHolding + "\n";
+      //Logger.info("titleMRKcontent now contains builderHolding: "+titleMRKcontent);
+
+      try{
+    		FileOutputStream fos = new FileOutputStream(destFileString, true); // 'true' for APPEND to file
+        byte[] bytesArray = titleMRKcontent.toString().getBytes();
+        fos.write(bytesArray);
+        bytesArray = "\n".getBytes();
+        fos.write(bytesArray);
+    		fos.close();
+        fos.flush();
+        Logger.info("buildMarcText: titleMRKcontent + newline written successfully at " +destFileString);
+      } catch (IOException e) { // TODO Auto-generated
+  		  Logger.info("buildMarcText error with writing titleMRKcontent: \n" +e);
+      }
+			titleIndex++;
+		} // end for ihsTitles
+
+		return destFileString;
+	} // end buildMarcText
+
+
+
+	String buildPortico(List<IhsTitle> ihsTitles) throws IOException {
+    Logger.info("PublishingJobActor.java: enter buildPortico: May cause 'java.lang.OutOfMemoryError: Java heap space.'"); // AJ 2016-09-30
+    Logger.info("... buildPortico did not crash when only a 5 day range chosen, but did for 30"); // AJE 2016-09-30
+
+		// String dataDir = Play.application().configuration().getString("application.publishing.process.data.Dir"); // Travant original
+    String dataDir = Play.application().configuration().getString("application.exporting.process.data.Dir"); // AJE 2016-12-07
+		String fileName = rand.nextInt(10000) + "-" + "portico.xlsx";
+		// String destFileString = dataDir + File.separator + fileName; // Travant original
+		String destFileString = dataDir + System.getProperty("file.separator") + fileName; // AJE replaced 2016-11-02
+		  destFileString = destFileString.replace('\\','/');
+    Logger.info("buildPortico has dataDir = " +dataDir+ "; fileName = " +fileName+ " ; destFileString = " +destFileString);
 
 		Workbook workbook = null;
 
@@ -374,26 +513,27 @@ ihsPublishingJob.update(); // Travant original ; appeared to cause error "javax.
 
 	}// end buildPortico
 
+
+
 	void buildIhsXls(List<IhsTitle> ihsTitles) {
 	  // AJE 2016-09-30 read the Logger: there was nothing here before today
     Logger.info("buildIhsXls was delivered as empty brackets by Travant: all it does it print this message"); // AJE 2016-09-30
 	}
+
+
 
 	String buildIhsCsv(List<IhsTitle> ihsTitles) {
 	  // AJE 2016-09-30 read the Logger: there was nothing here before today
     //Logger.info("buildIhsCsv was delivered as empty brackets by Travant: all it does it print this message"); // AJE 2016-09-30
     Logger.info("buildIhsCsv was delivered as empty brackets by Travant: all content now by CRL 2016-12-02."); // AJE 2016-12-02
 
-		String dataDir = Play.application().configuration().getString("application.publishing.process.data.Dir");
-    Logger.info("buildIhsCsv has dataDir = " +dataDir);
-
+		// String dataDir = Play.application().configuration().getString("application.publishing.process.data.Dir"); // Travant original
+    String dataDir = Play.application().configuration().getString("application.exporting.process.data.Dir"); // AJE 2016-12-07
 		String fileName = rand.nextInt(10000) + "_IHSexport.csv";
-    Logger.info("buildIhsCsv has fileName = " +fileName);
-
 		// String destFileString = dataDir + File.separator + fileName; // Travant original
 		String destFileString = dataDir + System.getProperty("file.separator") + fileName; // AJE replaced 2016-11-02
-		destFileString = destFileString.replace('\\','/');
-    Logger.info("buildIhsCsv has NEW destFileString = " +destFileString);
+		  destFileString = destFileString.replace('\\','/');
+    Logger.info("buildIhsCsv has dataDir = " +dataDir+ " ;  fileName = " +fileName+ " ; destFileString = " +destFileString);
 
 		// Add header: csvHeader taken from SHOW CREATE TABLE `ihstitle`
     String csvHeader = "titleID|titleTypeID|title|alphaTitle|printISSN|eISSN|oclcNumber|lccn|publisherID|description|";
@@ -407,17 +547,16 @@ ihsPublishingJob.update(); // Travant original ; appeared to cause error "javax.
         fos.write(bytesArray);
     		fos.close();
         fos.flush();
-        Logger.info("buildIhsCsv: csvHeader written successfully at " +destFileString);
+        //Logger.info("buildIhsCsv: csvHeader written successfully at " +destFileString);
       } catch (IOException e) { // TODO Auto-generated
   		  Logger.info("buildIhsCsv error with writing csvHeader: \n" +e);
       }
-
 
 		int titleIndex = 0;
     //Logger.info("buildIhsCsv: next is for IhsTitle; ihsTitles.size()=" +ihsTitles.size());
 		for (IhsTitle ihsTitle : ihsTitles) {
 
-      Logger.info("buildIhsCsv: inside for (IhsTitle ihsTitle : ihsTitles); ihsTitles.size() = " +ihsTitles.size()+ "; titleIndex = " +titleIndex);
+      //Logger.info("buildIhsCsv: inside for (IhsTitle ihsTitle : ihsTitles); ihsTitles.size() = " +ihsTitles.size()+ "; titleIndex = " +titleIndex);
 
       Integer titleID = ihsTitle.titleID; // int(11) NOT NULL AUTO_INCREMENT,
       //Integer titleTypeID = ihsTitle.titleTypeID; // int(11) NOT NULL // NOT IN THE DATA
@@ -444,8 +583,7 @@ ihsPublishingJob.update(); // Travant original ; appeared to cause error "javax.
       String country = ihsTitle.country != null ? ihsTitle.country : ""; // varchar(32) NOT NULL,
       //Integer volumeLevelFlag = ihsTitle.volumeLevelFlag; // char(1) DEFAULT '0' // NOT IN THE DATA
       Integer volumeLevelFlag = -1;
-      // now some fields not in the database
-      String holdings = ""; // from builderHolding, not in database
+
       String titleCSVcontent = Integer.toString(titleID) + "|" + Integer.toString(titleTypeID) + "|";
         titleCSVcontent += title + "|" + alphaTitle + "|" + printISSN + "|" + eISSN + "|" + oclcNumber + "|" + lccn + "|" ;
         titleCSVcontent += Integer.toString(publisherID) + "|" + description + "|" + Integer.toString(titleStatusID) + "|";
@@ -463,24 +601,27 @@ ihsPublishingJob.update(); // Travant original ; appeared to cause error "javax.
         int volumeIndex = 0;
 
         if(startVolume && startIssue) {
-          Logger.info("buildIhsCsv: inside for (IhsVolume ihsVolume: ihsTitle.ihsVolume); ihsTitle.ihsVolume.size()=" +ihsTitle.ihsVolume.size()+ "; volumeIndex = " +volumeIndex);
+          Logger.info("titleMRKcontent: inside for (IhsVolume ihsVolume: ihsTitle.ihsVolume); ihsTitle.ihsVolume.size()=" +ihsTitle.ihsVolume.size()+ "; volumeIndex = " +volumeIndex);
         }
 
-				if(!startVolume) builderHolding.append(",");
-				startVolume=false;
-
+				if(!startVolume) {
+				  builderHolding.append(",");
+				}
+				startVolume = false;
 				builderHolding.append("v.").append(ihsVolume.volumeNumber).append("(");
 
         int issueIndex = 0;
 				for(IhsIssue ihsissue: ihsVolume.ihsissues){
 
           if(startVolume && startIssue) {
-            Logger.info("buildIhsCsv: inside for (IhsIssue ihsissue: ihsVolume.ihsissues); ihsVolume.ihsissues.size()=" +ihsVolume.ihsissues.size()+ "; issueIndex = " +issueIndex);
+            Logger.info("titleMRKcontent: inside for (IhsIssue ihsissue: ihsVolume.ihsissues); ihsVolume.ihsissues.size()=" +ihsVolume.ihsissues.size()+ "; issueIndex = " +issueIndex);
           }
-
-					if(!startIssue) builderHolding.append(",");
-					builderHolding.append(ihsissue.issueNumber);
+					if(!startIssue) {
+					  builderHolding.append(",");
+					}
 					startIssue=false;
+					builderHolding.append(ihsissue.issueNumber);
+
 					issueIndex++;
 				} // end for IhsIssue ihsissue
 
@@ -490,52 +631,24 @@ ihsPublishingJob.update(); // Travant original ; appeared to cause error "javax.
 
 			} // end for IhsVolume ihsVolume
 
+      titleCSVcontent += builderHolding;
+      //Logger.info("titleCSVcontent now contains builderHolding: "+titleCSVcontent);
       try{
-    		FileOutputStream fos = new FileOutputStream(destFileString, true); // 'true' for APPEND to file
+        FileOutputStream fos = new FileOutputStream(destFileString, true); // 'true' for APPEND to file
         byte[] bytesArray = titleCSVcontent.toString().getBytes();
         fos.write(bytesArray);
-        /* no newline here
-        bytesArray = "\n".getBytes();
-        fos.write(bytesArray); */
-    		fos.close();
-        fos.flush();
-        Logger.info("buildIhsCsv: titleCSVcontent written successfully at " +destFileString);
-      } catch (IOException e) { // TODO Auto-generated
-  		  Logger.info("buildIhsCsv error with writing titleCSVcontent: \n" +e);
-      }
-      try{
-    		FileOutputStream fos = new FileOutputStream(destFileString, true); // 'true' for APPEND to file
-        Logger.info("before writing to file, builderHolding = "+builderHolding);
-        byte[] bytesArray = builderHolding.toString().getBytes();
-        fos.write(bytesArray);
         bytesArray = "\n".getBytes();
         fos.write(bytesArray);
-    		fos.close();
+        fos.close();
         fos.flush();
-        Logger.info("buildIhsCsv: builderHolding + newline written successfully at " +destFileString);
+        //Logger.info("buildIhsCsv: titleCSVcontent + newline written successfully at " +destFileString);
       } catch (IOException e) { // TODO Auto-generated
-  		  Logger.info("buildIhsCsv error with writing builderHolding: \n" +e);
+      Logger.info("buildIhsCsv error with writing titleCSVcontent: \n" +e);
       }
 			titleIndex++;
 		} // end for ihsTitles
 
-
-
-		/*
-		 * File file = new File(destFileString);
-		 *
-		 * try { BufferedWriter output = new BufferedWriter(new
-		 * FileWriter(file));
-		 *
-		 * for (IhsTitle ihsTitle : ihsTitles) { output.write(ihsTitle.title); }
-		 *
-		 * output.close(); } catch (IOException e) { // TODO Auto-generated
-		 * catch block throw e; }
-		 */
-
 		return destFileString;
 
-
-
-	}
+	} // end buildIhsCsv
 }
