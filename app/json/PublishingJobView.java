@@ -1,5 +1,8 @@
 package json;
 
+import play.Logger; /* AJE 2016-12-07 */
+
+
 public class PublishingJobView {
 	public String dateInitiated = "";
 	public String jobName = "Test";
@@ -24,5 +27,6 @@ public class PublishingJobView {
 		this.dateRange = dateRange;
 		this.jobStatus = jobStatus;
 		this.link = link;
+		Logger.info("app.json.PublishingJobView.java > PublishingJobView has link = " +link);
 	}
 }
