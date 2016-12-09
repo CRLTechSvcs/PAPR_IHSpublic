@@ -22,6 +22,8 @@ mkdir ./data/httpdata
 mkdir ./data/ftpdata
 mkdir ./data/ftpprocess
 mkdir ./data/pubprocess
+-- NEW 2016-12-07 for CSV and MRK 'Export Data':
+mkdir ./public/exports
 
 -- make activator executable
 chmod 755 activator
