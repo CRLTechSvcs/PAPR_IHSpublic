@@ -180,25 +180,8 @@ ihsPublishingJob.setLink("<a href=" + link + ">Download</a>");
 Logger.info("...AFTER replace, ihsPublishingJob.publishingJobId="+Integer.toString(ihsPublishingJob.publishingJobId)+", has ihsPublishingJob.link = " +ihsPublishingJob.link);
 
 //Logger.info("PublishingJobActor.java: onReceive: AJE: (1) ihsPublishingJob.update() is not valid? created dummy in IhsPublishingJob.java");
-// THIS WHOLE TRY BLOCK IS ANDY TEST -- ONLY ihsPublishingJob.update(); IS TRAVANT
-/*
-try{
-  Logger.info(" ... try ... if (ihsPublishingJob.fileformat ["+Integer.toString(ihsPublishingJob.fileformat)+"] != 1) THEN wil call ihsPublishingJob.update().");
-  if (ihsPublishingJob.fileformat != 1){
-    Logger.info(" ... try ... ihsPublishingJob.update() next.");
-*/
 ihsPublishingJob.update(); // Travant original ; appeared to cause error "javax.persistence.OptimisticLockException:Data has changed"
-/*
-  } else { Logger.info(" ... else ... no call to ihsPublishingJob.update().");
- }
-} catch (Exception e) {
-Logger.info("PublishingJobActor.java: onReceive: ihsPublishingJob.update() caused Exception: ", e);
-}
-*/
-
 // AJE 2016-11-21 added fake "public void update()" method body in IhsPublishingJob.java ; rescinded 2016-12-06, I think it is using update() of the superclass?
-
-// AJE 2016-12-09 for calls to buildIhsCsv, IhsPublishingJob.update() works; not
 
 //Logger.info("... NEW GET in routes for /public/reports ; new value in application.conf for application.PUBLISHING.process.data.Dir.  Yes, publishing is supposedly a different thing from reporting, and yes, there is an application.REPORTING.process.data.Dir");
 //Logger.info("AJE 2016-09-30 why no 'href' in link: " +link+ " ?  It is present in database.ihsreportingjob.link field.");
