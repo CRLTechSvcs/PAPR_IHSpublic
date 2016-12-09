@@ -154,8 +154,8 @@ public class IngestionJobActor extends UntypedActor {
 			}
 		} catch (Exception e) {
 			running = false;
-			Logger.error("IhsIngestionJob Exception",e); // AJE 2016-08-25 this line was commented out
-			Logger.info("IhsIngestionJob Exception",e); // AJE 2016-08-25 this line is new
+			Logger.error("app/actors/IngestionJobActor.java has IhsIngestionJob Exception: ",e); // AJE 2016-08-25 this line was commented out
+			Logger.error("app/actors/IngestionJobActor.java has IhsIngestionJob Exception: ",e); // AJE 2016-08-25 this line is new
 
 			SingestionJobStatus singestionJobStatus = SingestionJobStatus.find.where().eq("name", SingestionJobStatus.InternalError).findUnique();
 
@@ -164,7 +164,7 @@ public class IngestionJobActor extends UntypedActor {
 			update.setParameter("ingestionJobID", ihsIngestionJob.ingestionjobID);
 			Ebean.execute(update);
 
-		}finally{
+		} finally {
 
 		}
 		// getContext().stop(getSelf());
