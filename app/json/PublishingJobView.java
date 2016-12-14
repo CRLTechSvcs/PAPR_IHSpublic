@@ -27,6 +27,6 @@ public class PublishingJobView {
 		this.dateRange = dateRange;
 		this.jobStatus = jobStatus;
 		this.link = link;
-		Logger.info("app.json.PublishingJobView.java > PublishingJobView has link = " +link);
+		//Logger.info("app.json.PublishingJobView.java > PublishingJobView has link = " +link);
 	}
 }
