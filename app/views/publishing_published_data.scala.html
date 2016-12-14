@@ -17,6 +17,14 @@
 		    dateRange: '', jobStatus:'',  link:''}
     ]};
 
+// AJE 2016-12-13 debug
+console.warn("0) publishing_published_data.scala.html: data.items.length = '", data.items.length ,"'.");
+for(var i = 0; i < data.items[0].length; i++){
+  console.warn("1) publishing_published_data.scala.html: data.items[", i, "].dateRange = '", data.items[i].dateRange ,"'.");
+}
+
+// end AJE 2016-12-13
+
 		var store = new ItemFileReadStore({data: data});
 
 		var layout = [
@@ -48,7 +56,7 @@
 
 	  function populatepublishingJobSummary(response, ioArgs){
 
-			console.info('publishing_published_data.scala.html populatepublishingJobSummary(response='+response+', ioArgs='+ioArgs+')');
+			console.info("publishing_published_data.scala.html populatepublishingJobSummary(response=", response, " ; ioArgs=", ioArgs, ").");
 
   		var dataExceptionStore = new dojo.data.ItemFileReadStore({
     			 	data: {
