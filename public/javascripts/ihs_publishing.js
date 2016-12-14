@@ -13,10 +13,13 @@ require(["dijit/TitlePane","dojo/dom","dojo/domReady!"], function(dom) {
             alert("ihs_publishing.js getPublishingView Error: " + e.message);
         }
     });
-	$(function() { // AJE 2016-12-13 this is jQuery, not Dojo
-		 $('#startDate').datepicker();
-		 $('#endDate').datepicker();
-	});
+  /* $(function() {
+    // AJE  2016-12-13 this is jQuery, not Dojo
+    //      2016-12-14 replaced jQuery datepicker with Dojo's dijit/form/DateTextBox so hide this entire function
+    //  see app/views/publishing_publish_new_data.scala.html for widget location
+  		 $('#startDate').datepicker();
+  		 $('#endDate').datepicker();
+  	}); */
 });
 
 function submitPub(){
