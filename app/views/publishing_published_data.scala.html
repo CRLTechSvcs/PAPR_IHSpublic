@@ -12,21 +12,27 @@
 
 	require(["dojox/grid/DataGrid", "dojo/data/ItemFileReadStore", "dojo/dom", "dojo/domReady!"], function(DataGrid, ItemFileReadStore, dom) {
 
+/* Travant original 2016-12-14 : move 'Date Range' column after 'Job Name'
 		var data = { items: [
 		  { dateInitiated: '', jobName: '', formatType: '',  organization: '', user: '',
 		    dateRange: '', jobStatus:'',  link:''}
     ]};
+*/
+		var data = { items: [
+		  { dateInitiated: '', jobName: '', dateRange: '', formatType: '',  organization: '',
+		    user: '', jobStatus:'',  link:''}
+    ]};
 
-// AJE 2016-12-13 debug
+/* AJE 2016-12-13 debug
 console.warn("0) publishing_published_data.scala.html: data.items.length = '", data.items.length ,"'.");
 for(var i = 0; i < data.items[0].length; i++){
   console.warn("1) publishing_published_data.scala.html: data.items[", i, "].dateRange = '", data.items[i].dateRange ,"'.");
-}
+} */
 
 // end AJE 2016-12-13
 
 		var store = new ItemFileReadStore({data: data});
-
+/* Travant original 2016-12-14 : move 'Date Range' column after 'Job Name'
 		var layout = [
       { 'name': 'Date Initiated', 'field': 'dateInitiated', 'width': '120px'},
       { 'name': 'Job Name', 'field': 'jobName', 'width': '150px'},
@@ -36,7 +42,18 @@ for(var i = 0; i < data.items[0].length; i++){
       { 'name': 'Date Range', 'field': 'dateRange', 'width': '70px'},
       { 'name': 'Job Status', 'field': 'jobStatus', 'width': '70px'},
       { 'name': 'Link', 'field': 'link', 'width': '70px'}
+    ]; */
+		var layout = [
+      { 'name': 'Date Initiated', 'field': 'dateInitiated', 'width': '120px'},
+      { 'name': 'Job Name', 'field': 'jobName', 'width': '150px'},
+      { 'name': 'Date Range', 'field': 'dateRange', 'width': '70px'},
+      { 'name': 'File format', 'field': 'formatType', 'width': '80px'},
+      { 'name': 'Organization', 'field': 'organization', 'width': '100px'},
+      { 'name': 'User', 'field': 'user', 'width': '60px'},
+      { 'name': 'Job Status', 'field': 'jobStatus', 'width': '70px'},
+      { 'name': 'Link', 'field': 'link', 'width': '70px'}
     ];
+
 
 		var grid = new DataGrid({
 			id: 'publishing-job-summary',
