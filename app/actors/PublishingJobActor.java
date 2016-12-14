@@ -619,31 +619,16 @@ ihsPublishingJob.update(); // Travant original ; appeared to cause error "javax.
       titleCSVcontent += builderHolding;
       //Logger.info("titleCSVcontent now contains builderHolding: "+titleCSVcontent);
       try{
-        /*
-        // AJE 2016-12-09 : this version does not produce UTF-8
-        FileOutputStream fos = new FileOutputStream(destFileString, true); // 'true' for APPEND to file
-        byte[] bytesArray = titleCSVcontent.toString().getBytes();
-        fos.write(bytesArray);
-        bytesArray = "\n".getBytes();
-        fos.write(bytesArray);
-        fos.close();
-        fos.flush();
-        //Logger.info("buildIhsCsv: titleCSVcontent + newline written successfully at " +destFileString);
-        */
+        // AJE 2016-12-09 : for a version that does not produce UTF-8, see: PublishingJobActor_UTF8_incomplete.java
         // AJE 2016-12-09 : this version should produce UTF-8: http://stackoverflow.com/questions/1001540/how-to-write-a-utf-8-file-with-java?rq=1
         java.io.Writer bwfos = new java.io.BufferedWriter(new java.io.OutputStreamWriter(
           new FileOutputStream(destFileString, true), // 'true' for APPEND to file
           "UTF-8")
         );
-        //or
-        //Writer bwfos = new java.io.PrintWriter(new java.io.File(destFileString), "UTF-8");
-
-        //byte[] bytesArray = titleCSVcontent.toString().getBytes();
-        //fos.write(bytesArray);
         bwfos.write(titleCSVcontent);
         bwfos.write("\n");
-       // bwfos.close();
         bwfos.flush();
+        bwfos.close(); // AJE 2016-12-14
 Logger.info("buildIhsCsv: titleCSVcontent + newline UTF-8 written successfully with bwfos at " +destFileString);
       } catch (IOException e) { // TODO Auto-generated
       Logger.info("buildIhsCsv error with writing titleCSVcontent: \n" +e);
