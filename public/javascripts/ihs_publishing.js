@@ -13,8 +13,7 @@ require(["dijit/TitlePane","dojo/dom","dojo/domReady!"], function(dom) {
             alert("ihs_publishing.js getPublishingView Error: " + e.message);
         }
     });
-
-	$(function() {
+	$(function() { // AJE 2016-12-13 this is jQuery, not Dojo
 		 $('#startDate').datepicker();
 		 $('#endDate').datepicker();
 	});
