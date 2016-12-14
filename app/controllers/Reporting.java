@@ -112,7 +112,8 @@ public class Reporting extends Controller {
 			String parameters = "";
 
 			if(IssuesHeld.equals(newReportView.report)){
-				parameters = "Member Id: " + ihsMember.name;
+				// parameters = "Member Id: " + ihsMember.name; // Travant original
+				parameters = "Member: <br/>" + ihsMember.name; // AJE 2016-12-14
 			}else{
 				parameters = "Title: " + ihsTitle.title + "<br> ISSN: " + ihsTitle.printISSN;
 
