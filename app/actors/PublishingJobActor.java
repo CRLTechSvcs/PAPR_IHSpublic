@@ -33,11 +33,11 @@ import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.apache.poi.ss.usermodel.Row;
 
-// AJE 2016-11-21
-import play.db.ebean.Model;
-import com.avaje.ebean.Ebean;
-import com.avaje.ebean.SqlRow;
-// AJE 2016-11-21
+import play.db.ebean.Model;// AJE 2016-11-21
+import com.avaje.ebean.Ebean;// AJE 2016-11-21
+import com.avaje.ebean.SqlRow;// AJE 2016-11-21
+
+import java.io.Writer.*; // AJE 2016-12-09 for UTF-8 in file output
 
 
 public class PublishingJobActor extends UntypedActor {
@@ -545,6 +545,8 @@ ihsPublishingJob.update(); // Travant original ; appeared to cause error "javax.
       //Integer titleTypeID = ihsTitle.titleTypeID; // int(11) NOT NULL // NOT IN THE DATA
       Integer titleTypeID = -1;
       String title = ihsTitle.title != null ? ihsTitle.title : ""; // varchar(512) NOT NULL,
+      //Logger.info("....ihsTitles.title = " +ihsTitle.title+ " ; local var 'title' = " +title+ ".");
+
       String alphaTitle = ihsTitle.alphaTitle != null ? ihsTitle.alphaTitle : ""; // varchar(512) DEFAULT NULL,
       String printISSN = ihsTitle.printISSN != null ? Helper.formatIssn(ihsTitle.printISSN) : ""; // varchar(32) DEFAULT NULL,
       String eISSN = ihsTitle.eISSN != null ? Helper.formatIssn(ihsTitle.eISSN) : ""; // varchar(32) DEFAULT NULL,
@@ -617,6 +619,8 @@ ihsPublishingJob.update(); // Travant original ; appeared to cause error "javax.
       titleCSVcontent += builderHolding;
       //Logger.info("titleCSVcontent now contains builderHolding: "+titleCSVcontent);
       try{
+        /*
+        // AJE 2016-12-09 : this version does not produce UTF-8
         FileOutputStream fos = new FileOutputStream(destFileString, true); // 'true' for APPEND to file
         byte[] bytesArray = titleCSVcontent.toString().getBytes();
         fos.write(bytesArray);
@@ -625,6 +629,22 @@ ihsPublishingJob.update(); // Travant original ; appeared to cause error "javax.
         fos.close();
         fos.flush();
         //Logger.info("buildIhsCsv: titleCSVcontent + newline written successfully at " +destFileString);
+        */
+        // AJE 2016-12-09 : this version should produce UTF-8: http://stackoverflow.com/questions/1001540/how-to-write-a-utf-8-file-with-java?rq=1
+        java.io.Writer bwfos = new java.io.BufferedWriter(new java.io.OutputStreamWriter(
+          new FileOutputStream(destFileString, true), // 'true' for APPEND to file
+          "UTF-8")
+        );
+        //or
+        //Writer bwfos = new java.io.PrintWriter(new java.io.File(destFileString), "UTF-8");
+
+        //byte[] bytesArray = titleCSVcontent.toString().getBytes();
+        //fos.write(bytesArray);
+        bwfos.write(titleCSVcontent);
+        bwfos.write("\n");
+       // bwfos.close();
+        bwfos.flush();
+Logger.info("buildIhsCsv: titleCSVcontent + newline UTF-8 written successfully with bwfos at " +destFileString);
       } catch (IOException e) { // TODO Auto-generated
       Logger.info("buildIhsCsv error with writing titleCSVcontent: \n" +e);
       }
