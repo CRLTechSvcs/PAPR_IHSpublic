@@ -253,32 +253,32 @@ ihsPublishingJob.update(); // Travant original ; appeared to cause error "javax.
       //Integer volumeLevelFlag = ihsTitle.volumeLevelFlag; // char(1) DEFAULT '0' // NOT IN THE DATA
       Integer volumeLevelFlag = -1;
 
-      String titleMRKcontent = "=001  IHS-" +Integer.toString(titleID) + ":"+ Integer.toString(titleTypeID) + "\n";
-        titleMRKcontent += "=010  \\\\$a" + lccn + "\n";
-        titleMRKcontent += "=022  \\\\$a" + printISSN + "\n";
-        titleMRKcontent += "=022  \\\\$a" + eISSN + "\n";
-        titleMRKcontent += "=035  \\\\$a" + oclcNumber + "\n";
-        titleMRKcontent += "=245  00$a" +title + "\n";
-        titleMRKcontent += "=246  00$a"+ alphaTitle + "\n";
-        titleMRKcontent += "=264  \1$b"+ Integer.toString(publisherID) + "\n";
-        titleMRKcontent += "=500  \\\\$adescription: " + description + "\n";
-        titleMRKcontent += "=500  \\\\$atitleID: " + Integer.toString(titleID) + "\n";
-        titleMRKcontent += "=500  \\\\$atitleTypeID: " + Integer.toString(titleTypeID) + "\n";
-        titleMRKcontent += "=500  \\\\$atitleStatusID: " + Integer.toString(titleStatusID) + "\n";
-        titleMRKcontent += "=500  \\\\$achangeDate: " +changeDate.substring(0,10) + "\n";
-        titleMRKcontent += "=500  \\\\$auserID: " +Integer.toString(userID) + "\n";
-        titleMRKcontent += "=500  \\\\$atitleVersion: " +Integer.toString(titleVersion) + "\n";
+      String titleMRKcontent = "=001  IHS-" +Integer.toString(titleID) + ":"+ Integer.toString(titleTypeID) + "\r\n";
+        titleMRKcontent += "=010  \\\\$a" + lccn + "\r\n";
+        titleMRKcontent += "=022  \\\\$a" + printISSN + "\r\n";
+        titleMRKcontent += "=022  \\\\$a" + eISSN + "\r\n";
+        titleMRKcontent += "=035  \\\\$a" + oclcNumber + "\r\n";
+        titleMRKcontent += "=245  00$a" +title + "\r\n";
+        titleMRKcontent += "=246  00$a"+ alphaTitle + "\r\n";
+        titleMRKcontent += "=264  \1$b"+ Integer.toString(publisherID) + "\r\n";
+        titleMRKcontent += "=500  \\\\$adescription: " + description + "\r\n";
+        titleMRKcontent += "=500  \\\\$atitleID: " + Integer.toString(titleID) + "\r\n";
+        titleMRKcontent += "=500  \\\\$atitleTypeID: " + Integer.toString(titleTypeID) + "\r\n";
+        titleMRKcontent += "=500  \\\\$atitleStatusID: " + Integer.toString(titleStatusID) + "\r\n";
+        titleMRKcontent += "=500  \\\\$achangeDate: " +changeDate.substring(0,10) + "\r\n";
+        titleMRKcontent += "=500  \\\\$auserID: " +Integer.toString(userID) + "\r\n";
+        titleMRKcontent += "=500  \\\\$atitleVersion: " +Integer.toString(titleVersion) + "\r\n";
         titleMRKcontent += "=500  \\\\$aIssue-level data in system? : ";
         if(volumeLevelFlag == -1) {
-          titleMRKcontent += Integer.toString(volumeLevelFlag)+" = [no information]\n";
+          titleMRKcontent += Integer.toString(volumeLevelFlag)+" = [no information]\r\n";
         } else if(volumeLevelFlag == 0) {
-          titleMRKcontent += Integer.toString(volumeLevelFlag)+" = yes\n";
+          titleMRKcontent += Integer.toString(volumeLevelFlag)+" = yes\r\n";
         } else if(volumeLevelFlag == 1) {
-          titleMRKcontent += Integer.toString(volumeLevelFlag)+" = no\n";
+          titleMRKcontent += Integer.toString(volumeLevelFlag)+" = no\r\n";
         }
-        titleMRKcontent += "=500  \\\\$aimagePageRatio: " +Integer.toString(imagePageRatio) + "\n" ;
-        titleMRKcontent += "=522  \\\\$aFrom "+ country + "\n";
-        titleMRKcontent += "=546  \\\\$aIn "+ language + "\n";
+        titleMRKcontent += "=500  \\\\$aimagePageRatio: " +Integer.toString(imagePageRatio) + "\r\n" ;
+        titleMRKcontent += "=522  \\\\$aFrom "+ country + "\r\n";
+        titleMRKcontent += "=546  \\\\$aIn "+ language + "\r\n";
 
 			StringBuilder builderHolding = new StringBuilder();
 			boolean startVolume = true;
@@ -318,18 +318,19 @@ ihsPublishingJob.update(); // Travant original ; appeared to cause error "javax.
 				volumeIndex++;
 			} // end for IhsVolume ihsVolume
 
-        titleMRKcontent += "=945  \\\\$a"+ builderHolding + "\n";
+        titleMRKcontent += "=945  \\\\$a"+ builderHolding + "\r\n";
       //Logger.info("titleMRKcontent now contains builderHolding: "+titleMRKcontent);
 
       try{
-    		FileOutputStream fos = new FileOutputStream(destFileString, true); // 'true' for APPEND to file
-        byte[] bytesArray = titleMRKcontent.toString().getBytes();
-        fos.write(bytesArray);
-        bytesArray = "\n".getBytes();
-        fos.write(bytesArray);
-    		fos.close();
-        fos.flush();
-        //Logger.info("buildMarcText: titleMRKcontent + newline written successfully at " +destFileString);
+        // AJE 2016-12-09 : for a version that does not produce UTF-8, see: PublishingJobActor_UTF8_incomplete.java
+        // AJE 2016-12-09 : this version should produce UTF-8: http://stackoverflow.com/questions/1001540/how-to-write-a-utf-8-file-with-java?rq=1
+        java.io.Writer bwfos = new java.io.BufferedWriter(new java.io.OutputStreamWriter(
+          new FileOutputStream(destFileString, true), // 'true' for APPEND to file
+          "UTF-8")
+        );
+        bwfos.write(titleMRKcontent + "\r\n");
+        bwfos.flush();
+        bwfos.close(); // AJE 2016-12-14
       } catch (IOException e) { // TODO Auto-generated
   		  Logger.info("buildMarcText error with writing titleMRKcontent: \n" +e);
       }
