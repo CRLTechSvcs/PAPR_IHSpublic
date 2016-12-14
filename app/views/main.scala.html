@@ -13,40 +13,60 @@
 		<link rel="stylesheet" media="screen" href="@routes.Assets.at("javascripts/jquery-ui-1.11.3/jquery-ui.css")">
 
 		<link rel="shortcut icon" type="image/png" href="@routes.Assets.at("images/favicon.ico")">
+
+<script src="@routes.Assets.at("javascripts/jquery-1.11.1.min.js")" type="text/javascript"></script>
+<script src="@routes.Assets.at("javascripts/jquery-ui-1.11.3/jquery-ui.js")" type="text/javascript"></script>
+<script>
+  console.info("main.scala.html has jquery + jquery-ui loading first of all scripts");
+</script>
+
+
 		<script src="@routes.Assets.at("javascripts/ihs.js")" type="text/javascript"></script>
 		<script src="@routes.Assets.at("javascripts/d3.v3.min.js")" type="text/javascript"></script>
 		<link rel="stylesheet" type="text/css" media="screen" href="@routes.Assets.at("javascripts/dojo-release-1.9.0/dijit/themes/nihilo/nihilo.css")">
 		<link rel="stylesheet" type="text/css" media="screen" href="@routes.Assets.at("javascripts/dojo-release-1.9.0/dojox/grid/resources/nihiloGrid.css")">
 
-
-		<script>
-      dojoConfig = {
-		    parseOnLoad: true
-		    //async: true // AJE 2016-09-29 added this part, based online docs: rest of this script tag is Travant original
-      }
-    </script>
-
 		<!-- AJE 2016-09-27 fix Travant spelling error 'conifg' > 'config', which is how this directive is expressed in 45 other files
 	  <script src="@routes.Assets.at("javascripts/dojo-release-1.9.0/dojo/dojo.js")" data-dojo-conifg="async: true"></script>
 
-	  <!-- AJE 2016-09-29 fix from 27th: reverted to Travant's spelling mistake because it makes new dojo errors disappear!
-	  <script src="@routes.Assets.at("javascripts/dojo-release-1.9.0/dojo/dojo.js")" data-dojo-config="async: true"></script>
-    async false did not resolve problems on advanced editing page
-    <script src="@routes.Assets.at("javascripts/dojo-release-1.9.0/dojo/dojo.js")" data-dojo-config="async: false"></script>
-    with Travant's script tag, there are no errors loading pages except on advanced editing, where Travant used the wrong syntax for required dojo components.
-    Test if all is well now that that has been fixed: can we use 'config'?
-    No, we cannot: error reappears on search_home, which had no problems until this change:
+    [MORE IN IHS_SERVER/dojo_tag_ideas.js]
+    [MORE IN IHS_SERVER/main.scala.html]
+    -->
 
-[MORE IN IHS_SERVER/dojo_tag_ideas.js]
--->
+    <!--<script src="@routes.Assets.at("javascripts/dojo-release-1.9.0/dojo/dojo.js")" data-dojo-config="async: false"></script>-->
+    <!--
+      tried async true and false in the above line; dojoConfig must be set before including Dojo?
+    <script>
+      dojoConfig = {
+        parseOnLoad: true
+        //async: true // AJE 2016-09-29 added this part, based online docs: rest of this script tag is Travant original
+      }
+      console.info("CRL has new dojoConfig 2016-12-13 ; adding jQuery next in main.scala.html.");
+    </script>
+    -->
 
-	  <script src="@routes.Assets.at("javascripts/dojo-release-1.9.0/dojo/dojo.js")" data-dojo-conifg="async: true"></script>
+
+<script>
+    dojoConfig = {
+        isDebug: true,
+        parseOnLoad: false,
+        async: false
+    };
+    console.info("main.scala.html: dojoConfig complete; dojoConfig.isDebug = ", dojoConfig.isDebug, "; ; dojoConfig.parseOnLoad = ", dojoConfig.parseOnLoad, "; dojoConfig.async = ", dojoConfig.async);
+</script>
+<script src="@routes.Assets.at("javascripts/dojo-release-1.9.0/dojo/dojo.js")"></script>
+<script type="text/javascript">
+	require(["dijit/Dialog", "dijit/form/TextBox", "dijit/form/Button"]);
+  //require(["dijit/form/Button", "dojo/dom", "dojo/domReady!"]);
+
+require(["dojo/parser", "dojo/ready"], function(parser, ready){
+  ready(function(){
+    parser.parse();
+  });
+});
+</script>
 
 
-		<script type="text/javascript">
-			require(["dijit/Dialog", "dijit/form/TextBox", "dijit/form/Button"]);
-
-		</script>
 		@script
 	</head>
 	<body id="tab3" class="nihilo">
