@@ -52,21 +52,19 @@ console.info("dijit/form/DateTextBox will require next");
               <br/><br/>
               End Date: &nbsp;<input type="text" size="10" id="endDate" />
               <br/><br/>
--->
-
-              Start Date:
-                <input type="text" size="10" id="startDate"/>
-              <br/><br/>
-                End Date: &nbsp;
-                <input type="text" size="10" id="endDate"/>
-              <br/><br/>
-<!--               Dojo Date: &nbsp;
-                <input type="text" size="10" id="dojoDate"
+AJE 2016-12-14 consult with CJ, agree that dijit/form/DateTextBox is a better widget than the jQuery version ; if restoring jQuery, then in ihs_publishing.js also uncomment function with  $('#startDate').datepicker(); and  $('#startDate').datepicker() -->
+  Start Date: <input type="text" size="10" id="startDate"
                   data-dojo-type="dijit/form/DateTextBox"
-                  required = "false"
-                  promptMessage = "please test the dojoDate field - this is an experiment only"
+                  required="false"
+                  promptMessage="click arrow to choose start date from calendar"
                 />
-              <br/><br/>-->
+              <br/><br/>
+  End Date: &nbsp; <input type="text" size="10" id="endDate"
+                  data-dojo-type="dijit/form/DateTextBox"
+                  required="false"
+                  promptMessage="click arrow to choose end date from calendar"
+                />
+              <br/><br/>
 
               <div style="float:left">
               <input type="submit" value="Start Export Job" onclick="submitPub();"/>
