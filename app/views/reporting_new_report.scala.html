@@ -254,64 +254,61 @@
 				</select><br /><br />
 
 				<div id="IssuesHeld" style="display:none;">
-							Member with blank div:<div id="member" style="float:left;"> </div>
-							<br />
+					Member:<div id="member" style="float:left;"> </div>
+					<br /><br />
+				</div>
 
-							<br />
-						</div>
-						<div id="JournalFamily" style="display:none;">
-							Title:&nbsp;<input class="ingestion-form" type="text" id="title1" disabled/><br /><br />
-							<br />
-						</div>
-						<div id="BibliographicHistory" style="display:none;">
-							Title:&nbsp;<input class="ingestion-form" type="text" id="title2" disabled/><br /><br />
-							Version Order:&nbsp;
-							<div style="width:200px;float:right;"><input type="radio" name="orderby" />Newest First</div>
-							<div style="width:200px;float:right;"><input type="radio" name="orderby" checked />Oldest First</div>
-							<br /><br />
+				<div id="JournalFamily" style="display:none;">
+					Title:&nbsp;<input class="ingestion-form" type="text" id="title1" disabled/>
+					<br /><br /><br />
+				</div>
 
-						</div>
+				<div id="BibliographicHistory" style="display:none;">
+					Title:&nbsp;<input class="ingestion-form" type="text" id="title2" disabled/><br /><br />
+					Version Order:&nbsp;
+					<div style="width:200px;float:right;"><input type="radio" name="orderby" />Newest First</div>
+					<div style="width:200px;float:right;"><input type="radio" name="orderby" checked />Oldest First</div>
+					<br /><br />
+				</div>
 
-						<div style="float:left">
-								<br /><br />
-								<input type="submit" value="Generate Report" onclick="submitPub();"/>
+				<div style="float:left">
+						<input type="submit" value="Generate Report" onclick="submitPub();"/>
+				</div>
 
+				<div id="file-source" style="display:none;">
 
-						</div>
+				</div>
 
-						<div id="file-source" style="display:none;">
+        <br /><br />
 
-						</div>
-
+				<div id="search-panel" style="padding-left:16px;display:none;width:600px;">
+					<br /><br />
+					<hr />
+					<h2>Search Journals</h2><br />
+					<p id="search-criteria">
+						@Messages("search.journal.title"):&nbsp;&nbsp;
+						<input class="search" onkeyup="searchJournalByTitle(this);" type="text" id="titleid" />
 						<br /><br />
+						@Messages("search.journal.issn"): &nbsp;<input class="search" onkeyup="searchJournalByISSN(this);" type="text" id="issnid" />
+						<br /><br />
+						@Messages("search.journal.oclc"): <input class="search" onkeyup="searchJournalByOCLC(this);" type="text" id="oclcid" />
+						<br />
+					</p>
 
-						<div id="search-panel" style="padding-left:16px;display:none;width:600px;">
-							<br /><br />
-							<hr />
-							<h2>Search Journals</h2><br />
-							<p id="search-criteria">
-								@Messages("search.journal.title"): <input class="search" onkeyup="searchJournalByTitle(this);" type="text" id="titleid" /><br />
-								<br>
-								@Messages("search.journal.issn"): <input class="search" onkeyup="searchJournalByISSN(this);" type="text" id="issnid" /><br />
-								<br>
-								@Messages("search.journal.oclc"): <input class="search" onkeyup="searchJournalByOCLC(this);" type="text" id="oclcid" /><br />
-							</p>
+					<hr/>
+					<h2>@Messages("search.journal.results")</h2>
 
-							<hr/>
-							<h2>@Messages("search.journal.results")</h2>
-								<div id="results">
+        <div id="results">
+        </div>
 
-
-							</div>
-						</div>
+       </div>
 
 			</div>
-        </div>
-        <div id="content-right">
+     </div>
 
-        <div id="content-right">
-        	 <div id="inner-content-right">
-        	 </div>
-        </div>
+  <div id="content-right">
+  	 <div id="inner-content-right">
+  	 </div>
+  </div>
 
 }
