@@ -51,8 +51,8 @@ public class Publishing extends Controller {
 	//Logger.info("app/contollers.Publishing.java: use AJE shortdtf yyyy-mm-dd instead of Travant mm/dd/yyyy.")
 	// had no effect 2016-12-13 ; now have tried twice :
 	//static DateTimeFormatter shortdtf = DateTimeFormat.forPattern("yyyy-mm-dd"); // AJE 2016-11-22
-
-static DateTimeFormatter shortdtf = DateTimeFormat.forPattern("MM/dd/yyyy"); // AJE 2016-12-13
+  // AJE 2016-12-13 enhancement #28: the problem was Travant used 'mm' instead of 'MM' in defining shortdtf
+  static DateTimeFormatter shortdtf = DateTimeFormat.forPattern("MM/dd/yyyy"); // AJE 2016-12-13
 
 	public static Result publishing_published_data() {
 		return ok(publishing_published_data.render());
@@ -230,34 +230,14 @@ Logger.info("Publishing.java: [2] date set by TRAVANT");
 				formatType = IHS_CSV;
 			}
 
-/*
-Travant's original code makes all months '00' in the 'Date Range' column in publishing_published_data.scala.html
+/* Travant's original code makes all months '00' in the 'Date Range' column in publishing_published_data.scala.html
 			String startDate = ihsPublishingJob.startDate != null ? shortdtf.print( ihsPublishingJob.startDate) + " to ": "Beginning to";
 			String endDate = ihsPublishingJob.endDate != null ? shortdtf.print( ihsPublishingJob.endDate): " End";
-
-// AJE trying sth else: 2016-12-13
-			String startDate =
-			  ihsPublishingJob.startDate != null ? ihsPublishingJob.startDate : "Beginning to";
-			startDate =
-			    ihsPublishingJob.startDate.substring(0, 4) +"-"+
-			    ihsPublishingJob.startDate.substring(6, 8) +"-"+
-			    ihsPublishingJob.startDate.substring(10, 12) +" to ";
-			String endDate = ihsPublishingJob.endDate != null ? shortdtf.print( ihsPublishingJob.endDate): " End";
-// AJE trying sth else: shortdtf.format(date) // 2016-12-13
-			String startDate = ihsPublishingJob.startDate != null ? shortdtf.format( ihsPublishingJob.startDate) + " to ": "Beginning to";
-			String endDate = ihsPublishingJob.endDate != null ? shortdtf.format( ihsPublishingJob.endDate): " End";
-
-// AJE 2016-12-13 try LIKE Travant BUT PLAIN dtf object: NOT shortdtf
-      String startDate = ihsPublishingJob.startDate != null ? dtf.print( ihsPublishingJob.startDate) + " to ": "Beginning to";
-			String endDate = ihsPublishingJob.endDate != null ? dtf.print( ihsPublishingJob.endDate): " End";
-// works well enough: now trim the strings
-startDate = startDate.replace(" 00:00 AM to ", " to ");
-endDate = endDate.replace(" 00:00 AM", "");
-
-  BUT FINALLY FIGURED IT OUT JUST AS WAS ABOUT TO COMMIT THE dtf CODE:
-  - Travant screwed up the format of shortdtf: do not use with 'mm' to get the month: use 'MM'
-*/
-
+// AJE tried several other things 2016-12-13: see Publishing_withAJE_dateStuff.java
+  but finally figured it out just as was about to commit different usable solution:
+  - Travant screwed up the format of shortdtf: do not use with 'mm' to get the month (that gets minutes): use 'MM'.
+  - Fixed definition of shortdtf in this file, commented there
+  - now Travant code works as expected: */
 			String startDate = ihsPublishingJob.startDate != null ? shortdtf.print( ihsPublishingJob.startDate) + " to ": "Beginning to";
 			String endDate = ihsPublishingJob.endDate != null ? shortdtf.print( ihsPublishingJob.endDate): " End";
 
