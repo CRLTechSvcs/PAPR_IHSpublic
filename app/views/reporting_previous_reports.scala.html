@@ -7,24 +7,22 @@
 
 	require(["dojox/grid/DataGrid", "dojo/data/ItemFileReadStore", "dojo/dom", "dojo/domReady!"], function(DataGrid, ItemFileReadStore, dom) {
 
-
 		var data = { items: [
-			                   	{ dateInitiated: '', reportType: '', reportParameter: '', formatType: '',  organization: '', user: '', jobStatus: '', link:''}
-			                   	]};
+   	  { dateInitiated: '', reportType: '', reportParameter: '', formatType: '',  organization: '', user: '', jobStatus: '', link:''}
+   	]};
 
 		var store = new ItemFileReadStore({data: data});
 
-
 		var layout = [
-		               { 'name': 'Date Initiated', 'field': 'dateInitiated', 'width': '120px'},
-		               { 'name': 'Report Type', 'field': 'reportType', 'width': '150px'},
-		               { 'name': 'Report Parameter', 'field': 'reportParameter', 'width': '154px'},
-		               { 'name': 'File format', 'field': 'formatType', 'width': '60px'},
-		               { 'name': 'Organization', 'field': 'organization', 'width': '100px'},
-		               { 'name': 'User', 'field': 'user', 'width': '60px'},
-		               { 'name': 'Job Status', 'field': 'jobStatus', 'width': '70px'},
-		               { 'name': 'Link', 'field': 'link', 'width': '70px'}
-		               ];
+      { 'name': 'Date Initiated', 'field': 'dateInitiated', 'width': '120px'},
+      { 'name': 'Report Type', 'field': 'reportType', 'width': '150px'},
+      { 'name': 'Report Parameter', 'field': 'reportParameter', 'width': '154px'},
+      { 'name': 'File format', 'field': 'formatType', 'width': '60px'},
+      { 'name': 'Organization', 'field': 'organization', 'width': '100px'},
+      { 'name': 'User', 'field': 'user', 'width': '60px'},
+      { 'name': 'Job Status', 'field': 'jobStatus', 'width': '70px'},
+      { 'name': 'Link', 'field': 'link', 'width': '70px'}
+    ];
 
 		var grid = new DataGrid({
 			id: 'reporting-job-summary',
