@@ -84,12 +84,35 @@ AJE 2016-11-23 jquery-ui may be the cause of the "Error: multipleDefine" that po
 							@Messages("search.journal.title"): <input class="search" onkeyup="searchJournalByTitle(this);" type="text" id="titleid" /><br /><br />
 							@Messages("search.journal.issn"): <input class="search" onkeyup="searchJournalByISSN(this);" type="text" id="issnid" /><br /><br />
 							@Messages("search.journal.oclc"): <input class="search" onkeyup="searchJournalByOCLC(this);" type="text" id="oclcid" /><br />-->
-						  <form id="search_boxes_form"><!--AJE 2016-10-26 wrap them in a form tag so can call reset() on the form and erase previous searches-->
-						  @Messages("search.journal.title_browse"):&nbsp;<input class="search" type="text" id="browse_titleid" /><br/>
-						  @Messages("search.journal.title_contains"):&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input class="search" type="text" id="contains_titleid" /><br/>
-							@Messages("search.journal.title_keyword"):&nbsp;&nbsp;<input class="search" type="text" id="titleid" /><br/>
-							@Messages("search.journal.issn"):&nbsp;&nbsp;&nbsp;&nbsp;<input class="search" type="text" id="issnid" /><br/>
-							@Messages("search.journal.oclc"):&nbsp;&nbsp;&nbsp;<input class="search" type="text" id="oclcid" />
+						  <form id="search_boxes_form">
+							  <!--AJE added search boxes next 2016-10-24 ; title attribute for jQuery tooltip 2016-12-16  -->
+							  @Messages("search.journal.title_browse"):&nbsp;
+							  <input class="search" type="text" id="browse_titleid" 
+							  	title="'enter' or 'space' to search titles STARTING with this" />
+							  <br />
+							  @Messages("search.journal.title_contains"):&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+							  <input class="search" type="text" id="contains_titleid" 
+							  	title="'enter' or 'space' to search titles CONTAINING this" />
+							  <br/>
+							  <!--Travant original search boxes next 2016-10-24 except using new messages.en for first one ; 
+							  	AJE 2016-12-16 added title attributes -->
+								@Messages("search.journal.title_keyword"):&nbsp;&nbsp;
+								<input class="search" type="text" id="titleid" 
+							  	title="'enter' or 'space' to search titles with this KEYWORD" />
+								<!--<input class="search" onkeyup="searchJournalByTitle(this);" type="text" id="titleid" />-->
+								<br />
+								@Messages("search.journal.issn"):&nbsp;&nbsp;&nbsp;&nbsp;
+								<input class="search" type="text" id="issnid" 
+							  	title="'enter' or 'space' to search titles with this ISSN" />
+								<!--<input class="search" onkeyup="searchJournalByISSN(this);" type="text" id="issnid" />-->
+								<br />
+								@Messages("search.journal.oclc"):&nbsp;&nbsp;&nbsp;
+								
+								<input class="search" type="text" id="oclcid" 
+							  	title="'enter' or 'space' to search titles with this OCLC number" />
+								<!--<input class="search" onkeyup="searchJournalByOCLC(this);" type="text" id="oclcid" />-->
+								<br />
+						  	
 							</form>
 					</p>
 
