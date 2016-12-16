@@ -90,11 +90,11 @@ h2.menu-header a {
 }
 
 div#menu-contents {
-	height:559px;
+	/* height:559px; # Travant original ; AJE removed 2016-12-16 so that the unused menu items do not collapse so far down the page */
 	text-align:left;
 }
 
-div#menu-contents-search_journal {
+div#menu-contents-search_journal { /* 2016-12-16 class appears unused */
 	height:559px;
 	text-align:left;
 }
@@ -157,8 +157,8 @@ p#search-criteria {
 
 #inner-content-left {
 	width:184px;
-	height:835px; /* # Travant original */
-	/* height:600px; /* AJE test 2016-12-16 */
+	/* height:835px; # Travant original */
+	height:99%; /* AJE test 2016-12-16 */
 	background-color:#e9e6d3;
 	padding:49px 3px 3px 3px;
 }
