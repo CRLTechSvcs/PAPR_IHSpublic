@@ -157,7 +157,8 @@ p#search-criteria {
 
 #inner-content-left {
 	width:184px;
-	height:835px;
+	height:835px; /* # Travant original */
+	/* height:600px; /* AJE test 2016-12-16 */
 	background-color:#e9e6d3;
 	padding:49px 3px 3px 3px;
 }
