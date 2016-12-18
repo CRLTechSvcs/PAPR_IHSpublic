@@ -42,14 +42,62 @@
 
 
 	function populateMember(response, ioArgs){
-
 		var test= response;
-
 		var store = new dojo.store.Memory(response)
 	    dijit.byId("stateMember").store = store;
 	    members=response.data;
-
 	}
+
+
+/*********************************************************
+AJE for enhancement #26 test 
+*********************************************************/
+	require(["dijit/form/ComboBox", "dojo/store/Memory", "dojo/dom", "dojo/domReady!"], function(ComboBox, Memory,  dom) {
+				 var classStore = new Memory({
+    			    data: [
+            			{titleID:"", description:""}
+        				]
+    				});
+
+				var LCselect = ComboBox({
+					name: "LCclassSelect",
+					id: "LCclassSelect",
+					placeHolder: "",
+					store: classStore,
+					style: "width: 127px; height: 19px;",
+					onChange: function(){
+						var val = dijit.byId("LCclassSelect").get("value");
+						class_id=0;
+						for (var index = 0; index < title_classes.length; ++index) {
+							if(title_classes[index].description == val){
+								class_id = title_classes[index].description;
+							}
+						}
+					}
+				}, "LCclassSelectDiv");
+				LCselect.startup();
+
+				dojo.xhrGet({
+	       			 handleAs: 'json',
+	       				 url: "/search/getLCclasses", // SearchJournals.java
+	       				 preventCache: false,
+	        	   		 error: function(e) {
+	            			alert("ihs_search.js, getLCclasses Error: " + e.message);
+	        		},
+	        		load: populateLCclassSelect
+	    		});
+	});
+
+	function populateLCclassSelect(response, ioArgs){ // AJE 2016-12-16 enhancement #26: LC Class search: started as copy of populateMember
+		var test= response;
+		var store = new dojo.store.Memory(response)
+	    dijit.byId("LCclassSelect").store = store;
+	    title_classes=response.data;
+	}
+/*********************************************************
+END AJE for enhancement #26 test 
+*********************************************************/
+
 
 
   // function drawPubRange() was moved 2016-11-28 by AJE here from advance_history.js, since advance_linking.js seems to need it too
@@ -371,16 +419,62 @@ function clearUnusedSearchFields(calling_function){
         //console.log('browseJBT, value.length < 2 [no results found for '+value+' yet]'); // AJE 2016-09-21
     } else {
     //console.log('browseJBT, value.length = ',value.length,', should search'); // AJE 2016-10-27
-      dojo.xhrGet({
-          handleAs: 'json',
-          url: "/search/browseJournalByTitle/" + value,
-            //  app/controllers/SearchJournals.java
-          preventCache: true,
-          error: function(e) {
-              alert("ihs_search.js, browseJournalByTitle Error: " + e.message);
-          },
-          load: populateSearchList
-      });
+    
+    	// new block 2016-12-16 for enhancement #26 test
+    	var memberVal = $("#stateMember").val();
+    	var memberID = "-1";
+    	var memberData = "";
+    	console.log('browseJBT, stateMember.val() memberVal = ',memberVal,'. Next is dojo.xhrGet.'); 
+
+			if (memberVal != ""){
+
+				var targetNode = dojo.byId("memberDEVNOTE");
+				targetNode.innerHTML = "<h4>Got to if memberVal</h4>";
+				
+	      dojo.xhrGet({
+	          handleAs: 'json',
+	          url: "/search/getMemberByName/" + memberVal, //  app/controllers/SearchJournals.java
+	          preventCache: true,
+	          error: function(e) {
+	              alert("ihs_search.js, getMemberByName Error: " + e.message);
+	          },
+	          load: function(data){
+							console.warn("memberVal got us data = ", data);
+							console.warn("data.data['0'] = ",data.data["0"],".");
+							console.warn("and data.data['0'].id = ",data.data["0"].id,".");
+							memberID = data.data["0"].id;
+				    	console.warn('browseJBT IF memberVal = ',memberVal,' we got memberID = ', memberID, ' ; value =' ,value,'. Next is xhrGet.'); 
+	
+							var memBrowseURL = "/search/MEMBERbrowseJournalByTitle/" + value + "/" + memberID;
+							targetNode.innerHTML = "<h4>" + memBrowseURL + "</h4>";
+				    	
+				      dojo.xhrGet({
+				          handleAs: 'json',
+				          url: "/search/MEMBERbrowseJournalByTitle/" + value + "/" + memberID, //  app/controllers/SearchJournals.java
+				          preventCache: true,
+				          error: function(e) {
+				              alert("ihs_search.js, MEMBERbrowseJournalByTitle Error: " + e.message);
+				          },
+				          load: populateSearchList
+				      });	    	
+	    			} // end load: function 
+	      });
+	    } else { // not memberVal : this block is Travant original 2016-12-16	
+	      dojo.xhrGet({
+	          handleAs: 'json',
+	          url: "/search/browseJournalByTitle/" + value,
+	            //  app/controllers/SearchJournals.java
+	          preventCache: true,
+	          error: function(e) {
+	              alert("ihs_search.js, browseJournalByTitle Error: " + e.message);
+	          },
+	          load: populateSearchList
+	      });
+	    	
+			} // end if memberVal
+			// now we need to repeat browseJournalByTitle xhrGet for when memberVal above, 
+			// and enclose the rest of the function in an else (not memberVal)
+    
     }
 	} // end AJE 2016-10-24 browseJournalByTitle
 
