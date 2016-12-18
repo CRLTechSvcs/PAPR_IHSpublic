@@ -87,6 +87,29 @@ public class SearchJournals extends Controller {
 		return ok(toJson(pageingJson));
 	} /* end AJE 2016-10-24
 *****************************************************************/
+
+
+/*****************************************************************
+  AJE 2016-12-16 new function to use SQL LIKE instead of MATCH AGAINST; modeled after browseJournalByTitle
+  - string must be at start of title
+*/
+	//public static Result MEMBERbrowseJournalByTitle(String searchValue) {
+	public static Result MEMBERbrowseJournalByTitle(String searchValue, Integer memberID) {
+		String modifiedSearchValue = searchValue.trim();  // AJE 2016-12-16
+    Logger.info("app.controllers.SearchJournals.java MEMBERbrowseJournalByTitle("+searchValue+", "+Integer.toString(memberID)+"), modifiedSearchValue = "+modifiedSearchValue+".");
+
+		List<TitleView> titleViews = IhsTitle.MEMBERgetTitleBrowse(modifiedSearchValue, memberID); // AJE 2016-12-16
+    Logger.info("...MEMBERbrowseJournalByTitle("+searchValue+"), titleViews.size() = "+titleViews.size()+", titleViews[0].publisher = "+titleViews.get(0).publisher+".");
+
+		PageingJson pageingJson = new PageingJson();
+		pageingJson.items = titleViews;
+
+		return ok(toJson(pageingJson));
+	} /* end AJE 2016-12-16
+*****************************************************************/
+
+
+
 /*****************************************************************
   AJE 2016-10-27 new function to use SQL LIKE instead of MATCH AGAINST; modeled after browseJournalByTitle
   - string can be anywhere in title
@@ -165,6 +188,38 @@ public class SearchJournals extends Controller {
 
 		return ok(toJson(data));
 	}
+
+/********************************************************
+AJE 2016-12-16 for enhancement 26: LC CLass search_home
+*/	
+	public static Result getLCclasses() {
+
+		/* AJE 2016-09-14 make the select drop-downs show the members alphabetically by name
+		List<IhsMember> LCclasses = IhsMember.find.findList(); // Travant original code: */
+		
+		//List<IhsTitle> LCclasses = IhsTitle.find.orderBy("name ASC").findList();
+		//remember order by exists
+		List<IhsTitle> LCclasses = IhsTitle.find.orderBy("description ASC").findList();
+		
+		List<TitleView> titleViews = new ArrayList<TitleView>();
+
+		for (IhsTitle ihsTitle : LCclasses) {
+			titleViews.add(new TitleView(ihsTitle.titleID, ihsTitle.description));
+			Logger.info("AJE 2016-12-16: for ihsTitle : LCclasses...: ihsTitle.titleID='"+ihsTitle.titleID+"', ihsTitle.description='"+ihsTitle.description+".");
+		}
+
+    // AJE 2016-09-15 app/json/Data.java ; Data() is an ArrayList
+		Data data = new Data();
+		data.data = titleViews;
+
+		return ok(toJson(data));
+	}	
+/*	
+END AJE 2016-12-16 for enhancement 26: LC CLass search_home
+********************************************************/
+
+
+
 
 	@BodyParser.Of(BodyParser.Json.class)
 	public static Result postHoldingConditions() {
@@ -385,4 +440,51 @@ public class SearchJournals extends Controller {
 		return ok(toJson(wantStatus));
 
 	}
+
+
+/*****************************************
+AJE 2016-12-16 */
+
+	static String memberByNameSQL = "SELECT memberID, name FROM ihsmember WHERE name = 'param' ORDER BY name ASC;";
+
+	public static Result getMemberByName(String member_name_input) { // copy of plain getMembers
+
+		member_name_input = member_name_input.trim();
+
+		/* AJE 2016-09-14 make the select drop-downs show the members alphabetically by name */
+		List<IhsMember> ihsMembers = IhsMember.find.findList(); // Travant original code: 
+		
+		Logger.info("SearchJournals.java, enter getMemberByName("+member_name_input+").");
+
+		List<MemberView> memberViews = new ArrayList<MemberView>();
+
+		for (IhsMember ihsMember : ihsMembers) {
+			
+			Logger.info("getMemberByName: for ihsMember : ihsMembers...: ihsMember.memberID='"+ihsMember.memberID+"', ihsMember.name='"+ihsMember.name+"'.");
+
+		//Logger.info("...member_name_input='" +member_name_input+ "' ; ihsMember.name='"+ihsMember.name+"' ; are they == ? '" +(ihsMember.name == member_name_input)+"'.");
+		Logger.info("...member_name_input='" +member_name_input+ ".");
+		Logger.info("...ihsMember.name='"+ihsMember.name+"'.");
+		Logger.info("...are they .equals ? '" +(ihsMember.name.equals(member_name_input))+"'.");
+			
+			if(ihsMember.name.equals(member_name_input)){
+				Logger.info("...member_name_input='" +member_name_input+ " ; ihsMember.name='"+ihsMember.name+"': match, add to memberViews");
+				memberViews.add(new MemberView(ihsMember.memberID, ihsMember.name));
+			}
+		}
+
+    // AJE 2016-09-15 app/json/Data.java ; Data() is an ArrayList
+		Data data = new Data();
+		data.data = memberViews;
+
+		return ok(toJson(data));
+	}
+/*
+AJE 2016-12-16 14:55:33
+******************************************/
+
+
+
+
+
 }
