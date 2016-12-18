@@ -26,7 +26,19 @@ GET /search/searchJournalByOCLC/:searchValue        controllers.SearchJournals.s
 
 GET /search/getJournalDetail/:id      controllers.SearchJournals.getJournalDetail(id: Int)
 GET /search/getJournalVolumeDetail/:id/:memberid      controllers.SearchJournals.getJournalVolumeDetail(id: Int, memberid: Int)
+
 GET /search/getMembers                       controllers.SearchJournals.getMembers()
+# AJE 2016-12-16 next is copy of above for enhancement #25, member search: see IhsMember.java
+GET /search/getMemberByName/:searchValue        controllers.SearchJournals.getMemberByName(searchValue: String)
+
+GET /search/browseJournalByTitle/:searchValue       controllers.SearchJournals.browseJournalByTitle(searchValue: String)
+# AJE 2016-12-16 next is for enhancement #25, member search: see SearchJournals.java
+GET /search/MEMBERbrowseJournalByTitle/:searchValue/:memberID  	controllers.SearchJournals.MEMBERbrowseJournalByTitle(searchValue: String, memberID: Int)
+
+# AJE 2016-12-16 next is copy of above for enhancement #26, LC Class search: see SearchJournals.java
+GET /search/getLCclasses                       controllers.SearchJournals.getLCclasses()
+
+
 POST /search/postHoldingConditions           controllers.SearchJournals.postHoldingConditions()
 POST /search/postHoldingNotes           controllers.SearchJournals.postHoldingNotes()
 GET /search/getJournalWantStatus/:id 	controllers.SearchJournals.getJournalWantStatus(id: Int)
