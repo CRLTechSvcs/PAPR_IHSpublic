@@ -85,6 +85,20 @@ public class IhsTitle extends Model {
     + "WHERE title LIKE 'param%' " // AJE new TEST
 		+ "ORDER BY title ASC "
 		+ "LIMIT  50;";
+		
+	static String MEMBERtitleBrowseSql = "SELECT titleId, title, "
+    + "MATCH (title) AGAINST ('search_term' IN BOOLEAN MODE) as relevance, "
+    + "P.name AS publisher "
+		+ "FROM ihstitle T "
+		+ "JOIN ihspublisher P ON T.publisherID = P.publisherID "
+    + "WHERE title LIKE 'search_term%' " // AJE new TEST
+    + "AND titleId IN( " 
+    + "SELECT DISTINCT titleID FROM ihsissue WHERE issueID IN ( " 
+    	+ "SELECT DISTINCT issueID FROM ihsholding WHERE memberID = search_member" 
+    + ") ) ORDER BY title ASC " 
+		+ "LIMIT  50;";
+
+
 	static String titleContainsSql = "SELECT titleId, title, "
     + "MATCH (title) AGAINST ('param' IN BOOLEAN MODE) as relevance, "
     + "P.name AS publisher "
@@ -270,10 +284,19 @@ public class IhsTitle extends Model {
   - note this forms tmpSql from titleBrowseSql
   */
 	public static List <TitleView> getTitleBrowse(String search){
-   // Logger.info("app/models/IhsTitle.java : getTitleBrowse(search=|" +search+"|).");
+		
+	 Integer memberParamPos = search.indexOf("|");
+   Logger.info("app/models/IhsTitle.java : getTitleBrowse(search=|" +search+"|) ; search.indexOf('|')=="+Integer.toString(memberParamPos)+ ".");
     List <TitleView> titleViews = new ArrayList<TitleView>();
+	
+	/*
+		if search.indexOf("|") 
+			then 
+			String tmpSql = MEMBERtitleBrowseSql.replaceAll("param", search);
+	*/
+
     String tmpSql = titleBrowseSql.replaceAll("param", search);
-    //Logger.info("app/models/IhsTitle.java : getTitleBrowse will use SQL: " +tmpSql);
+    Logger.info("app/models/IhsTitle.java : getTitleBrowse will use SQL: " +tmpSql);
 
     List<SqlRow> sqlRows = Ebean.createSqlQuery(tmpSql)
       .findList();
@@ -302,6 +325,53 @@ Logger.info("app/models/IhsTitle.java : getTitleBrowse has results sqlRows.size(
 
     return titleViews;
 	} // end AJE 2016-10-24 getTitleBrowse
+
+
+  /************************************************************
+  AJE 2016-12-16 MEMBERgetTitleBrowse is new function, public/javascripts/ihs_search.js will call ?
+  - note this forms tmpSql from titleBrowseSql
+  */
+	public static List <TitleView> MEMBERgetTitleBrowse(String search, Integer memberID){
+   
+   Logger.info("app/models/IhsTitle.java : MEMBERgetTitleBrowse(" +search+", "+Integer.toString(memberID)+ ").");
+   
+   List <TitleView> titleViews = new ArrayList<TitleView>();
+	
+		String tmpSql = MEMBERtitleBrowseSql.replaceAll("search_term", search);
+			tmpSql = tmpSql.replaceAll("search_member", Integer.toString(memberID));
+
+    Logger.info("... will use SQL: " +tmpSql);
+
+    List<SqlRow> sqlRows = Ebean.createSqlQuery(tmpSql)
+      .findList();
+
+Logger.info("... MEMBERgetTitleBrowse has results sqlRows.size() = " +sqlRows.size());
+
+    if (sqlRows.size() > 0){
+      for(SqlRow sqlRow : sqlRows){
+        //titleViews.add(new TitleView( sqlRow.getInteger("titleId"), sqlRow.getString("title")));
+        titleViews.add(
+          new TitleView(
+            sqlRow.getInteger("titleId"),
+            sqlRow.getString("title"),
+            sqlRow.getString("publisher")
+        ));
+        //Logger.info(sqlRow.getInteger("titleId").toString()+ " ; "+ sqlRow.getString("title") + " / " + sqlRow.getString("publisher") );
+      }
+    } else {
+      titleViews.add(
+          new TitleView(
+            0, // sqlRow.getInteger("titleId"),
+            "No results for '" +search+ "'.", //sqlRow.getString("title"),
+            " " // sqlRow.getString("publisher")
+        ));
+    }
+
+    return titleViews;
+	} // end AJE 2016-12-16 MEMBERgetTitleBrowse
+
+
+
 
 
   /************************************************************
