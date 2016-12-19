@@ -70,6 +70,9 @@ public class SearchJournals extends Controller {
 		return ok(toJson(pageingJson));
 	}
 
+
+
+
 /*****************************************************************
   AJE 2016-10-24 new function to use SQL LIKE instead of MATCH AGAINST; modeled after searchJournalByTitle
   - string must be at start of title
@@ -87,13 +90,10 @@ public class SearchJournals extends Controller {
 		return ok(toJson(pageingJson));
 	} /* end AJE 2016-10-24
 *****************************************************************/
-
-
 /*****************************************************************
   AJE 2016-12-16 new function to use SQL LIKE instead of MATCH AGAINST; modeled after browseJournalByTitle
-  - string must be at start of title
+  - string must be at start of title ; search is limited to those held by memberID
 */
-	//public static Result MEMBERbrowseJournalByTitle(String searchValue) {
 	public static Result MEMBERbrowseJournalByTitle(String searchValue, Integer memberID) {
 		String modifiedSearchValue = searchValue.trim();  // AJE 2016-12-16
     Logger.info("app.controllers.SearchJournals.java MEMBERbrowseJournalByTitle("+searchValue+", "+Integer.toString(memberID)+"), modifiedSearchValue = "+modifiedSearchValue+".");
@@ -127,6 +127,27 @@ public class SearchJournals extends Controller {
 		return ok(toJson(pageingJson));
 	} /* end AJE 2016-10-27
 *****************************************************************/
+/*****************************************************************
+  AJE 2016-12-16 new function to use SQL LIKE instead of MATCH AGAINST; modeled after browseJournalByTitle
+  - string must be at start of title ; search is limited to those held by memberID
+*/
+	public static Result MEMBERcontainsJournalByTitle(String searchValue, Integer memberID) {
+		String modifiedSearchValue = searchValue.trim();  // AJE 2016-12-16
+    Logger.info("app.controllers.SearchJournals.java MEMBERcontainsJournalByTitle("+searchValue+", "+Integer.toString(memberID)+"), modifiedSearchValue = "+modifiedSearchValue+".");
+
+		List<TitleView> titleViews = IhsTitle.MEMBERgetTitleContains(modifiedSearchValue, memberID); // AJE 2016-12-16
+    Logger.info("...MEMBERcontainsJournalByTitle("+searchValue+"), titleViews.size() = "+titleViews.size()+", titleViews[0].publisher = "+titleViews.get(0).publisher+".");
+
+		PageingJson pageingJson = new PageingJson();
+		pageingJson.items = titleViews;
+
+		return ok(toJson(pageingJson));
+	} /* end AJE 2016-12-16
+*****************************************************************/
+
+
+
+
 
 	public static Result searchJournalByISSN(String searchValue) {
     Logger.info("app.controllers.SearchJournals.java searchJournalByISSN("+searchValue+").");
