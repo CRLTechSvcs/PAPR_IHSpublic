@@ -23,6 +23,12 @@ GET /search/browseJournalByTitle/:searchValue       controllers.SearchJournals.b
 GET /search/containsJournalByTitle/:searchValue       controllers.SearchJournals.containsJournalByTitle(searchValue: String)
 GET /search/searchJournalByISSN/:searchValue        controllers.SearchJournals.searchJournalByISSN(searchValue: String)
 GET /search/searchJournalByOCLC/:searchValue        controllers.SearchJournals.searchJournalByOCLC(searchValue: String)
+# AJE 2016-12-16 ... next set is for enhancement #25, member search: see SearchJournals.java
+GET /search/MEMBERbrowseJournalByTitle/:searchValue/:memberID  	controllers.SearchJournals.MEMBERbrowseJournalByTitle(searchValue: String, memberID: Int)
+GET /search/MEMBERcontainsJournalByTitle/:searchValue/:memberID  	controllers.SearchJournals.MEMBERcontainsJournalByTitle(searchValue: String, memberID: Int)
+# READY GET /search/MEMBERsearchJournalByTitle/:searchValue/:memberID  	controllers.SearchJournals.MEMBERsearchJournalByTitle(searchValue: String, memberID: Int)
+# READY GET /search/MEMBERsearchJournalsByISSN/:searchValue/:memberID  	controllers.SearchJournals.MEMBERsearchJournalsByISSN(searchValue: String, memberID: Int)
+# READY GET /search/MEMBERsearchJournalsByOCLC/:searchValue/:memberID  	controllers.SearchJournals.MEMBERsearchJournalsByOCLC(searchValue: String, memberID: Int)
 
 GET /search/getJournalDetail/:id      controllers.SearchJournals.getJournalDetail(id: Int)
 GET /search/getJournalVolumeDetail/:id/:memberid      controllers.SearchJournals.getJournalVolumeDetail(id: Int, memberid: Int)
@@ -31,9 +37,7 @@ GET /search/getMembers                       controllers.SearchJournals.getMembe
 # AJE 2016-12-16 next is copy of above for enhancement #25, member search: see IhsMember.java
 GET /search/getMemberByName/:searchValue        controllers.SearchJournals.getMemberByName(searchValue: String)
 
-GET /search/browseJournalByTitle/:searchValue       controllers.SearchJournals.browseJournalByTitle(searchValue: String)
-# AJE 2016-12-16 next is for enhancement #25, member search: see SearchJournals.java
-GET /search/MEMBERbrowseJournalByTitle/:searchValue/:memberID  	controllers.SearchJournals.MEMBERbrowseJournalByTitle(searchValue: String, memberID: Int)
+
 
 # AJE 2016-12-16 next is copy of above for enhancement #26, LC Class search: see SearchJournals.java
 GET /search/getLCclasses                       controllers.SearchJournals.getLCclasses()
