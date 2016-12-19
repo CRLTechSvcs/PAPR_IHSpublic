@@ -26,9 +26,9 @@ GET /search/searchJournalByOCLC/:searchValue        controllers.SearchJournals.s
 # AJE 2016-12-16 ... next set is for enhancement #25, member search: see SearchJournals.java
 GET /search/MEMBERbrowseJournalByTitle/:searchValue/:memberID  	controllers.SearchJournals.MEMBERbrowseJournalByTitle(searchValue: String, memberID: Int)
 GET /search/MEMBERcontainsJournalByTitle/:searchValue/:memberID  	controllers.SearchJournals.MEMBERcontainsJournalByTitle(searchValue: String, memberID: Int)
-# READY GET /search/MEMBERsearchJournalByTitle/:searchValue/:memberID  	controllers.SearchJournals.MEMBERsearchJournalByTitle(searchValue: String, memberID: Int)
-# READY GET /search/MEMBERsearchJournalsByISSN/:searchValue/:memberID  	controllers.SearchJournals.MEMBERsearchJournalsByISSN(searchValue: String, memberID: Int)
-# READY GET /search/MEMBERsearchJournalsByOCLC/:searchValue/:memberID  	controllers.SearchJournals.MEMBERsearchJournalsByOCLC(searchValue: String, memberID: Int)
+GET /search/MEMBERsearchJournalByTitle/:searchValue/:memberID  	controllers.SearchJournals.MEMBERsearchJournalByTitle(searchValue: String, memberID: Int)
+GET /search/MEMBERsearchJournalByISSN/:searchValue/:memberID  	controllers.SearchJournals.MEMBERsearchJournalByISSN(searchValue: String, memberID: Int)
+GET /search/MEMBERsearchJournalByOCLC/:searchValue/:memberID  	controllers.SearchJournals.MEMBERsearchJournalByOCLC(searchValue: String, memberID: Int)
 
 GET /search/getJournalDetail/:id      controllers.SearchJournals.getJournalDetail(id: Int)
 GET /search/getJournalVolumeDetail/:id/:memberid      controllers.SearchJournals.getJournalVolumeDetail(id: Int, memberid: Int)
