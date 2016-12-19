@@ -69,6 +69,22 @@ public class SearchJournals extends Controller {
 
 		return ok(toJson(pageingJson));
 	}
+/*****************************************************************
+  AJE 2016-12-19 new for enhancement #25 (member search limit) : string found via relevance algorithm ; search is limited to those held by memberID
+*/
+	public static Result MEMBERsearchJournalByTitle(String searchValue, Integer memberID) {
+		String modifiedSearchValue = searchValue.trim();  // AJE 2016-12-16
+    Logger.info("app.controllers.SearchJournals.java MEMBERsearchJournalByTitle("+searchValue+", "+Integer.toString(memberID)+"), modifiedSearchValue = "+modifiedSearchValue+".");
+
+		List<TitleView> titleViews = IhsTitle.MEMBERgetTitle(modifiedSearchValue, memberID); // AJE 2016-12-16
+    Logger.info("...MEMBERsearchJournalByTitle("+searchValue+"), titleViews.size() = "+titleViews.size()+", titleViews[0].publisher = "+titleViews.get(0).publisher+".");
+
+		PageingJson pageingJson = new PageingJson();
+		pageingJson.items = titleViews;
+
+		return ok(toJson(pageingJson));
+	} /* end AJE 2016-12-16
+*****************************************************************/
 
 
 
@@ -91,7 +107,7 @@ public class SearchJournals extends Controller {
 	} /* end AJE 2016-10-24
 *****************************************************************/
 /*****************************************************************
-  AJE 2016-12-16 new function to use SQL LIKE instead of MATCH AGAINST; modeled after browseJournalByTitle
+  AJE 2016-12-16 new for enhancement #25 (member search limit) 
   - string must be at start of title ; search is limited to those held by memberID
 */
 	public static Result MEMBERbrowseJournalByTitle(String searchValue, Integer memberID) {
@@ -128,8 +144,8 @@ public class SearchJournals extends Controller {
 	} /* end AJE 2016-10-27
 *****************************************************************/
 /*****************************************************************
-  AJE 2016-12-16 new function to use SQL LIKE instead of MATCH AGAINST; modeled after browseJournalByTitle
-  - string must be at start of title ; search is limited to those held by memberID
+  AJE 2016-12-16 new for enhancement #25 (member search limit) 
+  - string can be anywhere in title ; search is limited to those held by memberID
 */
 	public static Result MEMBERcontainsJournalByTitle(String searchValue, Integer memberID) {
 		String modifiedSearchValue = searchValue.trim();  // AJE 2016-12-16
@@ -160,6 +176,22 @@ public class SearchJournals extends Controller {
 		return ok(toJson(pageingJson));
 
 	}
+/*****************************************************************
+  AJE 2016-12-19 new function for enhancement #25: member search limit : string found via SQL LIKE ; search is limited to those held by memberID
+*/
+	public static Result MEMBERsearchJournalByISSN(String searchValue, Integer memberID) {
+		String modifiedSearchValue = searchValue.trim();  // AJE 2016-12-16
+    Logger.info("app.controllers.SearchJournals.java MEMBERsearchJournalByISSN("+searchValue+", "+Integer.toString(memberID)+"), modifiedSearchValue = "+modifiedSearchValue+".");
+
+		List<TitleView> titleViews = IhsTitle.MEMBERgetByISSN(modifiedSearchValue, memberID); // AJE 2016-12-16
+    Logger.info("...MEMBERsearchJournalByISSN("+searchValue+"), titleViews.size() = "+titleViews.size()+", titleViews[0].publisher = "+titleViews.get(0).publisher+".");
+
+		PageingJson pageingJson = new PageingJson();
+		pageingJson.items = titleViews;
+
+		return ok(toJson(pageingJson));
+	} /* end AJE 2016-12-19
+*****************************************************************/
 
 	public static Result searchJournalByOCLC(String searchValue) {
 
@@ -171,6 +203,28 @@ public class SearchJournals extends Controller {
 		return ok(toJson(pageingJson));
 
 	}
+/*****************************************************************
+  AJE 2016-12-19 new function for enhancement #25: member search limit : string found via SQL LIKE ; search is limited to those held by memberID
+*/
+	public static Result MEMBERsearchJournalByOCLC(String searchValue, Integer memberID) {
+		String modifiedSearchValue = searchValue.trim();  // AJE 2016-12-16
+    Logger.info("app.controllers.SearchJournals.java MEMBERsearchJournalByOCLC("+searchValue+", "+Integer.toString(memberID)+"), modifiedSearchValue = "+modifiedSearchValue+".");
+
+		List<TitleView> titleViews = IhsTitle.MEMBERgetByOCLC(modifiedSearchValue, memberID); // AJE 2016-12-16
+    Logger.info("...MEMBERsearchJournalByOCLC("+searchValue+"), titleViews.size() = "+titleViews.size()+", titleViews[0].publisher = "+titleViews.get(0).publisher+".");
+
+		PageingJson pageingJson = new PageingJson();
+		pageingJson.items = titleViews;
+
+		return ok(toJson(pageingJson));
+	} /* end AJE 2016-12-19
+*****************************************************************/
+
+	
+	
+	
+	
+	
 	public static Result getJournalDetail(int id) {
 
 		TitleView titleView = IhsTitle.getDetailById(id);
