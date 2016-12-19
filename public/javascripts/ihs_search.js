@@ -403,6 +403,7 @@ function clearUnusedSearchFields(calling_function){
 
 	/*****************************************************
 	AJE 2016-10-24 : browseJournalByTitle is a copy of searchJournalByTitle; uses app/controllers/SearchJournals.java > browseJournalByTitle
+	AJE 2016-12-19 : browseJournalByTitle now also gets memberID from the name in the select, chooses whether to use original XHR url or uses /search/MEMBERbrowseJournalByTitle/" + value + "/" + memberID, 
 	*/
 	function browseJournalByTitle(search) {
     console.info('browseJournalByTitle("',search.value,'")');
@@ -429,24 +430,22 @@ function clearUnusedSearchFields(calling_function){
 			if (memberVal != ""){
 
 				var targetNode = dojo.byId("memberDEVNOTE");
-				targetNode.innerHTML = "<h4>Got to if memberVal</h4>";
+				targetNode.innerHTML = "<h4>browseJBT Got to if memberVal</h4>";
 				
 	      dojo.xhrGet({
 	          handleAs: 'json',
 	          url: "/search/getMemberByName/" + memberVal, //  app/controllers/SearchJournals.java
 	          preventCache: true,
 	          error: function(e) {
-	              alert("ihs_search.js, getMemberByName Error: " + e.message);
+	              alert("ihs_search.js, browseJBT getMemberByName Error: " + e.message);
 	          },
 	          load: function(data){
-							console.warn("memberVal got us data = ", data);
-							console.warn("data.data['0'] = ",data.data["0"],".");
-							console.warn("and data.data['0'].id = ",data.data["0"].id,".");
+							console.warn("browseJBT memberVal got us data = ", data, " ; and data.data['0'] = ",data.data["0"]," ; and data.data['0'].id = ",data.data["0"].id,".");
 							memberID = data.data["0"].id;
 				    	console.warn('browseJBT IF memberVal = ',memberVal,' we got memberID = ', memberID, ' ; value =' ,value,'. Next is xhrGet.'); 
 	
-							var memBrowseURL = "/search/MEMBERbrowseJournalByTitle/" + value + "/" + memberID;
-							targetNode.innerHTML = "<h4>" + memBrowseURL + "</h4>";
+							var memLimitUrl = "/search/MEMBERbrowseJournalByTitle/" + value + "/" + memberID;
+							targetNode.innerHTML = "<h4>browseJBT " + memLimitUrl + "</h4>";
 				    	
 				      dojo.xhrGet({
 				          handleAs: 'json',
@@ -470,11 +469,7 @@ function clearUnusedSearchFields(calling_function){
 	          },
 	          load: populateSearchList
 	      });
-	    	
 			} // end if memberVal
-			// now we need to repeat browseJournalByTitle xhrGet for when memberVal above, 
-			// and enclose the rest of the function in an else (not memberVal)
-    
     }
 	} // end AJE 2016-10-24 browseJournalByTitle
 
@@ -494,18 +489,59 @@ function clearUnusedSearchFields(calling_function){
 		var value1 = search.value.replace(' ', '');
     if (value.length < 2 ) {
         //console.log('containsJBT, value.length < 2 [no results found for '+value+' yet]'); // AJE 2016-09-21
-    } else {
+    }  else {
+    	//console.log('containsJBT, value.length = ',value.length,', should search'); // AJE 2016-10-27
+    
+    	// new block 2016-12-16 for enhancement #26 test
+    	var memberVal = $("#stateMember").val();
+    	var memberID = "-1";
+    	var memberData = "";
+    	console.log('containsJBT, stateMember.val() memberVal = ',memberVal,'. Next is dojo.xhrGet.'); 
+
+			if (memberVal != ""){
+
+				var targetNode = dojo.byId("memberDEVNOTE");
+				targetNode.innerHTML = "<h4>containsJBT Got to if memberVal</h4>";
+				
+	      dojo.xhrGet({
+	          handleAs: 'json',
+	          url: "/search/getMemberByName/" + memberVal, //  app/controllers/SearchJournals.java
+	          preventCache: true,
+	          error: function(e) {
+	              alert("ihs_search.js, containsJBT getMemberByName Error: " + e.message);
+	          },
+	          load: function(data){
+							console.warn("containsJBT memberVal got us data = ", data, " ; and data.data['0'] = ",data.data["0"]," ; and data.data['0'].id = ",data.data["0"].id,".");
+							memberID = data.data["0"].id;
+				    	console.warn('browseJBT IF memberVal = ',memberVal,' we got memberID = ', memberID, ' ; value =' ,value,'. Next is xhrGet.'); 
+	
+							var memLimitUrl = "/search/MEMBERcontainsJournalByTitle/" + value + "/" + memberID;
+							targetNode.innerHTML = "<h4>containsJBT " + memLimitUrl + "</h4>";
+				    	
+				      dojo.xhrGet({
+				          handleAs: 'json',
+				          url: "/search/MEMBERcontainsJournalByTitle/" + value + "/" + memberID, //  app/controllers/SearchJournals.java
+				          preventCache: true,
+				          error: function(e) {
+				              alert("ihs_search.js, MEMBERbrowseJournalByTitle Error: " + e.message);
+				          },
+				          load: populateSearchList
+				      });	    	
+	    			} // end load: function 
+	      });
+	    } else { // not memberVal : this block is Travant original 2016-12-19
       //console.log('containsJBT, value.length = ',value.length,', should search'); // AJE 2016-10-27
       dojo.xhrGet({
           handleAs: 'json',
           url: "/search/containsJournalByTitle/" + value,
           preventCache: true,
           error: function(e) {
-              alert("ihs_searcg.js, containsJournalByTitle Error: " + e.message);
+              alert("ihs_search.js, containsJournalByTitle Error: " + e.message);
           },
           load: populateSearchList
       });
-    }
+    }// end if memberVal
+	} // end if value.length > 2
   } // end AJE 2016-10-27 containsJournalByTitle
 
 
