@@ -71,6 +71,27 @@ public class IhsTitle extends Model {
 		+ "LIMIT 50;"; // was LIMIT 20 ; if not included, results will often be too long for sidebar; some searches can be too long for the entire page
 		//once results moved into center white space portion of screen, try removing LIMIT again
 
+
+
+
+	static String MEMBERtitleSearchSql = "SELECT T.titleId, T.title, "
+	  + "MATCH (T.title) AGAINST ('search_term' IN BOOLEAN MODE) as relevance, "
+	  + "P.name AS publisher "
+		+ "FROM ihstitle T "
+		+ "JOIN ihspublisher P ON T.publisherID = P.publisherID "
+		+ "WHERE MATCH (title) AGAINST ('search_term' IN BOOLEAN MODE) "
+    + "AND titleId IN( " // AJE new clause differentiates new var 2016-12-19
+    + "SELECT DISTINCT titleID FROM ihsissue WHERE issueID IN ( " 
+    	+ "SELECT DISTINCT issueID FROM ihsholding WHERE memberID = search_member" 
+    + ") ) " 
+	  + "ORDER BY relevance DESC "
+		+ "LIMIT 50;"; 
+
+
+
+
+
+
   /******************************************
   AJE 2016-10-24
   app/controllers/SearchJournals.java : searchJournalByTitle uses titleSearchSql
@@ -92,7 +113,7 @@ public class IhsTitle extends Model {
 		+ "FROM ihstitle T "
 		+ "JOIN ihspublisher P ON T.publisherID = P.publisherID "
     + "WHERE title LIKE 'search_term%' " // AJE new TEST
-    + "AND titleId IN( " 
+    + "AND titleId IN( " // AJE new clause differentiates new var 2016-12-16
     + "SELECT DISTINCT titleID FROM ihsissue WHERE issueID IN ( " 
     	+ "SELECT DISTINCT issueID FROM ihsholding WHERE memberID = search_member" 
     + ") ) " 
@@ -114,11 +135,11 @@ public class IhsTitle extends Model {
 		+ "FROM ihstitle T "
 		+ "JOIN ihspublisher P ON T.publisherID = P.publisherID "
     + "WHERE title LIKE '%search_term%' " // AJE new TEST
-    + "AND titleId IN( " 
+    + "AND titleId IN( " // AJE new clause differentiates new var 2016-12-19
     + "SELECT DISTINCT titleID FROM ihsissue WHERE issueID IN ( " 
     	+ "SELECT DISTINCT issueID FROM ihsholding WHERE memberID = search_member" 
-    + ") ) "     
-		+ "ORDER BY title ASC "
+    + ") ) " 
+    + "ORDER BY title ASC "
 		+ "LIMIT  50;"; // AJE 2016-12-19
 
 
@@ -133,6 +154,19 @@ public class IhsTitle extends Model {
     + "WHERE printISSN = 'param' "
 		+ "ORDER BY title ASC "
 		+ "LIMIT  50;";
+	static String MEMBERprintISSNequalsSql = "SELECT titleId, title, " // AJE 2016-11-10
+    + "MATCH (title) AGAINST ('search_term' IN BOOLEAN MODE) as relevance, "
+    + "P.name AS publisher "
+		+ "FROM ihstitle T "
+		+ "JOIN ihspublisher P ON T.publisherID = P.publisherID "
+    + "WHERE printISSN = 'search_term' "
+    + "AND titleId IN( " // AJE new clause differentiates new var 2016-12-19
+    + "SELECT DISTINCT titleID FROM ihsissue WHERE issueID IN ( " 
+    	+ "SELECT DISTINCT issueID FROM ihsholding WHERE memberID = search_member" 
+    + ") ) " 		
+		+ "ORDER BY title ASC "
+		+ "LIMIT  50;";
+		
 	static String OCLCequalsSql = "SELECT titleId, title, " // AJE 2016-11-10
     + "MATCH (title) AGAINST ('param' IN BOOLEAN MODE) as relevance, "
     + "P.name AS publisher "
@@ -141,7 +175,23 @@ public class IhsTitle extends Model {
     + "WHERE oclcNumber = 'param' "
 		+ "ORDER BY title ASC "
 		+ "LIMIT  50;";
-  // end AJE 2016-10-24/27, and 2016-11-10
+	static String MEMBEROCLCequalsSql = "SELECT titleId, title, " // AJE 2016-11-10
+    + "MATCH (title) AGAINST ('param' IN BOOLEAN MODE) as relevance, "
+    + "P.name AS publisher "
+		+ "FROM ihstitle T "
+		+ "JOIN ihspublisher P ON T.publisherID = P.publisherID "
+		+ "AND titleId IN( " // AJE new clause differentiates new var 2016-12-19
+    + "SELECT DISTINCT titleID FROM ihsissue WHERE issueID IN ( " 
+    	+ "SELECT DISTINCT issueID FROM ihsholding WHERE memberID = search_member" 
+    + ") ) "
+    + "WHERE oclcNumber = 'param' "
+		+ "ORDER BY title ASC "
+		+ "LIMIT  50;";        
+  // end AJE 2016-10-24/27, and 2016-11-10, and 2016-12-16+
+
+
+
+
 
 	/**
 	 *
@@ -295,6 +345,51 @@ public class IhsTitle extends Model {
 
     return titleViews;
 	}
+  /************************************************************
+  AJE 2016-12-19 MEMBERgetTitle is new function, public/javascripts/ihs_search.js will call ?
+  - note MEMBERgetTitle(Str, Int) forms tmpSql from MEMBERtitleSearchSql
+  */
+	public static List <TitleView> MEMBERgetTitle(String search, Integer memberID){
+   
+   Logger.info("app/models/IhsTitle.java : MEMBERgetTitle(" +search+", "+Integer.toString(memberID)+ ").");
+   
+   List <TitleView> titleViews = new ArrayList<TitleView>();
+	
+		String tmpSql = MEMBERtitleSearchSql.replaceAll("search_term", search);
+			tmpSql = tmpSql.replaceAll("search_member", Integer.toString(memberID));
+
+    Logger.info("... will use SQL: " +tmpSql);
+
+    List<SqlRow> sqlRows = Ebean.createSqlQuery(tmpSql)
+      .findList();
+
+Logger.info("... MEMBERgetTitle has results sqlRows.size() = " +sqlRows.size());
+
+    if (sqlRows.size() > 0){
+      for(SqlRow sqlRow : sqlRows){
+        //titleViews.add(new TitleView( sqlRow.getInteger("titleId"), sqlRow.getString("title")));
+        titleViews.add(
+          new TitleView(
+            sqlRow.getInteger("titleId"),
+            sqlRow.getString("title"),
+            sqlRow.getString("publisher")
+        ));
+        //Logger.info(sqlRow.getInteger("titleId").toString()+ " ; "+ sqlRow.getString("title") + " / " + sqlRow.getString("publisher") );
+      }
+    } else {
+      titleViews.add(
+          new TitleView(
+            0, // sqlRow.getInteger("titleId"),
+            "No results for '" +search+ "'.", //sqlRow.getString("title"),
+            " " // sqlRow.getString("publisher")
+        ));
+    }
+
+    return titleViews;
+	} // end AJE 2016-12-19 MEMBERgetTitle
+
+
+
 
 
   /************************************************************
@@ -517,6 +612,55 @@ Logger.info("... MEMBERgetTitleContains has results sqlRows.size() = " +sqlRows.
 
 	}
 
+  /************************************************************
+  AJE 2016-12-19 MEMBERgetByISSN is new function, public/javascripts/ihs_search.js will call ?
+  - note MEMBERgetByISSN(Str, Int) forms tmpSql from MEMBERtitleContainsSql
+  */
+	public static List <TitleView> MEMBERgetByISSN(String search, Integer memberID){
+   
+   Logger.info("app/models/IhsTitle.java : MEMBERgetByISSN(" +search+", "+Integer.toString(memberID)+ ").");
+   
+   List <TitleView> titleViews = new ArrayList<TitleView>();
+	
+		String tmpSql = MEMBERprintISSNequalsSql.replaceAll("search_term", search);
+			tmpSql = tmpSql.replaceAll("search_member", Integer.toString(memberID));
+
+    Logger.info("... will use SQL: " +tmpSql);
+
+    List<SqlRow> sqlRows = Ebean.createSqlQuery(tmpSql)
+      .findList();
+
+Logger.info("... MEMBERgetByISSN has results sqlRows.size() = " +sqlRows.size());
+
+    if (sqlRows.size() > 0){
+      for(SqlRow sqlRow : sqlRows){
+        //titleViews.add(new TitleView( sqlRow.getInteger("titleId"), sqlRow.getString("title")));
+        titleViews.add(
+          new TitleView(
+            sqlRow.getInteger("titleId"),
+            sqlRow.getString("title"),
+            sqlRow.getString("publisher")
+        ));
+        //Logger.info(sqlRow.getInteger("titleId").toString()+ " ; "+ sqlRow.getString("title") + " / " + sqlRow.getString("publisher") );
+      }
+    } else {
+      titleViews.add(
+          new TitleView(
+            0, // sqlRow.getInteger("titleId"),
+            "No results for '" +search+ "'.", //sqlRow.getString("title"),
+            " " // sqlRow.getString("publisher")
+        ));
+    }
+
+    return titleViews;
+	} // end AJE 2016-12-19 MEMBERgetByISSN
+
+	
+	
+	
+	
+	
+
 	public static List <TitleView> getByOCLC(String search){
 /* AJE 2016-11-10 this block is the original Travant code:
 	    problem: if > 1 title has the OCLC, there will be failure (though there should be no such titles
@@ -556,11 +700,60 @@ Logger.info("... MEMBERgetTitleContains has results sqlRows.size() = " +sqlRows.
             " " // sqlRow.getString("publisher")
         ));
     }
+    return titleViews;
+	}
+
+  /************************************************************
+  AJE 2016-12-19 MEMBERgetByOCLC is new function, public/javascripts/ihs_search.js will call ?
+  - note MEMBERgetByOCLC(Str, Int) forms tmpSql from MEMBERtitleContainsSql
+  */
+	public static List <TitleView> MEMBERgetByOCLC(String search, Integer memberID){
+   
+   Logger.info("app/models/IhsTitle.java : MEMBERgetByOCLC(" +search+", "+Integer.toString(memberID)+ ").");
+   
+   List <TitleView> titleViews = new ArrayList<TitleView>();
+	
+		String tmpSql = MEMBEROCLCequalsSql.replaceAll("search_term", search);
+			tmpSql = tmpSql.replaceAll("search_member", Integer.toString(memberID));
+
+    Logger.info("... will use SQL: " +tmpSql);
+
+    List<SqlRow> sqlRows = Ebean.createSqlQuery(tmpSql)
+      .findList();
+
+Logger.info("... MEMBERgetByOCLC has results sqlRows.size() = " +sqlRows.size());
+
+    if (sqlRows.size() > 0){
+      for(SqlRow sqlRow : sqlRows){
+        //titleViews.add(new TitleView( sqlRow.getInteger("titleId"), sqlRow.getString("title")));
+        titleViews.add(
+          new TitleView(
+            sqlRow.getInteger("titleId"),
+            sqlRow.getString("title"),
+            sqlRow.getString("publisher")
+        ));
+        //Logger.info(sqlRow.getInteger("titleId").toString()+ " ; "+ sqlRow.getString("title") + " / " + sqlRow.getString("publisher") );
+      }
+    } else {
+      titleViews.add(
+          new TitleView(
+            0, // sqlRow.getInteger("titleId"),
+            "No results for '" +search+ "'.", //sqlRow.getString("title"),
+            " " // sqlRow.getString("publisher")
+        ));
+    }
 
     return titleViews;
+	} // end AJE 2016-12-19 MEMBERgetByOCLC
 
 
-	}
+
+
+
+
+
+
+
 
 	public static TitleView getDetailById(int searchId){
 
