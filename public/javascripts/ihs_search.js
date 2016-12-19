@@ -523,7 +523,7 @@ function clearUnusedSearchFields(calling_function){
 				          url: "/search/MEMBERcontainsJournalByTitle/" + value + "/" + memberID, //  app/controllers/SearchJournals.java
 				          preventCache: true,
 				          error: function(e) {
-				              alert("ihs_search.js, MEMBERbrowseJournalByTitle Error: " + e.message);
+				              alert("ihs_search.js, MEMBERcontainsJournalByTitle Error: " + e.message);
 				          },
 				          load: populateSearchList
 				      });	    	
