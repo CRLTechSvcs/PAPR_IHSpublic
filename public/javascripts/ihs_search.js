@@ -310,9 +310,23 @@ function clearUnusedSearchFields(calling_function){
       if ( (response.items.length < 1) ||
            ((response.items[0].titleId == 0) || (response.items[0].titleId == undefined) || (response.items[0].titleId == ""))
          ) {
-        //console.log("populateSearchList hit the IF");
-        var li = document.createElement('li');
-        li.innerHTML = "<h2>No results were found for <span class='search_term'>&nbsp;'"+search_value+"'&nbsp;</span></h2>";
+        console.log("populateSearchList hit the IF");
+        
+        var li = document.createElement('li');        
+        // AJE 2016-12-19 add note if member limit is used
+				    	// new block 2016-12-16 for enhancement #26 test
+	    	var memberVal = $("#stateMember").val();
+	    	console.log('populateSearchList, stateMember.val() memberVal = ',memberVal,'.'); 
+	    	
+	    	var noResultsMsg = "";
+	    	
+				if (memberVal != ""){
+					noResultsMsg = "<h2>No results found for <br/><span class='search_term'>&nbsp;'"+search_value+"'&nbsp;</span>, <br/>limited to titles held by member <span class='search_term'>&nbsp;'"+memberVal+"'&nbsp;</span></h2>";
+				} else {
+					noResultsMsg = "<h2>No results found for <br/><span class='search_term'>&nbsp;'"+search_value+"'&nbsp;</span></h2>";
+				}
+
+        li.innerHTML = noResultsMsg;
         ul.appendChild(li);
       } else {
         //console.log("populateSearchList hit the ELSE");
@@ -370,6 +384,9 @@ function clearUnusedSearchFields(calling_function){
   /*
     AJE 2016-10-24 searchJournalByTitle uses app/controllers/SearchJournals.java > searchJournalByTitle
     until 10-26: main.scala.html called searchJournalByTitle from: <input type="text" id="titleid" onkeyup="searchJournalByTitle(this);" class="search">
+    
+		AJE 2016-12-19 : searchJournalByTitle now also gets memberID from the name in the select, chooses whether to use original XHR url or member-limited version
+
   */
 	function searchJournalByTitle(search) {
     console.info('searchJournalByTitle(',search.value,')');
@@ -385,7 +402,41 @@ function clearUnusedSearchFields(calling_function){
         //results.innerHTML = ' '; // Travant
         //console.log('searchJBT, value.length < 2 [no results found for '+value+' yet]'); // AJE 2016-09-21
     } else {
-      //console.log('searchJBT, value.length = ',value.length,', should search'); // AJE 2016-10-27
+    //console.log('searchJBT, value.length = ',value.length,', should search'); // AJE 2016-10-27
+    
+    	// new block 2016-12-16 for enhancement #26 test
+    	var memberVal = $("#stateMember").val();
+    	var memberID = "-1";
+    	var memberData = "";
+    	console.log('searchJBT, stateMember.val() memberVal = ',memberVal,'. Next is dojo.xhrGet.'); 
+      
+			if (memberVal != ""){
+
+	      dojo.xhrGet({
+	          handleAs: 'json',
+	          url: "/search/getMemberByName/" + memberVal, //  app/controllers/SearchJournals.java
+	          preventCache: true,
+	          error: function(e) {
+	              alert("ihs_search.js, searchJBT getMemberByName Error: " + e.message);
+	          },
+	          load: function(data){
+							console.warn("searchJBT memberVal got us data = ", data, " ; and data.data['0'] = ",data.data["0"]," ; and data.data['0'].id = ",data.data["0"].id,".");
+							memberID = data.data["0"].id;
+				    	console.warn('searchJBT IF memberVal = ',memberVal,' we got memberID = ', memberID, ' ; value =' ,value,'. Next is xhrGet.'); 
+							console.warn('searchJBT /search/MEMBERsearchJournalByTitle/', value, '/"', memberID);				    	
+							
+				      dojo.xhrGet({
+				          handleAs: 'json',
+				          url: "/search/MEMBERsearchJournalByTitle/" + value + "/" + memberID, //  app/controllers/SearchJournals.java
+				          preventCache: true,
+				          error: function(e) {
+				              alert("ihs_search.js, MEMBERsearchJournalByTitle Error: " + e.message);
+				          },
+				          load: populateSearchList
+				      });	    	
+	    			} // end load: function 
+	      });
+	    } else { // not memberVal : this block is Travant original 2016-12-16	
         dojo.xhrGet({
             handleAs: 'json',
             url: "/search/searchJournalByTitle/" + value,
@@ -394,16 +445,17 @@ function clearUnusedSearchFields(calling_function){
             error: function(e) {
                 alert("ihs_search.js, searchJournalByTitle Error: " + e.message);
             },
-            load: populateSearchList
+            load: populateSearchList	      
         });
+			} // end if memberVal
     }
-	} // end Travant's searchJournalByTitle
+	} // end Travant's searchJournalByTitle ; extensive changes AJE 2016-12-19
 
 
 
 	/*****************************************************
 	AJE 2016-10-24 : browseJournalByTitle is a copy of searchJournalByTitle; uses app/controllers/SearchJournals.java > browseJournalByTitle
-	AJE 2016-12-19 : browseJournalByTitle now also gets memberID from the name in the select, chooses whether to use original XHR url or uses /search/MEMBERbrowseJournalByTitle/" + value + "/" + memberID, 
+	AJE 2016-12-19 : browseJournalByTitle now also gets memberID from the name in the select, chooses whether to use original XHR url or member-limited version
 	*/
 	function browseJournalByTitle(search) {
     console.info('browseJournalByTitle("',search.value,'")');
@@ -425,13 +477,11 @@ function clearUnusedSearchFields(calling_function){
     	var memberVal = $("#stateMember").val();
     	var memberID = "-1";
     	var memberData = "";
-    	console.log('browseJBT, stateMember.val() memberVal = ',memberVal,'. Next is dojo.xhrGet.'); 
+    	console.log('browseJBT, stateMember.val() memberVal = ',memberVal,'.'); 
 
 			if (memberVal != ""){
+    	console.log('browseJBT, Next is dojo.xhrGet.'); 
 
-				var targetNode = dojo.byId("memberDEVNOTE");
-				targetNode.innerHTML = "<h4>browseJBT Got to if memberVal</h4>";
-				
 	      dojo.xhrGet({
 	          handleAs: 'json',
 	          url: "/search/getMemberByName/" + memberVal, //  app/controllers/SearchJournals.java
@@ -443,10 +493,8 @@ function clearUnusedSearchFields(calling_function){
 							console.warn("browseJBT memberVal got us data = ", data, " ; and data.data['0'] = ",data.data["0"]," ; and data.data['0'].id = ",data.data["0"].id,".");
 							memberID = data.data["0"].id;
 				    	console.warn('browseJBT IF memberVal = ',memberVal,' we got memberID = ', memberID, ' ; value =' ,value,'. Next is xhrGet.'); 
-	
-							var memLimitUrl = "/search/MEMBERbrowseJournalByTitle/" + value + "/" + memberID;
-							targetNode.innerHTML = "<h4>browseJBT " + memLimitUrl + "</h4>";
-				    	
+							console.warn('browseJBT /search/MEMBERbrowseJournalByTitle/', value, '/"', memberID);				    	
+							
 				      dojo.xhrGet({
 				          handleAs: 'json',
 				          url: "/search/MEMBERbrowseJournalByTitle/" + value + "/" + memberID, //  app/controllers/SearchJournals.java
@@ -477,6 +525,7 @@ function clearUnusedSearchFields(calling_function){
 
 	/*****************************************************
 	AJE 2016-10-27 : containsJournalByTitle is a copy of searchJournalByTitle; uses app/controllers/SearchJournals.java > containsJournalByTitle
+	AJE 2016-12-19 : containsJournalByTitle now also gets memberID from the name in the select, chooses whether to use original XHR url or member-limited version, 
 	*/
 	function containsJournalByTitle(search) {
     console.info('containsJournalByTitle("',search.value,'")');
@@ -496,13 +545,11 @@ function clearUnusedSearchFields(calling_function){
     	var memberVal = $("#stateMember").val();
     	var memberID = "-1";
     	var memberData = "";
-    	console.log('containsJBT, stateMember.val() memberVal = ',memberVal,'. Next is dojo.xhrGet.'); 
+    	console.log('containsJBT, stateMember.val() memberVal = ',memberVal,'.'); 
 
 			if (memberVal != ""){
+    	console.log('containsJBT, Next is dojo.xhrGet.'); 
 
-				var targetNode = dojo.byId("memberDEVNOTE");
-				targetNode.innerHTML = "<h4>containsJBT Got to if memberVal</h4>";
-				
 	      dojo.xhrGet({
 	          handleAs: 'json',
 	          url: "/search/getMemberByName/" + memberVal, //  app/controllers/SearchJournals.java
@@ -513,10 +560,8 @@ function clearUnusedSearchFields(calling_function){
 	          load: function(data){
 							console.warn("containsJBT memberVal got us data = ", data, " ; and data.data['0'] = ",data.data["0"]," ; and data.data['0'].id = ",data.data["0"].id,".");
 							memberID = data.data["0"].id;
-				    	console.warn('browseJBT IF memberVal = ',memberVal,' we got memberID = ', memberID, ' ; value =' ,value,'. Next is xhrGet.'); 
-	
-							var memLimitUrl = "/search/MEMBERcontainsJournalByTitle/" + value + "/" + memberID;
-							targetNode.innerHTML = "<h4>containsJBT " + memLimitUrl + "</h4>";
+				    	console.warn('containsJBT IF memberVal = ',memberVal,' we got memberID = ', memberID, ' ; value =' ,value,'. Next is xhrGet.'); 
+							console.warn('containsJBT /search/MEMBERcontainsJournalByTitle/', value, '/"', memberID);
 				    	
 				      dojo.xhrGet({
 				          handleAs: 'json',
@@ -546,55 +591,140 @@ function clearUnusedSearchFields(calling_function){
 
 
 
+	/*****************************************************
+	AJE 2016-12-19 : searchJournalByISSN now also gets memberID from the name in the select, chooses whether to use original XHR url or member-limited version, 
+	*/
 	function searchJournalByISSN(search) {
+    console.info('searchJournalByISSN("',search.value,'")');
+
 	  clearUnusedSearchFields('searchJournalByISSN');
 	  showWaiting();
 
-	  var results = document.getElementById('results');
 
-    var st = search.value.replace('-', '');
-    if (st.length < 2) {
-        results.innerHTML= ' ';
-    } else {
-        if (st.length == 8) {
-            dojo.xhrGet({
-                handleAs: 'json',
-                url: "/search/searchJournalByISSN/" + st,
-                preventCache: true,
-                error: function(e) {
-                    alert("ihs_search.js, searchJournalByISSN Error: " + e.message);
-                },
-                load: populateSearchList
-            });
-        }
-    }
-	}
+		var results = document.getElementById('results');
+		var value = search.value.replace('\\', ' ').replace('\/', ' ').replace('  ', ' ');
+		var value1 = search.value.replace(' ', '');
+    if (value.length < 2 ) {
+        //console.log('searchJBI, value.length < 2 [no results found for '+value+' yet]'); // AJE 2016-09-21
+    }  else {
+    	//console.log('searchJBI, value.length = ',value.length,', should search'); // AJE 2016-10-27
+    
+    	// new block 2016-12-16 for enhancement #26 test
+    	var memberVal = $("#stateMember").val();
+    	var memberID = "-1";
+    	var memberData = "";
+    	console.log('searchJBI, stateMember.val() memberVal = ',memberVal,'.'); 
+
+			if (memberVal != ""){
+    	console.log('searchJBI, Next is dojo.xhrGet.'); 
+
+	      dojo.xhrGet({
+	          handleAs: 'json',
+	          url: "/search/getMemberByName/" + memberVal, //  app/controllers/SearchJournals.java
+	          preventCache: true,
+	          error: function(e) {
+	              alert("ihs_search.js, searchJBI getMemberByName Error: " + e.message);
+	          },
+	          load: function(data){
+							console.warn("searchJBI memberVal got us data = ", data, " ; and data.data['0'] = ",data.data["0"]," ; and data.data['0'].id = ",data.data["0"].id,".");
+							memberID = data.data["0"].id;
+				    	console.warn('searchJBI IF memberVal = ',memberVal,' we got memberID = ', memberID, ' ; value =' ,value,'. Next is xhrGet.'); 
+							console.warn('searchJBI /search/MEMBERsearchJournalByISSN/', value, '/"', memberID);
+				    	
+				      dojo.xhrGet({
+				          handleAs: 'json',
+				          url: "/search/MEMBERsearchJournalByISSN/" + value + "/" + memberID, //  app/controllers/SearchJournals.java
+				          preventCache: true,
+				          error: function(e) {
+				              alert("ihs_search.js, MEMBERsearchJournalByISSN Error: " + e.message);
+				          },
+				          load: populateSearchList
+				      });	    	
+	    			} // end load: function 
+	      });
+	    } else { // not memberVal : this block is Travant original 2016-12-19
+      //console.log('searchJBI, value.length = ',value.length,', should search'); // AJE 2016-10-27
+      dojo.xhrGet({
+          handleAs: 'json',
+          url: "/search/searchJournalByISSN/" + value,
+          preventCache: true,
+          error: function(e) {
+              alert("ihs_search.js, searchJournalByISSN Error: " + e.message);
+          },
+          load: populateSearchList
+      });
+    }// end if memberVal
+	} // end if value.length > 2
+  } // end AJE 2016-10-27 searchJournalByISSN
 
 
 
-function searchJournalByOCLC(search) {
-  clearUnusedSearchFields('searchJournalByOCLC');
-  showWaiting();
+	/*****************************************************
+	AJE 2016-12-19 : searchJournalByOCLC now also gets memberID from the name in the select, chooses whether to use original XHR url or member-limited version, 
+	*/
+	function searchJournalByOCLC(search) {
+    console.info('searchJournalByOCLC("',search.value,'")');
 
-  var results = document.getElementById('results');
+	  clearUnusedSearchFields('searchJournalByOCLC');
+	  showWaiting();
 
-  var st = search.value;
-  if (st.length < 2) {
-      results.innerHTML= ' ';
-  } else {
-      if (st.length > 4) {
-          dojo.xhrGet({
-              handleAs: 'json',
-              url: "/search/searchJournalByOCLC/" + st,
-              preventCache: true,
-              error: function(e) {
-                  alert("ihs_search.js, searchJournalByOCLC Error: " + e.message);
-              },
-              load: populateSearchList
-          });
-      }
-  }
-}
+
+		var results = document.getElementById('results');
+		var value = search.value.replace('\\', ' ').replace('\/', ' ').replace('  ', ' ');
+		var value1 = search.value.replace(' ', '');
+    if (value.length < 2 ) {
+        //console.log('searchJBO, value.length < 2 [no results found for '+value+' yet]'); // AJE 2016-09-21
+    }  else {
+    	//console.log('searchJBO, value.length = ',value.length,', should search'); // AJE 2016-10-27
+    
+    	// new block 2016-12-16 for enhancement #26 test
+    	var memberVal = $("#stateMember").val();
+    	var memberID = "-1";
+    	var memberData = "";
+    	console.log('searchJBO, stateMember.val() memberVal = ',memberVal,'.'); 
+
+			if (memberVal != ""){
+    	console.log('searchJBO, Next is dojo.xhrGet.'); 
+
+	      dojo.xhrGet({
+	          handleAs: 'json',
+	          url: "/search/getMemberByName/" + memberVal, //  app/controllers/SearchJournals.java
+	          preventCache: true,
+	          error: function(e) {
+	              alert("ihs_search.js, searchJBO getMemberByName Error: " + e.message);
+	          },
+	          load: function(data){
+							console.warn("searchJBO memberVal got us data = ", data, " ; and data.data['0'] = ",data.data["0"]," ; and data.data['0'].id = ",data.data["0"].id,".");
+							memberID = data.data["0"].id;
+				    	console.warn('searchJBO IF memberVal = ',memberVal,' we got memberID = ', memberID, ' ; value =' ,value,'. Next is xhrGet.'); 
+							console.warn('searchJBO /search/MEMBERsearchJournalByOCLC/', value, '/"', memberID);
+				    	
+				      dojo.xhrGet({
+				          handleAs: 'json',
+				          url: "/search/MEMBERsearchJournalByOCLC/" + value + "/" + memberID, //  app/controllers/SearchJournals.java
+				          preventCache: true,
+				          error: function(e) {
+				              alert("ihs_search.js, MEMBERsearchJournalByOCLC Error: " + e.message);
+				          },
+				          load: populateSearchList
+				      });	    	
+	    			} // end load: function 
+	      });
+	    } else { // not memberVal : this block is Travant original 2016-12-19
+      //console.log('searchJBO, value.length = ',value.length,', should search'); // AJE 2016-10-27
+      dojo.xhrGet({
+          handleAs: 'json',
+          url: "/search/searchJournalByOCLC/" + value,
+          preventCache: true,
+          error: function(e) {
+              alert("ihs_search.js, searchJournalByOCLC Error: " + e.message);
+          },
+          load: populateSearchList
+      });
+    }// end if memberVal
+	} // end if value.length > 2
+  } // end AJE 2016-10-27 searchJournalByOCLC
+
 
 
 
