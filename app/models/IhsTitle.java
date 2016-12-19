@@ -85,7 +85,7 @@ public class IhsTitle extends Model {
     + "WHERE title LIKE 'param%' " // AJE new TEST
 		+ "ORDER BY title ASC "
 		+ "LIMIT  50;";
-		
+
 	static String MEMBERtitleBrowseSql = "SELECT titleId, title, "
     + "MATCH (title) AGAINST ('search_term' IN BOOLEAN MODE) as relevance, "
     + "P.name AS publisher "
@@ -95,7 +95,8 @@ public class IhsTitle extends Model {
     + "AND titleId IN( " 
     + "SELECT DISTINCT titleID FROM ihsissue WHERE issueID IN ( " 
     	+ "SELECT DISTINCT issueID FROM ihsholding WHERE memberID = search_member" 
-    + ") ) ORDER BY title ASC " 
+    + ") ) " 
+    + "ORDER BY title ASC " 
 		+ "LIMIT  50;";
 
 
@@ -107,6 +108,23 @@ public class IhsTitle extends Model {
     + "WHERE title LIKE '%param%' " // AJE new TEST
 		+ "ORDER BY title ASC "
 		+ "LIMIT  50;";
+	static String MEMBERtitleContainsSql = "SELECT titleId, title, " 
+    + "MATCH (title) AGAINST ('search_term' IN BOOLEAN MODE) as relevance, "
+    + "P.name AS publisher "
+		+ "FROM ihstitle T "
+		+ "JOIN ihspublisher P ON T.publisherID = P.publisherID "
+    + "WHERE title LIKE '%search_term%' " // AJE new TEST
+    + "AND titleId IN( " 
+    + "SELECT DISTINCT titleID FROM ihsissue WHERE issueID IN ( " 
+    	+ "SELECT DISTINCT issueID FROM ihsholding WHERE memberID = search_member" 
+    + ") ) "     
+		+ "ORDER BY title ASC "
+		+ "LIMIT  50;"; // AJE 2016-12-19
+
+
+
+
+
 	static String printISSNequalsSql = "SELECT titleId, title, " // AJE 2016-11-10
     + "MATCH (title) AGAINST ('param' IN BOOLEAN MODE) as relevance, "
     + "P.name AS publisher "
@@ -281,7 +299,7 @@ public class IhsTitle extends Model {
 
   /************************************************************
   AJE 2016-10-24 getTitleBrowse is new function, public/javascripts/ihs_search.js will call ?
-  - note this forms tmpSql from titleBrowseSql
+  - note getTitleBrowse(Str) forms tmpSql from titleBrowseSql
   */
 	public static List <TitleView> getTitleBrowse(String search){
 		
@@ -329,7 +347,7 @@ Logger.info("app/models/IhsTitle.java : getTitleBrowse has results sqlRows.size(
 
   /************************************************************
   AJE 2016-12-16 MEMBERgetTitleBrowse is new function, public/javascripts/ihs_search.js will call ?
-  - note this forms tmpSql from titleBrowseSql
+  - note MEMBERgetTitleBrowse(Str, Int) forms tmpSql from MEMBERtitleBrowseSql
   */
 	public static List <TitleView> MEMBERgetTitleBrowse(String search, Integer memberID){
    
@@ -409,6 +427,49 @@ Logger.info("... MEMBERgetTitleBrowse has results sqlRows.size() = " +sqlRows.si
 
     return titleViews;
 	} // end AJE 2016-10-27 getTitleContains
+
+  /************************************************************
+  AJE 2016-12-19 MEMBERgetTitleContains is new function, public/javascripts/ihs_search.js will call ?
+  - note MEMBERgetTitleContains(Str, Int) forms tmpSql from MEMBERtitleContainsSql
+  */
+	public static List <TitleView> MEMBERgetTitleContains(String search, Integer memberID){
+   
+   Logger.info("app/models/IhsTitle.java : MEMBERgetTitleContains(" +search+", "+Integer.toString(memberID)+ ").");
+   
+   List <TitleView> titleViews = new ArrayList<TitleView>();
+	
+		String tmpSql = MEMBERtitleContainsSql.replaceAll("search_term", search);
+			tmpSql = tmpSql.replaceAll("search_member", Integer.toString(memberID));
+
+    Logger.info("... will use SQL: " +tmpSql);
+
+    List<SqlRow> sqlRows = Ebean.createSqlQuery(tmpSql)
+      .findList();
+
+Logger.info("... MEMBERgetTitleContains has results sqlRows.size() = " +sqlRows.size());
+
+    if (sqlRows.size() > 0){
+      for(SqlRow sqlRow : sqlRows){
+        //titleViews.add(new TitleView( sqlRow.getInteger("titleId"), sqlRow.getString("title")));
+        titleViews.add(
+          new TitleView(
+            sqlRow.getInteger("titleId"),
+            sqlRow.getString("title"),
+            sqlRow.getString("publisher")
+        ));
+        //Logger.info(sqlRow.getInteger("titleId").toString()+ " ; "+ sqlRow.getString("title") + " / " + sqlRow.getString("publisher") );
+      }
+    } else {
+      titleViews.add(
+          new TitleView(
+            0, // sqlRow.getInteger("titleId"),
+            "No results for '" +search+ "'.", //sqlRow.getString("title"),
+            " " // sqlRow.getString("publisher")
+        ));
+    }
+
+    return titleViews;
+	} // end AJE 2016-12-19 MEMBERgetTitleContains
 
 
 
