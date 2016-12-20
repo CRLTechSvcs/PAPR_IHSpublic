@@ -147,8 +147,9 @@ p#search-criteria {
 
 #content-left {
 	width:190px;
-	height:887px;
+	height:887px; /* Travant original */
 	float:left;
+	background-color:#e9e6d3; /* move color from child ID -- AJE 2016-12-20 */
 }
 
 #content-left #logo {
@@ -157,9 +158,9 @@ p#search-criteria {
 
 #inner-content-left {
 	width:184px;
-	/* height:835px; # Travant original */
-	height:99%; /* AJE test 2016-12-16 */
-	background-color:#e9e6d3;
+	height:837px; /* # Travant original is 835px */
+	/* height:99%; /* AJE test 2016-12-16 */
+	/* background-color:#e9e6d3; /* move color to parent ID -- AJE 2016-12-20 */
 	padding:49px 3px 3px 3px;
 }
 
@@ -187,7 +188,7 @@ input.search-small {
 
 #content-center {
 	width:867px;
-	height:auto;
+	/* height:auto; Travant original */
 	float:left;
 	text-align:left;
 }
@@ -207,7 +208,9 @@ input.search-small {
 }
 #results {
 	/* visibility: hidden; # AJE 2016-09-16 changed this Travant original */
-	height: 458px; /* AJE 2016-09-15 this line is Travant original */
+	/* height: 458px; /* AJE 2016-09-15 this line is Travant original */
+height:auto; /* AJE 2016-12-20 */
+
 	/* AJE 2016-09-15 -- allow list of found titles to expand */
 	display:flex;overflow:auto;
 }
@@ -567,14 +570,17 @@ img.edit-pub-range {
 #content-right {
 	/* width:83px;  Travant original value ; AJE 2016-09-21 changed */
 	width:5px;
-	height:887px;
+	height:887px; /* Travant original */
+	/* height:auto; /* AJE 2016-12-20 */
 	float:left;
+	background-color:#e9e6d3; /* move color from child ID -- AJE 2016-12-20 */
 }
 
 #inner-content-right {
 	/* width:77px; Travant original value ; AJE 2016-09-21 changed to nothing */
-	height:835px;
-	background-color:#e9e6d3;
+	height:837px; /* Travant original was 835px */
+	/* height:auto; /* AJE 2016-12-20 */
+	/* background-color:#e9e6d3; /* move color to parent ID -- AJE 2016-12-20 */
 	padding:49px 3px 3px 3px;
 	text-align:right;
 }
@@ -632,15 +638,16 @@ img.edit-pub-range {
 }
 
 #footer {
-	margin: 10px auto 32px auto;
-	width: 974px;
+	/* margin: 10px auto 32px auto; */
+	/* width: 974px; Travant original */
+	width:1062px; /* AJE 2016-12-20 : make it same as #header */
 	/*border: 1px solid #000000;*/
 }
 
 #footer p {
 	text-align:left;
 	font-size:88%;
-	margin-left:124px;
+	/* margin-left:124px; Travant original */
 	/*border:1px solid #000;*/
 	}
 
@@ -1150,12 +1157,20 @@ table.pagination td.pagination-link {
 
 .hr { /* width:974px; Travant value */
   width: 1062px; /* AJE 2016-09-21 */
-  color:#e9e6d3; background-color:#e9e6d3; height:1px;
+  color:#e9e6d3;
+  background-color:#e9e6d3;
+  height:1px;
   /* margin:8px auto 0 auto; Travant value */
   margin:8px auto 0px 0px; /* AJE 2016-09-21 */
 }
 
-.hr-bottom {width:974px; color:#e9e6d3; background-color:#e9e6d3; height:1px; margin:32px auto 0 auto;}
+.hr-bottom {
+  width:974px;
+  color:#e9e6d3;
+  background-color:#e9e6d3;
+  height:1px;
+  margin:32px auto 0 auto;
+}
 
 .login {margin-right:0;/*border:1px solid #000000;*/}
 
