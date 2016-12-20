@@ -209,8 +209,11 @@ var currentTitle = {};
 		var pubRange = currentTitle.publicationRangeViews[i];
 		var startDate =  $('#startDate1').val();
 		var endDate =  $('#endDate1').val();
+
+		console.log("advance_history.js has startDate=", startDate, " ; endDate=", endDate);
+
 		if( !validateDate(startDate) ){
-			alert( 'Enter a  valid Start Date' );
+			alert( 'Enter a valid Start Date' );
 			return;
 		}
 		if(endDate != '' ) {
