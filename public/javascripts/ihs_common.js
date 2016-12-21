@@ -70,8 +70,11 @@ function hideWaiting(){
 
 
 function validateDate(testdate) {
-    var date_regex = /^(0[1-9]|1[0-2])\/(0[1-9]|1\d|2\d|3[01])\/(19|20)\d{2}$/ ;
+    var date_regex = /^(0[1-9]|1[0-2])\/(0[1-9]|1\d|2\d|3[01])\/(19|20)\d{2}$/ ; // Travant original before 2016-12-20 : now using DOJO wijit
+    //var date_regex = /^([0-9]{1-2}|1[0-2])\/(0[1-9]|1\d|2\d|3[01])\/(19|20)\d{2}$/ ; // AJE 2016-12-20
     var result = date_regex.test(testdate);
+    console.log('ihs_common.js : validateDate has validateDate=', testdate, ' and result=', result);
+
     return result;
 }
 
