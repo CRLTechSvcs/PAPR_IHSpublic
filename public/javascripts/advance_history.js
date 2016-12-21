@@ -210,7 +210,7 @@ var currentTitle = {};
 		var startDate =  $('#startDate1').val();
 		var endDate =  $('#endDate1').val();
 
-		console.log("advance_history.js has startDate=", startDate, " ; endDate=", endDate);
+		console.log("advance_history.js saveChangePubRange(",i,") has startDate=", startDate, " ; endDate=", endDate);
 
 		if( !validateDate(startDate) ){
 			alert( 'Enter a valid Start Date' );
