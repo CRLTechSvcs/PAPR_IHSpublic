@@ -78,11 +78,18 @@ public class PublishingJobActor extends UntypedActor {
         Logger.info("...Garbage collection -> System.gc() next for java.lang.OutOfMemoryError: Java heap space");
         System.gc(); // AJE 2016-11-30 to fix java.lang.OutOfMemoryError: Java heap space ; suggested by: http://stackoverflow.com/questions/37335/how-to-deal-with-java-lang-outofmemoryerror-java-heap-space-error-64mb-heap
 
+        long heapsize = Runtime.getRuntime().totalMemory();
+        Logger.info("heapsize is :: " + heapsize);
+
 				ihsTitles = IhsTitle.find.fetch("ihsPublisher")
 						.fetch("ihsVolume").fetch("ihsVolume.ihsissues")
 						.fetch("ihsPublicationRange").where()
 						.ge("changeDate", ihsPublishingJob.startDate)
 						.le("changeDate", ihsPublishingJob.endDate).findList();
+
+        Logger.info("After fetch, have we hit memory error yet?");
+
+
 			} else if (ihsPublishingJob.startDate != null) {
   			Logger.info("PublishingJobActor.onReceive: enter if startDate NOT null block");
 
