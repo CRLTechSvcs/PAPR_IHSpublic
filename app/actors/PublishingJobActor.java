@@ -79,7 +79,7 @@ public class PublishingJobActor extends UntypedActor {
         System.gc(); // AJE 2016-11-30 to fix java.lang.OutOfMemoryError: Java heap space ; suggested by: http://stackoverflow.com/questions/37335/how-to-deal-with-java-lang-outofmemoryerror-java-heap-space-error-64mb-heap
 
         long heapsize = Runtime.getRuntime().totalMemory();
-        Logger.info("heapsize is :: " + heapsize);
+        Logger.info("heapsize == Runtime.getRuntime().totalMemory() == " + heapsize);
 
 				ihsTitles = IhsTitle.find.fetch("ihsPublisher")
 						.fetch("ihsVolume").fetch("ihsVolume.ihsissues")
@@ -526,35 +526,42 @@ ihsPublishingJob.update(); // Travant original ; appeared to cause error "javax.
 		  destFileString = destFileString.replace('\\','/');
     Logger.info("buildIhsCsv has dataDir = " +dataDir+ " ;  fileName = " +fileName+ " ; destFileString = " +destFileString);
 
+
 		// Add header: csvHeader taken from SHOW CREATE TABLE `ihstitle`
     String csvHeader = "titleID|titleTypeID|title|alphaTitle|printISSN|eISSN|oclcNumber|lccn|publisherID|description|";
            csvHeader += "titleStatusID|changeDate|userID|titleVersion|imagePageRatio|language|country|volumeLevelFlag|";
            csvHeader += "builderHolding"; // not in table
-      try{
-  		  FileOutputStream fos = new FileOutputStream(destFileString, true); // 'true' for APPEND
-        byte[] bytesArray = csvHeader.toString().getBytes();
-        fos.write(bytesArray);
-        bytesArray = "\n".getBytes();
-        fos.write(bytesArray);
-    		fos.close();
-        fos.flush();
-        //Logger.info("buildIhsCsv: csvHeader written successfully at " +destFileString);
-      } catch (IOException e) { // TODO Auto-generated
-  		  Logger.info("buildIhsCsv error with writing csvHeader: \n" +e);
-      }
+
+    try{
+      // AJE 2016-12-09 : for a version that does not produce UTF-8, see: PublishingJobActor_UTF8_incomplete.java
+      // AJE 2016-12-09 : this version should produce UTF-8: http://stackoverflow.com/questions/1001540/how-to-write-a-utf-8-file-with-java?rq=1
+      java.io.Writer bwfos = new java.io.BufferedWriter(new java.io.OutputStreamWriter(
+        new FileOutputStream(destFileString, true), // 'true' for APPEND to file
+        "UTF-8")
+      );
+      byte[] bytesArray = csvHeader.toString().getBytes();
+      bwfos.write(csvHeader);
+      bwfos.write("\n");
+      bwfos.flush();
+      bwfos.close();
+    } catch (IOException e) {
+      Logger.info("buildIhsCsv error with writing csvHeader: \n" +e);
+    }
+
 
 		int titleIndex = 0;
-    //Logger.info("buildIhsCsv: next is for IhsTitle; ihsTitles.size()=" +ihsTitles.size());
 		for (IhsTitle ihsTitle : ihsTitles) {
 
-      //Logger.info("buildIhsCsv: inside for (IhsTitle ihsTitle : ihsTitles); ihsTitles.size() = " +ihsTitles.size()+ "; titleIndex = " +titleIndex);
 
+      Logger.info("...buildIhsCsv: on titleIndex = "+Integer.toString(titleIndex)+" ; Garbage collection -> System.gc() next for java.lang.OutOfMemoryError: Java heap space");
+      System.gc(); // AJE 2016-11-30 to fix java.lang.OutOfMemoryError: Java heap space ; suggested by: http://stackoverflow.com/questions/37335/how-to-deal-with-java-lang-outofmemoryerror-java-heap-space-error-64mb-heap
+
+
+      //Logger.info("buildIhsCsv: inside for (IhsTitle ihsTitle : ihsTitles); ihsTitles.size() = " +ihsTitles.size()+ "; titleIndex = " +titleIndex);
       Integer titleID = ihsTitle.titleID; // int(11) NOT NULL AUTO_INCREMENT,
       //Integer titleTypeID = ihsTitle.titleTypeID; // int(11) NOT NULL // NOT IN THE DATA
       Integer titleTypeID = -1;
       String title = ihsTitle.title != null ? ihsTitle.title : ""; // varchar(512) NOT NULL,
-      //Logger.info("....ihsTitles.title = " +ihsTitle.title+ " ; local var 'title' = " +title+ ".");
-
       String alphaTitle = ihsTitle.alphaTitle != null ? ihsTitle.alphaTitle : ""; // varchar(512) DEFAULT NULL,
       String printISSN = ihsTitle.printISSN != null ? Helper.formatIssn(ihsTitle.printISSN) : ""; // varchar(32) DEFAULT NULL,
       String eISSN = ihsTitle.eISSN != null ? Helper.formatIssn(ihsTitle.eISSN) : ""; // varchar(32) DEFAULT NULL,
@@ -590,8 +597,9 @@ ihsPublishingJob.update(); // Travant original ; appeared to cause error "javax.
 			boolean startVolume = true;
 			boolean startIssue = true;
 
+      int volumeIndex = 0;
 			for(IhsVolume ihsVolume: ihsTitle.ihsVolume){
-        int volumeIndex = 0;
+        //int volumeIndex = 0; // moved outside loop 2016-12-22
 
         if(startVolume && startIssue) {
           //Logger.info("titleMRKcontent: inside for (IhsVolume ihsVolume: ihsTitle.ihsVolume); ihsTitle.ihsVolume.size()=" +ihsTitle.ihsVolume.size()+ "; volumeIndex = " +volumeIndex);
@@ -626,6 +634,7 @@ ihsPublishingJob.update(); // Travant original ; appeared to cause error "javax.
 
       titleCSVcontent += builderHolding;
       //Logger.info("titleCSVcontent now contains builderHolding: "+titleCSVcontent);
+
       try{
         // AJE 2016-12-09 : for a version that does not produce UTF-8, see: PublishingJobActor_UTF8_incomplete.java
         // AJE 2016-12-09 : this version should produce UTF-8: http://stackoverflow.com/questions/1001540/how-to-write-a-utf-8-file-with-java?rq=1
@@ -633,6 +642,8 @@ ihsPublishingJob.update(); // Travant original ; appeared to cause error "javax.
           new FileOutputStream(destFileString, true), // 'true' for APPEND to file
           "UTF-8")
         );
+
+        byte[] bytesArray = csvHeader.toString().getBytes();
         bwfos.write(titleCSVcontent);
         bwfos.write("\n");
         bwfos.flush();
