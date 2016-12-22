@@ -38,10 +38,16 @@ function submitPub(){
 */
   var startYear = startDate.substring( startDate.lastIndexOf("/")+1);
   var startMonth = startDate.substring(0, startDate.indexOf("/"));
+  if (startMonth.length == 1) {
+    startMonth = '0' + startMonth;
+  }
   console.log('for month, startDate.substring(0)=', startDate.substring(0), ' ; startDate.indexOf("/")-1=', startDate.indexOf("/")-1, ' ; and the character there is ', startDate.charAt(startDate.indexOf("/")-1), '.');
   console.log('for month, expect ', startDate.substring(0, startDate.indexOf("/")), '.');
   console.log('startDate.indexOf("/")+1 = ', startDate.indexOf("/")+1);
   var startDay = startDate.substring(startDate.indexOf("/")+1, startDate.lastIndexOf("/"));
+  if (startDay.length == 1) {
+    startDay = '0' + startDay;
+  }
   console.log('for day, expect from ', startDate.indexOf("/")+1, ' to ', startDate.lastIndexOf("/")-1, '.');
 
   startDate =  startYear +"-"+  startMonth +"-"+ startDay;
@@ -49,7 +55,13 @@ function submitPub(){
 
   var endYear = endDate.substring( endDate.lastIndexOf("/")+1);
   var endMonth = endDate.substring(0, endDate.indexOf("/"));
+  if (endMonth.length == 1) {
+    endMonth = '0' + endMonth;
+  }
   var endDay = endDate.substring(endDate.indexOf("/")+1, endDate.lastIndexOf("/"));
+  if (endDay.length == 1) {
+    endDay = '0' + endDay;
+  }
   endDate =  endYear +"-"+  endMonth +"-"+ endDay;
 	console.log('2) submitPub has endYear=', endYear, ' ; endMonth=', endMonth, " ; endDay = ", endDay, "; endDate = ", endDate);
 
