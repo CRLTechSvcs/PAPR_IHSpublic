@@ -35,4 +35,6 @@ chmod 755 activator
 
 ./activator -jvm-debug 9999 run
 
+-- empty copy of database schema included in scripts directory 2017-01-09 ; run  ./scripts/crl_database_schema_nodata.sql in mysql to create blank database with tables
+
 
